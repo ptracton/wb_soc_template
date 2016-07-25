@@ -104,7 +104,7 @@ module soc_template (/*AUTOARG*/
                              .nrst_i(nrst_i),
                              // Inputs
                              .clk_sys_i(clk_sys_i), 
-                             .rst_sys_i(rst_sys_i)                             
+                             .rst_sys_i(reset_sys_i)                             
                              );
    
   
