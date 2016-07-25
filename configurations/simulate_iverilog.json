@@ -1,0 +1,23 @@
+{
+    "project":"simulate_iverilog",
+    "flow_steps": {
+        "1" : "clean_up",
+        "4" : "simulation",
+        "5" : "run"
+    },
+    "flow" : {
+        "clean_up" : {
+            "executable" : "rm",
+            "arguments" : "-f dump.vcd a.out hack.vh"
+        },    
+	    "simulation" : {
+	        "executable": "iverilog",
+	        "arguments" : " -f rtl_sim.f $simulation +define+ICARUS "	
+	    },
+	    "run" : {
+	        "executable" : "vvp",
+	        "arguments"  : "-l $simulation.log a.out"
+	    }
+    },
+    "remove_files": "hack.vh *.vcd a.out *.log"
+}

@@ -31,3 +31,29 @@
 # Debug files
 *.dSYM/
 *.su
+
+# Emacs files
+*~
+
+# Icarus Verilog
+*.vcd
+*.key
+*.log
+*.diag
+*.pyc
+.simvision/
+INCA_libs/
+*.shm/
+*.sv
+
+# Xilinx Files
+*.jou
+*.wdb
+*.pb
+xsim.dir/
+*.fmt
+*.mem
+*.gtkw
+*.wlf
+work/
+transcript
