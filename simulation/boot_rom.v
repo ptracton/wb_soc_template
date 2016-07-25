@@ -31,6 +31,7 @@ module test_case ();
       @(posedge `WB_RST);
       @(negedge `WB_RST);
       @(posedge `WB_CLK);
+      `UART_CONFIG;
       
       #10000;
       `TEST_COMPLETE;      

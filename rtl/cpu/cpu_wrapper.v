@@ -89,7 +89,7 @@ module wishbone_cpu (/*AUTOARG*/
    output wire                           dbg_ack_o;	// External Data Acknowledge (not WB compatible)
    
 `ifdef WISHBONE_CPU_LM32
-
+`include "lm32_config.v"
    lm32_top cpu(
                 // ----- Inputs -------
                 .clk_i(clk_i),
@@ -101,7 +101,7 @@ module wishbone_cpu (/*AUTOARG*/
  `endif
                 // From external devices
  `ifdef CFG_INTERRUPTS_ENABLED
-                .interrupt_n(interrupts),
+                .interrupt(interrupts),
  `endif
                 // From user logic
  `ifdef CFG_USER_ENABLED
@@ -120,16 +120,7 @@ module wishbone_cpu (/*AUTOARG*/
                 .D_ACK_I(dwbm_ack_i),
                 .D_ERR_I(dwbm_err_i),
                 .D_RTY_I(dwbm_rty_i),
-                // Debug Slave port WishboneInterface
-                .DEBUG_ADR_I(dbg_adr_i),
-                .DEBUG_DAT_I(dbg_dat_i),
-                .DEBUG_SEL_I(dbg_sel_i),
-                .DEBUG_WE_I(dbg_we_i),
-                .DEBUG_CTI_I(dbg_cti_i),
-                .DEBUG_BTE_I(dbg_bte_i),
-                .DEBUG_LOCK_I(dbg_lock_i),
-                .DEBUG_CYC_I(dbg_cyc_i),
-                .DEBUG_STB_I(dbg_stb_i),
+             
                 // ----- Outputs -------
  `ifdef CFG_USER_ENABLED    
                 .user_valid(),
@@ -139,31 +130,27 @@ module wishbone_cpu (/*AUTOARG*/
  `endif    
  `ifdef CFG_IWB_ENABLED
                 // Instruction Wishbone master
-                .I_DAT_O(),
-                .I_ADR_O(),
-                .I_CYC_O(),
-                .I_SEL_O(),
-                .I_STB_O(),
-                .I_WE_O(),
-                .I_CTI_O(),
+                .I_DAT_O(iwbm_dat_o),
+                .I_ADR_O(iwbm_adr_o),
+                .I_CYC_O(iwbm_cyc_o),
+                .I_SEL_O(iwbm_sel_o),
+                .I_STB_O(iwbm_stb_o),
+                .I_WE_O(iwbm_we_o),
+                .I_CTI_O(iwbm_cti_o),
                 .I_LOCK_O(),
-                .I_BTE_O(),
+                .I_BTE_O(iwbm_bte_o),
  `endif
                 // Data Wishbone master
-                .D_DAT_O(),
-                .D_ADR_O(),
-                .D_CYC_O(),
-                .D_SEL_O(),
-                .D_STB_O(),
-                .D_WE_O(),
-                .D_CTI_O(),
+                .D_DAT_O(dwbm_dat_o),
+                .D_ADR_O(dwbm_adr_o),
+                .D_CYC_O(dwbm_cyc_o),
+                .D_SEL_O(dwbm_sel_o),
+                .D_STB_O(dwbm_stb_o),
+                .D_WE_O(dwbm_we_o),
+                .D_CTI_O(dwbm_cti_o),
                 .D_LOCK_O(),
-                .D_BTE_O(),
-                // Debug Slave port WishboneInterface
-                .DEBUG_ACK_O(),
-                .DEBUG_ERR_O(),
-                .DEBUG_RTY_O(),
-                .DEBUG_DAT_O()
+                .D_BTE_O(dwbm_bte_o)
+               
                 );
    
 `elsif WISHBONE_CPU_MOR1K

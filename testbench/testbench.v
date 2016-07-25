@@ -27,26 +27,11 @@ module testbench;
 
    reg [31:0] read_word;
 
-
-   //
-   // Display
-   //
-   wire [3:0] anode;                  // From dut of display.v
-   wire [7:0] cathode;                // From dut of display.v
-
-   wire [15:0] leds;
-   reg [15:0]  switches_reg = 16'h0000;
-   wire [15:0] switches = switches_reg;
-   reg [3:0]   push_buttons_regs = 4'h0;   
-   wire [3:0]  push_buttons = push_buttons_regs;
-
-   wire        sck_o;
-   wire        ncs_o;
-   wire        mosi_o;
-   wire        miso_i;
-
-   wire wb_clk = clk;
-   wire wb_rst = reset;
+   wire       TX;
+   wire       RX;
+   
+   wire       wb_clk = clk;
+   wire       wb_rst = reset;
    
    soc_template dut(
                     // Outputs

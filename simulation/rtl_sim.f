@@ -2,10 +2,12 @@
 +define+VERBOSE
 +define+SIM
 +define+RTL_SIM
-
++define+SIMULATION
       
 +incdir+simulation
 +incdir+../behvioral/verilog_utils
++incdir+../behvioral/wb_common/
++incdir+../rtl/includes/
 
 //
 // SoC Top Level
@@ -60,3 +62,21 @@
 // Wishbone Master for UART access
 //
 ../behvioral/wb_master/wb_master_model.v
+
+//
+// Memory model for RAM/ROM
+//
+../rtl/wb_ram/rtl/verilog/wb_ram.v
+../rtl/wb_ram/rtl/verilog/wb_ram_generic.v
+
+//
+//
+//
++incdir+../rtl/cpu/
+../rtl/cpu/cpu_wrapper.v
+
+//
+// LM32 
+//
+../rtl/cpu/lm32_config.v
+-f ../rtl/lm32/lm32_rtl.f
