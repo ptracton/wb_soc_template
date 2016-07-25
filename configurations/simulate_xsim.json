@@ -6,9 +6,7 @@
         "icarus"
     ],
     "flow_steps": {
-	      "1" : "clean",
-        "2" : "make_clean",
-        "3" : "compile",
+	    "1" : "clean",
         "4" : "move",
         
         "6" : "test_case",
@@ -19,15 +17,7 @@
 	      "clean" :{
 	          "executable" : "rm",
 	          "arguments" : "-rf xsim.dir xvlog* xelab.pb webtalk* xsim.dir/ xvlog.pb *.wdb"
-	      },
-        "make_clean":{
-            "executable" : "make",
-            "arguments" : " TARGET=$application clean"            
-        },
-        "compile" : {
-            "executable" : "make",
-            "arguments" : " TARGET=$application"
-        },
+	      },    
         "move" : {
             "executable" : "mv",
             "arguments" : " $application.v boot_rom.v"
@@ -42,11 +32,11 @@
 	      },        
 	      "elaborate" :{
 	          "executable" : "xelab",
-            "arguments" : "-prj rtl_xsim.prj -debug all  --timescale 1ns/1ns -L unisims_ver -L unimacro_ver work.soc_testbench"
+            "arguments" : "-prj rtl_xsim.prj -debug all  --timescale 1ns/1ns -L unisims_ver -L unimacro_ver work.testbench"
 	      },        
 	      "xsimulation" : {
 	          "executable": "xsim",
-	          "arguments" : " work.soc_testbench -tclbatch simulation.tcl"	
+	          "arguments" : " work.testbench -tclbatch simulation.tcl"	
 	      },
 	      "run" : {
 	          "executable" : "./a.out",

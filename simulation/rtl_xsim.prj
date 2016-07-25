@@ -1,0 +1,53 @@
+
+      
+//+incdir+../behvioral/verilog_utils
+
+//
+// SoC Top Level
+//
+verilog work ../rtl/soc_template.v -i  ../rtl/bus_matrix/
+
+//
+// System Controller for clocks and resets
+//
+verilog work ../rtl/system_controller/system_controller.v -i simulation/
+
+//
+// Bus Matrix
+//
+verilog work ../rtl/bus_matrix/soc_bus_matrix.v
+verilog work ../behvioral/wb_intercon/wb_arbiter.v -i ../rtl/bus_matrix -i ../behvioral/verilog_utils
+verilog work ../behvioral/wb_intercon/wb_mux.v -i ../rtl/bus_matrix -i ../behvioral/verilog_utils
+verilog work ../behvioral/verilog-arbiter/arbiter.v -i ../rtl/bus_matrix -i ../behvioral/verilog_utils
+
+//
+// Test Bench
+//
+verilog work ../testbench/testbench.v -i ../testbench 
+verilog work ../testbench/dump.v -i ../testbench
+verilog work ../tasks/test_tasks.v -i ../testbench
+
+//
+// Bus Functional Master for test bench UART
+//
+verilog work ../behvioral/wb_bfm/wb_bfm_master.v -i ../behvioral/wb_bfm
+
+//
+// UART 16550
+//
+verilog work ../rtl/uart16550/rtl/verilog/raminfr.v -d UART_HAS_BAUDRATE_OUTPUT  -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_debug_if.v -d UART_HAS_BAUDRATE_OUTPUT  -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_receiver.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_regs.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_rfifo.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_sync_flops.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_tfifo.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_top.v -d UART_HAS_BAUDRATE_OUTPUT  -i ../rtl/uart16550/rtl/verilog/ 
+verilog work ../rtl/uart16550/rtl/verilog/uart_transmitter.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_wb.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
+verilog work ../tasks/uart_tasks.v -d UART_HAS_BAUDRATE_OUTPUT 
+
+//
+// Wishbone Master for UART access
+//
+verilog work ../behvioral/wb_master/wb_master_model.v -i ../testbench/
