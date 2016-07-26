@@ -17,7 +17,7 @@ module test_case ();
    // Test Configuration
    // These parameters need to be set for each test case
    //
-   parameter simulation_name = "boot";
+   parameter simulation_name = "boot_rom";
   
       
    parameter number_of_tests = 1;
