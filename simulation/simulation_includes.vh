@@ -19,7 +19,7 @@
 `define DUT `TB.dut
 `define CPU `DUT.picoblaze
 `define PROCESSOR `CPU.processor
-`define PROGRAM_ROM `CPU.program_rom
+`define PROGRAM_ROM `DUT.rom0
 
 
 `define TEST_CASE       `TB.test_case

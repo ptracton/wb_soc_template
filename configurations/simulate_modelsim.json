@@ -19,5 +19,5 @@
 	        "arguments"  : " "
 	    }
     },
-    "remove_files" : "work transcript test_case.v vsim.wlf"
+    "remove_files" : "work transcript test_case.v vsim.wlf a.out *.o *.d *.elf *.lst"
 }
