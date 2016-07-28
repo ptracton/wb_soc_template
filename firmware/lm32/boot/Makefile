@@ -13,6 +13,13 @@ LIB_DIR = lib
 DEP_DIR = dep
 LD_DIR = linker
 
+SOURCES          += $(wildcard $(SRC_DIR)/*.c)
+OBJECTS          += $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
+ELF_REQUIREMENTS += $(OBJECTS)
+VPATH            += $(SRC_DIR)
+CINCLUDES        += -I$(INC_DIR)
+
+
 ##
 ## The files we are creating
 ##
@@ -24,8 +31,8 @@ BIN_FILE  = $(LIB_DIR)/$(TARGET).bin
 ##
 ## Start up file
 ##
-ASM_SOURCES      += src/crt.S
-ASM_OBJECTS      += $(OBJ_DIR)/crt.o
+ASM_SOURCES      += src/crt.S #src/crt0ram.S 
+ASM_OBJECTS      += $(OBJ_DIR)/crt.o #crt0ram 
 ELF_REQUIREMENTS += $(ASM_OBJECTS)
 ASMFLAGS         +=  # -Wa 
 
@@ -33,6 +40,8 @@ ASMFLAGS         +=  # -Wa
 ## Linker flags
 ##
 LDFLAGS = -T$(LD_DIR)/linker.ld -nostdlib -lgcc
+CFLAGS  = -g $(CINCLUDES)
+CFLAGS += -Wall -Werror -Wextra 
 
 ##
 ## The directories to make for this build.
@@ -52,20 +61,20 @@ $(LIB_DIR)/$(LIB_FILE): $(ELF_REQUIREMENTS)
 	@echo "Create Library $(LIBRARY)"
 	$(AR) cr $(LIB_DIR)/$(LIBRARY) $(ELF_REQUIREMENTS)
 
-##
-## Turn out C code into objects in our $(OBJ_DIR)
-##
-$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
-	@echo "Compiling  $<"
-	@$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF dep/$(*F).d
 
 ##
 ## Turn out ASM code into objects in our $(OBJ_DIR)
 ##
-$(OBJ_DIR)/%.o:$(SRC_DIR)/%.S
+$(OBJ_DIR)/%.o:%.S
 	@echo "Assembling $<"
 	$(ASM) $(ASMFLAGS)   $<  -o $@
 
+##
+## Turn out C code into objects in our $(OBJ_DIR)
+##
+$(OBJ_DIR)/%.o:%.c
+	@echo "Compiling  $<"
+	$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF dep/$(*F).d
 
 clean:
 	$(RM) -rf  $(OBJ_DIR) $(EXEC_DIR) $(DEP_DIR) $(LIB_DIR)

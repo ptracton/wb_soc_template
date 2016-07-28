@@ -1,53 +1,107 @@
-
+//+libext+.v
+//+define+VERBOSE
+//+define+SIM
+//+define+RTL_SIM
+//+define+SIMULATION
       
+//+incdir+simulation
 //+incdir+../behvioral/verilog_utils
+//+incdir+../behvioral/wb_common/
+//+incdir+../rtl/includes/
 
 //
 // SoC Top Level
 //
-verilog work ../rtl/soc_template.v -i  ../rtl/bus_matrix/
+verilog work ../rtl/soc_template.v -i ../rtl/bus_matrix
 
 //
 // System Controller for clocks and resets
 //
-verilog work ../rtl/system_controller/system_controller.v -i simulation/
+verilog work ../rtl/system_controller/system_controller.v
 
 //
 // Bus Matrix
 //
-verilog work ../rtl/bus_matrix/soc_bus_matrix.v
+//+incdir+../rtl/bus_matrix
+verilog work ../rtl/bus_matrix/soc_bus_matrix.v -i ../rtl/bus_matrix
 verilog work ../behvioral/wb_intercon/wb_arbiter.v -i ../rtl/bus_matrix -i ../behvioral/verilog_utils
 verilog work ../behvioral/wb_intercon/wb_mux.v -i ../rtl/bus_matrix -i ../behvioral/verilog_utils
-verilog work ../behvioral/verilog-arbiter/arbiter.v -i ../rtl/bus_matrix -i ../behvioral/verilog_utils
+verilog work ../behvioral/verilog-arbiter/arbiter.v -i ../rtl/bus_matrix
 
 //
 // Test Bench
 //
-verilog work ../testbench/testbench.v -i ../testbench 
+//+incdir+../testbench
+verilog work ../testbench/testbench.v -i ../testbench
 verilog work ../testbench/dump.v -i ../testbench
 verilog work ../tasks/test_tasks.v -i ../testbench
 
 //
 // Bus Functional Master for test bench UART
 //
+//+incdir+../behvioral/wb_bfm
 verilog work ../behvioral/wb_bfm/wb_bfm_master.v -i ../behvioral/wb_bfm
 
 //
 // UART 16550
 //
-verilog work ../rtl/uart16550/rtl/verilog/raminfr.v -d UART_HAS_BAUDRATE_OUTPUT  -i ../rtl/uart16550/rtl/verilog/
-verilog work ../rtl/uart16550/rtl/verilog/uart_debug_if.v -d UART_HAS_BAUDRATE_OUTPUT  -i ../rtl/uart16550/rtl/verilog/
-verilog work ../rtl/uart16550/rtl/verilog/uart_receiver.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
-verilog work ../rtl/uart16550/rtl/verilog/uart_regs.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
-verilog work ../rtl/uart16550/rtl/verilog/uart_rfifo.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
-verilog work ../rtl/uart16550/rtl/verilog/uart_sync_flops.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
-verilog work ../rtl/uart16550/rtl/verilog/uart_tfifo.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
-verilog work ../rtl/uart16550/rtl/verilog/uart_top.v -d UART_HAS_BAUDRATE_OUTPUT  -i ../rtl/uart16550/rtl/verilog/ 
-verilog work ../rtl/uart16550/rtl/verilog/uart_transmitter.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
-verilog work ../rtl/uart16550/rtl/verilog/uart_wb.v -d UART_HAS_BAUDRATE_OUTPUT -i ../rtl/uart16550/rtl/verilog/
-verilog work ../tasks/uart_tasks.v -d UART_HAS_BAUDRATE_OUTPUT 
+//+incdir+../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/raminfr.v -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_debug_if.v -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_receiver.v -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_regs.v -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_rfifo.v -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_sync_flops.v -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_tfifo.v -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_top.v -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_transmitter.v -i ../rtl/uart16550/rtl/verilog/
+verilog work ../rtl/uart16550/rtl/verilog/uart_wb.v -i ../rtl/uart16550/rtl/verilog/
+verilog work ../tasks/uart_tasks.v -i ../rtl/uart16550/rtl/verilog/
 
 //
 // Wishbone Master for UART access
 //
-verilog work ../behvioral/wb_master/wb_master_model.v -i ../testbench/
+verilog work ../behvioral/wb_master/wb_master_model.v -i ../testbench
+
+//
+// Memory model for RAM/ROM
+//
+verilog work ../rtl/wb_ram/rtl/verilog/wb_ram.v -i ../behvioral/wb_common/
+verilog work ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v
+
+//
+//
+//
+//+incdir+../rtl/cpu/
+verilog work ../rtl/cpu/cpu_wrapper.v -i ../rtl/cpu/ -i ../rtl/includes/
+
+//
+// LM32 
+//
+verilog work ../rtl/cpu/lm32_config.v -i ../rtl/lm32/rtl
+//-f ../rtl/lm32/lm32_rtl.f
+
+verilog work ../rtl/lm32/rtl/jtag_cores.v
+verilog work ../rtl/lm32/rtl/lm32_adder.v -i -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_dcache.v 
+verilog work ../rtl/lm32/rtl/lm32_decoder.v
+verilog work ../rtl/lm32/rtl/lm32_dtlb.v
+verilog work ../rtl/lm32/rtl/lm32_interrupt.v
+verilog work ../rtl/lm32/rtl/lm32_jtag.v
+verilog work ../rtl/lm32/rtl/jtag_tap_spartan6.v
+verilog work ../rtl/lm32/rtl/BSCAN_SPARTAN6.v
+verilog work ../rtl/lm32/rtl/glbl.v
+verilog work ../rtl/lm32/rtl/lm32_logic_op.v
+verilog work ../rtl/lm32/rtl/lm32_multiplier.v
+verilog work ../rtl/lm32/rtl/lm32_shifter.v
+verilog work ../rtl/lm32/rtl/lm32_addsub.v
+verilog work ../rtl/lm32/rtl/lm32_cpu.v
+verilog work ../rtl/lm32/rtl/lm32_debug.v
+verilog work ../rtl/lm32/rtl/lm32_dp_ram.v
+verilog work ../rtl/lm32/rtl/lm32_icache.v
+verilog work ../rtl/lm32/rtl/lm32_instruction_unit.v
+verilog work ../rtl/lm32/rtl/lm32_itlb.v
+verilog work ../rtl/lm32/rtl/lm32_load_store_unit.v
+verilog work ../rtl/lm32/rtl/lm32_mc_arithmetic.v
+verilog work ../rtl/lm32/rtl/lm32_ram.v
+verilog work ../rtl/lm32/rtl/lm32_top.v

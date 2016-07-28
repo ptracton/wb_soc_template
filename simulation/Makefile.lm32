@@ -6,6 +6,7 @@ ELF_REQUIREMENTS = $(TEST_CASE_OBJ)
 ELF_FILE  = $(TEST_CASE).elf
 LIST_FILE = $(TEST_CASE).lst
 VH_FILE = $(TEST_CASE).vh
+ENTRY_POINT = ../firmware/lm32/boot/objects/crt.o
 
 FIRMWARE_ROOT = ../firmware
 FIRMWARE_CPU_ROOT = $(FIRMWARE_ROOT)/$(CPU)
@@ -13,7 +14,7 @@ LIB_BOOT = lm32boot
 LIB_BOOT_DIR = $(FIRMWARE_CPU_ROOT)/boot/lib
 
 
-LD_FLAGS = -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld  -fno-builtin -nostdlib -lgcc -L $(LIB_BOOT_DIR) -l$(LIB_BOOT) 
+LD_FLAGS = -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld  -fno-builtin -nostdlib -lgcc #-L $(LIB_BOOT_DIR) -l$(LIB_BOOT) 
 
 include $(FIRMWARE_CPU_ROOT)/environment.mk
 
@@ -24,8 +25,9 @@ $(LIST_FILE): $(ELF_FILE)
 	@$(OBJDUMP) -d $(ELF_FILE) > $(LIST_FILE)
 
 $(ELF_FILE): $(ELF_REQUIREMENTS)
+	@$(MAKE) -C ../firmware/lm32/boot/
 	@echo "Linking $(ELF_FILE)"
-	$(LD) -o $(ELF_FILE) $(LD_FLAGS) ../firmware/lm32/boot/objects/crt.o  $(ELF_REQUIREMENTS)
+	$(LD) -o $(ELF_FILE) $(LD_FLAGS)   $(ELF_REQUIREMENTS)
 
 %.vh: %.elf
 	@$(OBJCOPY) -O srec $< $@.tmp
