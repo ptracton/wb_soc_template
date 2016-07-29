@@ -3,7 +3,8 @@
 .text
 _start:
 xor r0, r0, r0
-
+xor r1, r0,r0
+    
 mvhi sp, hi(_fstack)
 ori sp, sp, lo(_fstack)
 

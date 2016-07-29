@@ -222,7 +222,7 @@ _divide_by_zero_handler:
 _interrupt_handler:
 	sw      (sp+0), ra
 	calli   _save_all
-	mvi     r1, SIGINT
+	mvi     r1, 2          
 #ifndef __MICO_NO_INTERRUPTS__
 	mvhi	r1, hi(MicoISRHandler)
 	ori	r1, r1, lo(MicoISRHandler)
@@ -606,7 +606,7 @@ _divide_by_zero_handler_2:
 _interrupt_handler_2:
 	sw      (sp+0), ra
 	calli   _save_all_2
-	mvi     r1, SIGINT
+	mvi     r1, 2         
 #ifndef __MICO_NO_INTERRUPTS__
 	mvhi	r1, hi(MicoISRHandler)
 	ori	r1, r1, lo(MicoISRHandler)

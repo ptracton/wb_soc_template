@@ -2,22 +2,34 @@
     "project":"simulate_modelsim",
  
     "flow_steps": {
-        "1": "test_case",
-	    "2" : "simulation"
+        "1": "compile_clean",
+        "2": "compile",
+        "3": "vlib",
+        "4": "test_case",
+	    "5" : "simulation"
     },
     "flow" : {
+        "compile_clean" : {
+	        "executable": "make",
+	        "arguments" : " TARGET=$simulation clean"	
+	    },           
+	    "compile" : {
+	        "executable": "make",
+	        "arguments" : " TARGET=$simulation"	
+	    },                
+	    "vlib" : {
+	        "executable": "vlib",
+	        "arguments" : " work"	
+	    },        
+        
 	    "test_case" : {
-	        "executable": "cp",
-	        "arguments" : " -f $simulation test_case.v"	
+	        "executable": "vlog",
+	        "arguments" : " $simulation +incdir+../testbench"	
 	    },        
 	    "simulation" : {
 	        "executable": "vsim",
 	        "arguments" : " -c -do rtl_modelsim.f -l $simulation.modelsim.log"	
-	    },
-	    "run" : {
-	        "executable" : "./a.out",
-	        "arguments"  : " "
 	    }
     },
-    "remove_files" : "work transcript test_case.v vsim.wlf a.out *.o *.d *.elf *.lst"
+    "remove_files" : "work transcript test_case.v vsim.wlf a.out *.o *.d *.elf *.lst *.mem *.srec *.vh.mem *.tmp"
 }

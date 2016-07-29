@@ -16,7 +16,7 @@ endif
 
 all:
 	@echo $(CPU_MAKEFILE)
-	make -f $(CPU_MAKEFILE) TEST_CASE=$(TARGET)
+	make -f $(CPU_MAKEFILE) TEST_NAME=$(TARGET)
 
 clean:
-	make -f $(CPU_MAKEFILE) TEST_CASE=$(TARGET) clean
+	make -f $(CPU_MAKEFILE) TEST_NAME=$(TARGET) clean

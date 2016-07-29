@@ -60,3 +60,5 @@ xsim.dir/
 *.wlf
 work/
 transcript
+*.tmp
+*.srec

@@ -181,7 +181,7 @@ module soc_template (/*AUTOARG*/
         .wb_clk_i(clk_i),
         .wb_rst_i(rst_i),
         
-        .wb_adr_i(wb_m2s_rom_adr[9:0]),
+        .wb_adr_i(wb_m2s_rom_adr[11:0]),
         .wb_dat_i(wb_m2s_rom_dat),
         .wb_sel_i(wb_m2s_rom_sel),
         .wb_we_i(VSS),

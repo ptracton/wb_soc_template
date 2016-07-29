@@ -78,30 +78,30 @@ verilog work ../rtl/cpu/cpu_wrapper.v -i ../rtl/cpu/ -i ../rtl/includes/
 //
 // LM32 
 //
-verilog work ../rtl/cpu/lm32_config.v -i ../rtl/lm32/rtl
+//verilog work ../rtl/cpu/lm32_config.v -i ../rtl/lm32/rtl
 //-f ../rtl/lm32/lm32_rtl.f
 
 verilog work ../rtl/lm32/rtl/jtag_cores.v
-verilog work ../rtl/lm32/rtl/lm32_adder.v -i -i ../rtl/cpu/
-verilog work ../rtl/lm32/rtl/lm32_dcache.v 
-verilog work ../rtl/lm32/rtl/lm32_decoder.v
-verilog work ../rtl/lm32/rtl/lm32_dtlb.v
-verilog work ../rtl/lm32/rtl/lm32_interrupt.v
-verilog work ../rtl/lm32/rtl/lm32_jtag.v
-verilog work ../rtl/lm32/rtl/jtag_tap_spartan6.v
-verilog work ../rtl/lm32/rtl/BSCAN_SPARTAN6.v
-verilog work ../rtl/lm32/rtl/glbl.v
-verilog work ../rtl/lm32/rtl/lm32_logic_op.v
-verilog work ../rtl/lm32/rtl/lm32_multiplier.v
-verilog work ../rtl/lm32/rtl/lm32_shifter.v
-verilog work ../rtl/lm32/rtl/lm32_addsub.v
-verilog work ../rtl/lm32/rtl/lm32_cpu.v
-verilog work ../rtl/lm32/rtl/lm32_debug.v
-verilog work ../rtl/lm32/rtl/lm32_dp_ram.v
-verilog work ../rtl/lm32/rtl/lm32_icache.v
-verilog work ../rtl/lm32/rtl/lm32_instruction_unit.v
-verilog work ../rtl/lm32/rtl/lm32_itlb.v
-verilog work ../rtl/lm32/rtl/lm32_load_store_unit.v
-verilog work ../rtl/lm32/rtl/lm32_mc_arithmetic.v
-verilog work ../rtl/lm32/rtl/lm32_ram.v
-verilog work ../rtl/lm32/rtl/lm32_top.v
+verilog work ../rtl/lm32/rtl/lm32_adder.v  -i ../rtl/cpu/ 
+verilog work ../rtl/lm32/rtl/lm32_dcache.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_decoder.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_dtlb.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_interrupt.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_jtag.v -i ../rtl/cpu/ 
+verilog work ../rtl/lm32/rtl/jtag_tap_spartan6.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/BSCAN_SPARTAN6.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/glbl.v -i ../rtl/cpu/ 
+verilog work ../rtl/lm32/rtl/lm32_logic_op.v -i ../rtl/cpu/ 
+verilog work ../rtl/lm32/rtl/lm32_multiplier.v -i ../rtl/cpu/ 
+verilog work ../rtl/lm32/rtl/lm32_shifter.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_addsub.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_cpu.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_debug.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_dp_ram.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_icache.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_instruction_unit.v -sv -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_itlb.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_load_store_unit.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_mc_arithmetic.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_ram.v -i ../rtl/cpu/
+verilog work ../rtl/lm32/rtl/lm32_top.v -i ../rtl/cpu/

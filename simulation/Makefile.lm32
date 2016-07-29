@@ -1,5 +1,6 @@
 CPU = lm32
-TEST_CASE = NONE
+TEST_NAME = none
+TEST_CASE = $(basename $(TEST_NAME))
 TEST_CASE_SRC = $(TEST_CASE).c
 TEST_CASE_OBJ = $(TEST_CASE).o
 ELF_REQUIREMENTS = $(TEST_CASE_OBJ) 
@@ -13,8 +14,9 @@ FIRMWARE_CPU_ROOT = $(FIRMWARE_ROOT)/$(CPU)
 LIB_BOOT = lm32boot
 LIB_BOOT_DIR = $(FIRMWARE_CPU_ROOT)/boot/lib
 
-
-LD_FLAGS = -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld  -fno-builtin -nostdlib -lgcc #-L $(LIB_BOOT_DIR) -l$(LIB_BOOT) 
+CINCLUDES = -I /home/ptracton/Downloads/gtools/lm32/lm32-elf/include/
+CFLAGS += $(CINCLUDES) -g -Wall -Werror -Wextra 
+LD_FLAGS = -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld  -lgcc 
 
 include $(FIRMWARE_CPU_ROOT)/environment.mk
 
@@ -27,16 +29,16 @@ $(LIST_FILE): $(ELF_FILE)
 $(ELF_FILE): $(ELF_REQUIREMENTS)
 	@$(MAKE) -C ../firmware/lm32/boot/
 	@echo "Linking $(ELF_FILE)"
-	$(LD) -o $(ELF_FILE) $(LD_FLAGS)   $(ELF_REQUIREMENTS)
+	$(LD) -o $(ELF_FILE) $(LD_FLAGS)   $(ELF_REQUIREMENTS) $(ENTRY_POINT)
 
 %.vh: %.elf
 	@$(OBJCOPY) -O srec $< $@.tmp
 	srec_cat $@.tmp --output $@.mem --VMEM
-	rm -rf $@.tmp
+
 
 %.o:%.c
 	@echo "Compiling  $<"
-	@$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF $(*F).d
+	$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF $(*F).d
 
 clean:
 	$(RM) -f $(ELF_FILE) $(TARGET).d $(LIST_FILE) $(TEST_CASE_OBJ) *.bin  *~

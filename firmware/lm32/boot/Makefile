@@ -31,8 +31,10 @@ BIN_FILE  = $(LIB_DIR)/$(TARGET).bin
 ##
 ## Start up file
 ##
-ASM_SOURCES      += src/crt.S #src/crt0ram.S 
-ASM_OBJECTS      += $(OBJ_DIR)/crt.o #crt0ram 
+#ASM_SOURCES      += src/crt0ram.S 
+#ASM_OBJECTS      += $(OBJ_DIR)/crt0ram.o
+ASM_SOURCES      += src/crt.S 
+ASM_OBJECTS      += $(OBJ_DIR)/crt.o
 ELF_REQUIREMENTS += $(ASM_OBJECTS)
 ASMFLAGS         +=  # -Wa 
 
