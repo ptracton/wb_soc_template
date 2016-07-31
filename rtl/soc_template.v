@@ -154,12 +154,12 @@ module soc_template (/*AUTOARG*/
    // System SRAM
    //
    
-   wb_ram #(.depth(1024))
+   wb_ram #(.depth(32768))
    ram0(
         .wb_clk_i(clk_i),
         .wb_rst_i(rst_i),
         
-        .wb_adr_i(wb_m2s_ram_adr),
+        .wb_adr_i(wb_m2s_ram_adr[14:0]),
         .wb_dat_i(wb_m2s_ram_dat),
         .wb_sel_i(wb_m2s_ram_sel),
         .wb_we_i(wb_m2s_ram_we),
@@ -176,12 +176,12 @@ module soc_template (/*AUTOARG*/
    //
    // System ROM
    // 
-   wb_ram #(.depth(4096))
+   wb_ram #(.depth(32768))
    rom0(
         .wb_clk_i(clk_i),
         .wb_rst_i(rst_i),
         
-        .wb_adr_i(wb_m2s_rom_adr[11:0]),
+        .wb_adr_i(wb_m2s_rom_adr[14:0]),
         .wb_dat_i(wb_m2s_rom_dat),
         .wb_sel_i(wb_m2s_rom_sel),
         .wb_we_i(VSS),

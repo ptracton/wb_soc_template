@@ -176,7 +176,7 @@ wire        wb_s2m_dwmb_debug_rty;
 wb_mux
   #(.num_slaves (4),
     .MATCH_ADDR ({32'h40000000, 32'h20000000, 32'h00000000, 32'he0000000}),
-    .MATCH_MASK ({32'hffffffe0, 32'hffffffe0, 32'hffffffe0, 32'hffffffe0}))
+    .MATCH_MASK ({32'hffffffe0, 32'hffff8000, 32'hffff8000, 32'hffffffe0}))
  wb_mux_iwmb
    (.wb_clk_i  (wb_clk_i),
     .wb_rst_i  (wb_rst_i),
@@ -208,7 +208,7 @@ wb_mux
 wb_mux
   #(.num_slaves (4),
     .MATCH_ADDR ({32'h40000000, 32'h20000000, 32'h00000000, 32'he0000000}),
-    .MATCH_MASK ({32'hffffffe0, 32'hffffffe0, 32'hffffffe0, 32'hffffffe0}))
+    .MATCH_MASK ({32'hffffffe0, 32'hffff8000, 32'hffff8000, 32'hffffffe0}))
  wb_mux_dwmb
    (.wb_clk_i  (wb_clk_i),
     .wb_rst_i  (wb_rst_i),

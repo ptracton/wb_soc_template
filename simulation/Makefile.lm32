@@ -29,7 +29,7 @@ $(LIST_FILE): $(ELF_FILE)
 $(ELF_FILE): $(ELF_REQUIREMENTS)
 	@$(MAKE) -C ../firmware/lm32/boot/
 	@echo "Linking $(ELF_FILE)"
-	$(LD) -o $(ELF_FILE) $(LD_FLAGS)   $(ELF_REQUIREMENTS) $(ENTRY_POINT)
+	$(LD) -o $(ELF_FILE) $(LD_FLAGS) $(ENTRY_POINT)  $(ELF_REQUIREMENTS) 
 
 %.vh: %.elf
 	@$(OBJCOPY) -O srec $< $@.tmp

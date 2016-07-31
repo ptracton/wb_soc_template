@@ -19,12 +19,17 @@ module wb_ram_generic
       dout <= mem[raddr];
    end
 
+   integer i;   
    generate
       initial
-	if(memfile != "") begin
-	   $display("Preloading %m from %s", memfile);
-	   $readmemh(memfile, mem);
-	end
+	    if(memfile != "") begin
+	       $display("Preloading %m from %s", memfile);
+	       $readmemh(memfile, mem);
+	    end else begin
+           for (i=0; i< depth; i=i+1) begin
+              mem[i] = i;              
+           end
+        end          
    endgenerate
 
 endmodule
