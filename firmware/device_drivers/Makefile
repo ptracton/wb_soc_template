@@ -10,6 +10,7 @@ OBJ_DIR  = $(CPU)_objects
 DEP_DIR  = $(CPU)_dep
 LIB_DIR  = $(CPU)_lib
 EXEC_DIR = $(CPU)_executable
+LIST_FILE = lib$(CPU).lst
 
 SOURCES = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
@@ -20,7 +21,7 @@ CINCLUDES = -I$(INC_DIR)
 MAKE_DIRS = $(DEP_DIR) $(LIB_DIR) $(OBJ_DIR)
 CFLAGS = -g -Wall -Werror $(CINCLUDES) -D$(CPU)
 
-all: dirs $(LIBRARY)
+all: dirs $(LIBRARY) $(LIST_FILE)
 
 dirs:
 	@echo "Making directories $(MAKE_DIRS)"
@@ -28,6 +29,10 @@ dirs:
 
 $(LIBRARY): $(ELF_REQUIREMENTS)
 	@echo "Building Library $(LIBRARY)"
+	$(AR) cr $(LIB_DIR)/$(LIBRARY) $(ELF_REQUIREMENTS)
+
+$(LIST_FILE): $(LIBRARY)
+	@$(OBJDUMP) -d $(LIB_DIR)/$(LIBRARY) > $(LIB_DIR)/$(LIST_FILE)
 
 $(OBJ_DIR)/%.o:%.c
 	@echo "Compiling $<"

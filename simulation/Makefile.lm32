@@ -1,4 +1,4 @@
-CPU = lm32
+CPU = LM32
 TEST_NAME = none
 TEST_CASE = $(basename $(TEST_NAME))
 TEST_CASE_SRC = $(TEST_CASE).c
@@ -7,16 +7,21 @@ ELF_REQUIREMENTS = $(TEST_CASE_OBJ)
 ELF_FILE  = $(TEST_CASE).elf
 LIST_FILE = $(TEST_CASE).lst
 VH_FILE = $(TEST_CASE).vh
-ENTRY_POINT = ../firmware/lm32/boot/objects/crt.o
+ENTRY_POINT = ../firmware/$(CPU)/boot/objects/crt.o
 
 FIRMWARE_ROOT = ../firmware
 FIRMWARE_CPU_ROOT = $(FIRMWARE_ROOT)/$(CPU)
 LIB_BOOT = lm32boot
 LIB_BOOT_DIR = $(FIRMWARE_CPU_ROOT)/boot/lib
 
-CINCLUDES = -I /home/ptracton/Downloads/gtools/lm32/lm32-elf/include/
-CFLAGS += $(CINCLUDES) -g -Wall -Werror -Wextra 
-LD_FLAGS = -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld  -lgcc 
+DEVICE_DRIVERS_DIR     = $(FIRMWARE_ROOT)/device_drivers
+DEVICE_DRIVERS_INC_DIR = $(DEVICE_DRIVERS_DIR)/includes
+DEVICE_DRIVERS_LIB_DIR = $(DEVICE_DRIVERS_DIR)/LM32_lib/
+DEVICE_DRIVERS_LIB = LM32_device_drivers
+
+CINCLUDES = -I /home/ptracton/Downloads/gtools/lm32/lm32-elf/include/ -I $(DEVICE_DRIVERS_INC_DIR)
+CFLAGS += $(CINCLUDES) -g -D$(CPU)  -Wall -Werror -Wextra
+LD_FLAGS = -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld -L $(DEVICE_DRIVERS_LIB_DIR) -l$(DEVICE_DRIVERS_LIB) -lgcc
 
 include $(FIRMWARE_CPU_ROOT)/environment.mk
 
@@ -27,9 +32,10 @@ $(LIST_FILE): $(ELF_FILE)
 	@$(OBJDUMP) -d $(ELF_FILE) > $(LIST_FILE)
 
 $(ELF_FILE): $(ELF_REQUIREMENTS)
-	@$(MAKE) -C ../firmware/lm32/boot/
+	@$(MAKE) -C ../firmware/device_drivers CPU=LM32
+	@$(MAKE) -C ../firmware/$(CPU)/boot/
 	@echo "Linking $(ELF_FILE)"
-	$(LD) -o $(ELF_FILE) $(LD_FLAGS) $(ENTRY_POINT)  $(ELF_REQUIREMENTS) 
+	$(LD) -o $(ELF_FILE) $(ENTRY_POINT)  $(ELF_REQUIREMENTS)  $(LD_FLAGS) 
 
 %.vh: %.elf
 	@$(OBJCOPY) -O srec $< $@.tmp

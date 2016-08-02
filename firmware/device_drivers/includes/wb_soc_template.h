@@ -10,14 +10,15 @@
 
 #endif
 
-
+#include <stdlib.h>
 #include <sys/types.h>
 
 #include "uart16550.h"
 
-#define ROM_BASE_ADDRESS 0x00000000
-#define RAM_BASE_ADDRESS 0x20000000
-
+#define ROM_BASE_ADDRESS  0x00000000
+#define RAM_BASE_ADDRESS  0x20000000
 #define UART_BASE_ADDRESS 0x40000000
+
+#define UART ((UART16550_REGS_TypeDef *) UART_BASE_ADDRESS)
 
 #endif

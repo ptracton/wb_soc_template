@@ -1,11 +1,13 @@
-#include <stdlib.h>
-#include <sys/types.h>
+
+#include "wb_soc_template.h"
 
 int main(void){
-  unsigned long i;
-  while(1){
-    i++;
-  }
-  
+
+
+  UART16550_Init(UART);
+  UART16550_TransmitByte(UART, '0');
+  UART16550_TransmitByte(UART, '1');
+  UART16550_TransmitByte(UART, '2');
+  UART16550_TransmitByte(UART, '3');
   return 0;
 }

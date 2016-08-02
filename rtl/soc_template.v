@@ -30,9 +30,6 @@ module soc_template (/*AUTOARG*/
    /*AUTOWIRE*/
 
    /*AUTOREG*/
-   // Beginning of automatic regs (for this module's undeclared outputs)
-   reg                  uart_tx = 0;
-   // End of automatics
 
    //
    // Bus Matrix
@@ -55,9 +52,11 @@ module soc_template (/*AUTOARG*/
    //
 
    wire [31:0]          interrupts;
+   wire                 uart_interrupt;
+   
    assign interrupts [0]  = 0;
    assign interrupts [1]  = 0;
-   assign interrupts [2]  = 0;
+   assign interrupts [2]  = uart_interrupt;
    assign interrupts [3]  = 0;
    assign interrupts [4]  = 0;
    assign interrupts [5]  = 0;
@@ -194,6 +193,40 @@ module soc_template (/*AUTOARG*/
         .wb_err_o(wb_s2m_rom_err),
         .wb_dat_o(wb_s2m_rom_dat)        
         );
-   
-  
+
+   //
+   // UART
+   //
+   uart_top	uart0(
+	              .wb_clk_i(wb_clk_i), 
+	              
+	              // Wishbone signals
+	              .wb_rst_i(wb_rst_i), 
+                  .wb_adr_i(wb_m2s_uart_adr), 
+                  .wb_dat_i(wb_m2s_uart_dat), 
+                  .wb_dat_o(wb_s2m_uart_dat), 
+                  .wb_we_i(wb_m2s_uart_we), 
+                  .wb_stb_i(wb_m2s_uart_stb), 
+                  .wb_cyc_i(wb_m2s_uart_cyc), 
+                  .wb_ack_o(wb_s2m_uart_ack), 
+                  .wb_sel_i(wb_m2s_uart_sel),
+	              .int_o(uart_interrupt), // interrupt request
+                  
+	              // UART	signals
+	              // serial input/output
+	              .stx_pad_o(uart_tx), 
+                  .srx_pad_i(uart_rx),
+                  
+	              // modem signals
+	              .rts_pad_o(), 
+                  .cts_pad_i(1'b0), 
+                  .dtr_pad_o(), 
+                  .dsr_pad_i(1'b0), 
+                  .ri_pad_i(1'b0), 
+                  .dcd_pad_i(1'b0)
+`ifdef UART_HAS_BAUDRATE_OUTPUT
+	              , 
+                  .baud_o()
+`endif
+	              );  
 endmodule // soc_template

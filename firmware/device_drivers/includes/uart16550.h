@@ -2,7 +2,7 @@
 #define __UART_16550_H__
 
 typedef struct{
-  volatile uint8_t  data;
+  volatile uint8_t data;
   volatile uint8_t interrupt_enable;
   volatile uint8_t interrupt_identifier;
   volatile uint8_t fifo_control;
@@ -13,7 +13,7 @@ typedef struct{
   volatile uint8_t reserved0;
   volatile uint32_t debug1;
   volatile uint32_t debug2;
-} UART16550_REGS;
+} UART16550_REGS_TypeDef;
 
 //
 // Interrupt Enable Bits
@@ -90,9 +90,9 @@ typedef struct{
 #define UART16550_MODEM_STATUS_COMPLEMENT_RI (0x40)
 #define UART16550_MODEM_STATUS_COMPLEMENT_DCD (0x80)
 
-void UART16550_Init(UART16550_REGS * uart);
-void UART16550_SetDivisor(UART16550_REGS * uart, uint16_t divisor);
-void UART16550_TransmitByte(UART16550_REGS * uart, uint8_t byte);
-void UART16550_ReceiveByte(UART16550_REGS * uart, uint8_t * byte);
+void UART16550_Init(UART16550_REGS_TypeDef * uart);
+void UART16550_SetDivisor(UART16550_REGS_TypeDef * uart, uint16_t divisor);
+void UART16550_TransmitByte(UART16550_REGS_TypeDef * uart, uint8_t byte);
+void UART16550_ReceiveByte(UART16550_REGS_TypeDef * uart, uint8_t * byte);
 
 #endif
