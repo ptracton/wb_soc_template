@@ -135,7 +135,7 @@ module soc_template (/*AUTOARG*/
                             .dbg_bte_i(VSS), 
                             .dbg_lock_i(VSS), 
                             .dbg_cyc_i(VSS), 
-                            .dbg_adr_i({10{VSS}}), 
+                            .dbg_adr_i({32{VSS}}), 
                             .dbg_dat_i({32{VSS}})
                             ) ; 
 
@@ -202,7 +202,7 @@ module soc_template (/*AUTOARG*/
 	              
 	              // Wishbone signals
 	              .wb_rst_i(wb_rst_i), 
-                  .wb_adr_i(wb_m2s_uart_adr), 
+                  .wb_adr_i(wb_m2s_uart_adr[4:0]), 
                   .wb_dat_i(wb_m2s_uart_dat), 
                   .wb_dat_o(wb_s2m_uart_dat), 
                   .wb_we_i(wb_m2s_uart_we), 
@@ -223,10 +223,7 @@ module soc_template (/*AUTOARG*/
                   .dtr_pad_o(), 
                   .dsr_pad_i(1'b0), 
                   .ri_pad_i(1'b0), 
-                  .dcd_pad_i(1'b0)
-`ifdef UART_HAS_BAUDRATE_OUTPUT
-	              , 
+                  .dcd_pad_i(1'b0),
                   .baud_o()
-`endif
 	              );  
 endmodule // soc_template

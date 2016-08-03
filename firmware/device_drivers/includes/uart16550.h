@@ -1,11 +1,25 @@
 #ifndef __UART_16550_H__
 #define __UART_16550_H__
 
-typedef struct{
-  volatile uint8_t data;
-  volatile uint8_t interrupt_enable;
-  volatile uint8_t interrupt_identifier;
-  volatile uint8_t fifo_control;
+typedef union{
+  uint8_t data;
+  uint8_t divisor_lsb;
+}UART16550_REG0_TypeDef;
+
+typedef union{
+  uint8_t interrupt_enable;
+  uint8_t divisor_msb;
+}UART16550_REG1_TypeDef;
+
+typedef union{
+  uint8_t interrupt_identifier;
+  uint8_t fifo_control; 
+} UART16550_REG2_TypeDef;
+
+typedef struct __attribute__ ((packed)) {
+  volatile UART16550_REG0_TypeDef reg0;
+  volatile UART16550_REG1_TypeDef reg1;
+  volatile UART16550_REG2_TypeDef reg2;
   volatile uint8_t line_control;
   volatile uint8_t modem_control;
   volatile uint8_t line_status;

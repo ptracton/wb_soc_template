@@ -31,6 +31,11 @@ module test_case ();
       @(negedge `WB_RST);
       @(posedge `WB_CLK);
       `UART_CONFIG;
+
+      `UART_READ_CHAR(8'h30);
+      `UART_READ_CHAR(8'h31);
+      `UART_READ_CHAR(8'h32);
+      `UART_READ_CHAR(8'h33);
       
       #10000;
       `TEST_COMPLETE;      

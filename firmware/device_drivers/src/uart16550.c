@@ -6,15 +6,14 @@ void UART16550_Init(UART16550_REGS_TypeDef * uart){
   //
   //Turn on Receive Data Interrupt
   //
-  uart->interrupt_enable |= UART16550_INTERRUPT_ENABLE_DATA_RECEIVED;
-
+  uart->reg1.interrupt_enable |= UART16550_INTERRUPT_ENABLE_DATA_RECEIVED;
+  
   //
   // FIFO Control, interrupt for each byte and clear FIFOs
   //
-  uart->fifo_control |= (UART16550_FIFO_CONTROL_CLEAR_RECIEVER |
-                         UART16550_FIFO_CONTROL_CLEAR_TRANSMIT |
-                         UART16550_FIFO_CONTROL_RX_TRIGGER_1);
-
+  uart->reg2.fifo_control = (UART16550_FIFO_CONTROL_CLEAR_RECIEVER | 
+                             UART16550_FIFO_CONTROL_CLEAR_TRANSMIT |
+                             UART16550_FIFO_CONTROL_RX_TRIGGER_1); 
   //
   // Set baud rate divisor
   //
@@ -37,12 +36,12 @@ void UART16550_SetDivisor(UART16550_REGS_TypeDef * uart, uint16_t divisor){
   //
   // Writing baud rate to low byte
   //
-  uart->data |= divisor & (0x00FF);
+  uart->reg0.divisor_lsb = divisor & 0x00FF;
 
   //
   // Writing baud rate to the high byte
   //
-  uart->data |= (divisor >> 8) & 0x00FF;
+  uart->reg1.divisor_msb = 0;//(divisor & 0xFF00) >> 8;
 
   //
   // Disable DLAB bit
@@ -55,9 +54,14 @@ void UART16550_SetDivisor(UART16550_REGS_TypeDef * uart, uint16_t divisor){
 void UART16550_TransmitByte(UART16550_REGS_TypeDef * uart, uint8_t byte){
 
   //
+  // Disable DLAB bit
+  //
+  uart->line_control &= ~UART16550_LINE_CONTROL_DLAB;
+  
+  //
   // Write byte to transmit FIFO
   //
-  uart->data = byte;
+  uart->reg0.data = byte;
 
   //
   // Wait for FIFO and Transmitter to be empty

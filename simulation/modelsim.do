@@ -1,5 +1,6 @@
 exec make TARGET=${1} clean
 exec make TARGET=${1}
+exec rm -rf work
 
 vlib work
 

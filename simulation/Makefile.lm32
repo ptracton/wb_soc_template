@@ -29,7 +29,7 @@ all: $(LIST_FILE) $(VH_FILE)
 
 $(LIST_FILE): $(ELF_FILE)
 	@echo "List File: $(LIST_FILE)"
-	@$(OBJDUMP) -d $(ELF_FILE) > $(LIST_FILE)
+	@$(OBJDUMP) -xStsd $(ELF_FILE) > $(LIST_FILE)
 
 $(ELF_FILE): $(ELF_REQUIREMENTS)
 	@$(MAKE) -C ../firmware/device_drivers CPU=LM32
