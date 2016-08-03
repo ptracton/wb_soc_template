@@ -1,0 +1,48 @@
+CPU = OR1200
+TEST_NAME = none
+TEST_CASE = $(basename $(TEST_NAME))
+TEST_CASE_SRC = $(TEST_CASE).c
+TEST_CASE_OBJ = $(TEST_CASE).o
+ELF_REQUIREMENTS = $(TEST_CASE_OBJ) 
+ELF_FILE  = $(TEST_CASE).elf
+LIST_FILE = $(TEST_CASE).lst
+VH_FILE = $(TEST_CASE).vh
+
+FIRMWARE_ROOT = ../firmware
+FIRMWARE_CPU_ROOT = $(FIRMWARE_ROOT)/$(CPU)
+LIB_BOOT = $(CPU)boot
+LIB_BOOT_DIR = $(FIRMWARE_CPU_ROOT)/boot/lib
+
+DEVICE_DRIVERS_DIR     = $(FIRMWARE_ROOT)/device_drivers
+DEVICE_DRIVERS_INC_DIR = $(DEVICE_DRIVERS_DIR)/includes
+DEVICE_DRIVERS_LIB_DIR = $(DEVICE_DRIVERS_DIR)/$(CPU)_lib/
+DEVICE_DRIVERS_LIB = $(CPU)_device_drivers
+
+CINCLUDES = -I $(DEVICE_DRIVERS_INC_DIR)
+CFLAGS += $(CINCLUDES) -g -D$(CPU)  -Wall -Werror -Wextra
+LD_FLAGS = -nostdlib -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld -L $(DEVICE_DRIVERS_LIB_DIR) -l$(DEVICE_DRIVERS_LIB) -lgcc
+
+include $(FIRMWARE_CPU_ROOT)/environment.mk
+
+all: $(LIST_FILE) $(VH_FILE)
+
+$(LIST_FILE): $(ELF_FILE)
+	@echo "List File: $(LIST_FILE)"
+	@or32-elf$(OBJDUMP) -xStsd $(ELF_FILE) > $(LIST_FILE)
+
+$(ELF_FILE): $(ELF_REQUIREMENTS)
+	@$(MAKE) -C ../firmware/device_drivers CPU=OR1200
+	@echo "Linking $(ELF_FILE)"
+	or32-elf$(LD) -o $(ELF_FILE)  $(ELF_REQUIREMENTS)  $(LD_FLAGS) 
+
+%.vh: %.elf
+	@or32-elf$(OBJCOPY) -O srec $< $@.tmp
+	srec_cat $@.tmp --output $@.mem --VMEM
+
+
+%.o:%.c
+	@echo "Compiling  $<"
+	or32-elf$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF $(*F).d
+
+clean:
+	$(RM) -f $(ELF_FILE) $(TARGET).d $(LIST_FILE) $(TEST_CASE_OBJ) *.bin  *~

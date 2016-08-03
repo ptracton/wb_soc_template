@@ -7,16 +7,20 @@ TARGET = None
 #
 # LM32, MOR1K or OR1200
 #
-CPU = LM32
+#CPU = LM32
 
 
 ifeq ($(CPU), LM32)
 	CPU_MAKEFILE = Makefile.lm32
 endif
 
+ifeq ($(CPU), OR1200)
+	CPU_MAKEFILE = Makefile.or1200
+endif
+
 all:
 	@echo $(CPU_MAKEFILE)
-	make -f $(CPU_MAKEFILE) TEST_NAME=$(TARGET)
+	make -f $(CPU_MAKEFILE) TEST_NAME=$(TARGET) CPU=$(CPU)
 
 clean:
-	make -f $(CPU_MAKEFILE) TEST_NAME=$(TARGET) clean
+	make -f $(CPU_MAKEFILE) TEST_NAME=$(TARGET) CPU=$(CPU) clean

@@ -11,11 +11,11 @@
     "flow" : {
         "compile_clean" : {
 	        "executable": "make",
-	        "arguments" : " TARGET=$simulation clean"	
+	        "arguments" : " TARGET=$simulation CPU=LM32 clean"	
 	    },           
 	    "compile" : {
 	        "executable": "make",
-	        "arguments" : " TARGET=$simulation"	
+	        "arguments" : " TARGET=$simulation CPU=LM32"	
 	    },                
 	    "vlib" : {
 	        "executable": "vlib",

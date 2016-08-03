@@ -69,10 +69,11 @@ if __name__ == "__main__":
                         help="Which code to run in this test",
                         required=False,
                         action="store")    
-    parser.add_argument("--soc",
-                        help="Run the SoC design",
+    parser.add_argument("--cpu",
+                        help="Which CPU to use",
                         required=False,
-                        action="store_true")    
+                        default="LM32",
+                        action="store")    
 
     args = parser.parse_args()
     if args.debug:
@@ -80,25 +81,13 @@ if __name__ == "__main__":
         print(args)
 
     if args.icarus:
-        if args.soc:
-            json_file = "../configurations/simulate_iverilog_soc.json"
-        else:
-            json_file = "../configurations/simulate_iverilog.json"
+        json_file = "../configurations/simulate_iverilog.json"
     if args.ncverilog:
-        if args.soc:
-            json_file = "../configurations/simulate_ncverilog_soc.json"
-        else:
-            json_file = "../configurations/simulate_ncverilog.json"
+        json_file = "../configurations/simulate_ncverilog.json"
     if args.xsim:
-        if args.soc:
-            json_file = "../configurations/simulate_xsim_soc.json"
-        else:
-            json_file = "../configurations/simulate_xsim.json"
+        json_file = "../configurations/simulate_xsim.json"
     if args.modelsim:
-        if args.soc:
-            json_file = "../configurations/simulate_modelsim_soc.json"
-        else:
-            json_file = "../configurations/simulate_modelsim.json"
+        json_file = "../configurations/simulate_modelsim.json"
         
     try:
         f = open(json_file, "r")
@@ -116,7 +105,9 @@ if __name__ == "__main__":
         executable = json_data['flow'][flow_steps[step]]['executable']
         arguments = string.Template(
             json_data['flow'][flow_steps[step]]['arguments'])
-        arguments_str = arguments.safe_substitute(simulation=args.simulation,application=args.application)
+        arguments_str = arguments.safe_substitute(simulation=args.simulation,
+                                                  application=args.application,
+                                                  cpu=args.cpu)
         if args.debug:
             print(executable)
         if (arguments is None):

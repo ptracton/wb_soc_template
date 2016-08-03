@@ -13,6 +13,6 @@
 // Select only 1 CPU.  No more, no less
 //
 
-`define WISHBONE_CPU_LM32
+//`define WISHBONE_CPU_LM32
 //`define WISHBONE_CPU_MOR1K
-//`define WISHBONE_CPU_OR1200
+`define WISHBONE_CPU_OR1200

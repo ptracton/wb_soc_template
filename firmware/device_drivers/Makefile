@@ -1,6 +1,6 @@
-CPU = LM32
-TARGET = $(CPU)_device_drivers
-LIBRARY = lib$(TARGET).a
+
+
+LIBRARY = lib$(CPU)_device_drivers.a
 
 include environment.mk
 
