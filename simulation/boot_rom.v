@@ -18,7 +18,7 @@ module test_case ();
    // These parameters need to be set for each test case
    //
    parameter simulation_name = "boot_rom";    
-   parameter number_of_tests = 1;
+   parameter number_of_tests = 0;
 `include "setup.v"
 
    reg  err;
@@ -31,6 +31,7 @@ module test_case ();
       @(negedge `WB_RST);
       @(posedge `WB_CLK);
       `UART_CONFIG;
+
 
       `UART_READ_CHAR(8'h30);
       `UART_READ_CHAR(8'h31);

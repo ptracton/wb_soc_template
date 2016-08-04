@@ -1,5 +1,5 @@
-exec make TARGET=${1} clean
-exec make TARGET=${1}
+exec make TARGET=${1} CPU=${2} clean
+exec make TARGET=${1} CPU=${2}
 exec rm -rf work
 
 vlib work
@@ -45,6 +45,6 @@ vlog ../rtl/cpu/lm32_config.v
 
 do ../rtl/lm32/lm32_rtl.do
 
-vsim -voptargs=+acc work.testbench +define+XILINX
+vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8
 do wave.do      
 run -all

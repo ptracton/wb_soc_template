@@ -60,7 +60,6 @@ module testbench;
    wire        uart0_int;
 
    assign      uart0_dat_o[31:8] = 'b0;
-
    uart_top uart0(
                   .wb_clk_i(clk),
                   .wb_rst_i(reset),
