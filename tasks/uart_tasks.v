@@ -60,7 +60,7 @@ module uart_tasks;
          //
          @(posedge `UART_CLK);
          $display("TASK: UART Write = %c @ %d", char, $time);
-         `UART_MASTER0.wb_wr1(32'hFFFF0000,    4'h0, {24'h000000, char});
+         `UART_MASTER0.wb_wr1(32'hFFFF0000,    4'h8, {char, 24'h000000});
       end
    endtask // uart_write_char
 

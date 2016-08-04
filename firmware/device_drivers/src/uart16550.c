@@ -72,5 +72,16 @@ void UART16550_TransmitByte(UART16550_REGS_TypeDef * uart, uint8_t byte){
 }
 
 void UART16550_ReceiveByte(UART16550_REGS_TypeDef * uart, uint8_t * byte){
+  *byte = uart->reg0.data;
+  return;
+}
+
+void UART16550_PollForReceive(UART16550_REGS_TypeDef * uart){
+
+  //
+  // We poll forever until a character has been received
+  //
+  while ((uart->line_status & UART16550_LINE_STATUS_DATA_READY) ==0);
+  
   return;
 }

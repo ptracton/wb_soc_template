@@ -37,6 +37,18 @@ module test_case ();
       `UART_READ_CHAR(8'h31);
       `UART_READ_CHAR(8'h32);
       `UART_READ_CHAR(8'h33);
+
+      repeat(100) @(posedge `WB_CLK);
+
+      `UART_WRITE_CHAR("A");
+      `UART_READ_CHAR("A");
+
+      `UART_WRITE_CHAR("B");
+      `UART_READ_CHAR("B");
+
+      `UART_WRITE_CHAR("C");
+      `UART_READ_CHAR("C");
+
       
       #10000;
       `TEST_COMPLETE;      

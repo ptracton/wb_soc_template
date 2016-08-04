@@ -108,5 +108,5 @@ void UART16550_Init(UART16550_REGS_TypeDef * uart);
 void UART16550_SetDivisor(UART16550_REGS_TypeDef * uart, uint16_t divisor);
 void UART16550_TransmitByte(UART16550_REGS_TypeDef * uart, uint8_t byte);
 void UART16550_ReceiveByte(UART16550_REGS_TypeDef * uart, uint8_t * byte);
-
+void UART16550_PollForReceive(UART16550_REGS_TypeDef * uart);
 #endif
