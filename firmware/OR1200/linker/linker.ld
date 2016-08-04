@@ -1,56 +1,91 @@
-OUTPUT_FORMAT("elf32-or32")
-ENTRY(_start)
+OUTPUT_ARCH(or32)
+SEARCH_DIR(.)
+__DYNAMIC  =  0;
 
-__DYNAMIC = 0;
-
-MEMORY {
-	pmem : ORIGIN = 0x00000000, LENGTH = 0x8000
-	dmem : ORIGIN = 0x20000000, LENGTH = 0x8000
+MEMORY
+{
+	vectors : ORIGIN = 0x00000100, LENGTH = 0x8000 - 0x100
+	ram     : ORIGIN = 0x20000000, LENGTH = (0x8000 - 0x200)
 }
+
+
+/* Stack information variables */
+_min_stack      = 0x200;   /* stack space to reserve */
+
 
 SECTIONS
-{
-	.text :
+{	
+	.vectors :
 	{
-		_ftext = .;
-		*(.text .stub .text.* .gnu.linkonce.t.*)
-		_etext = .;
-	} > pmem
+		*(.vectors)
+	} > vectors
+                              
+	.text : {
+		_stext = .;
+		*(.text)
+		_etext  =  .;
+		__CTOR_LIST__ = .;
+		LONG((__CTOR_END__ - __CTOR_LIST__) / 4 - 2)
+		*(.ctors)
+		LONG(0)
+		__CTOR_END__ = .;
+		__DTOR_LIST__ = .;
+		LONG((__DTOR_END__ - __DTOR_LIST__) / 4 - 2)
+		*(.dtors)
+		LONG(0)
+		__DTOR_END__ = .;
+		*(.lit)
+		*(.shdata)
+		_endtext = .;
+	}  > vectors
 
-	.rodata :
+	.rodata : {
+		*(.rodata);
+		*(.rodata.*)
+	} > vectors
+	
+	.shbss :
 	{
-		. = ALIGN(4);
-		_frodata = .;
-		*(.rodata .rodata.* .gnu.linkonce.r.*)
-		*(.rodata1)
-		_erodata = .;
-	} > dmem
-
-	.data :
-	{
-		. = ALIGN(4);
-		_fdata = .;
-		*(.data .data.* .gnu.linkonce.d.*)
-		*(.data1)
-		_gp = ALIGN(16);
-		*(.sdata .sdata.* .gnu.linkonce.s.*)
-		_edata = .;
-	} > dmem
-
+		*(.shbss)
+	} > ram
+	
+	.talias :
+	{ 
+	}  > ram
+	
+	.data : {
+		sdata  =  .;
+		_sdata  =  .;
+		*(.data)
+		edata  =  .;
+		_edata  =  .;
+	} > ram
+	
 	.bss :
 	{
-		. = ALIGN(4);
-		_fbss = .;
-		*(.dynsbss)
-		*(.sbss .sbss.* .gnu.linkonce.sb.*)
-		*(.scommon)
-		*(.dynbss)
-		*(.bss .bss.* .gnu.linkonce.b.*)
+		_bss_start = .;
+		*(.bss)
 		*(COMMON)
-		. = ALIGN(4);
-		_ebss = .;
-		_end = .;
-	} > dmem
+		_bss_end = .;
+	} > ram
+	
+	/* ensure there is enough room for stack */
+        .stack (NOLOAD): {
+                . = ALIGN(4);
+		. = . + _min_stack ;
+                . = ALIGN(4);
+                stack = . ;
+                _stack = . ;
+        } > ram
+	
+	.stab  0 (NOLOAD) : 
+	{
+		[ .stab ]
+	}
+	
+	.stabstr  0 (NOLOAD) :
+	{
+		[ .stabstr ]
+	}
 }
-
-PROVIDE(_fstack = ORIGIN(dmem) + LENGTH(dmem) - 4);
+PROVIDE(_fstack = ORIGIN(ram) + LENGTH(ram) - 4);

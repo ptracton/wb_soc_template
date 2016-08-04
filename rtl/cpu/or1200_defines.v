@@ -131,22 +131,22 @@
 //
 // Do not implement Data cache
 //
-//`define OR1200_NO_DC
+`define OR1200_NO_DC
 
 //
 // Do not implement Insn cache
 //
-//`define OR1200_NO_IC
+`define OR1200_NO_IC
 
 //
 // Do not implement Data MMU
 //
-//`define OR1200_NO_DMMU
+`define OR1200_NO_DMMU
 
 //
 // Do not implement Insn MMU
 //
-//`define OR1200_NO_IMMU
+`define OR1200_NO_IMMU
 
 //
 // Select between ASIC and generic multiplier

@@ -8,7 +8,7 @@
 // Update Count    : 0
 // Status          : Unknown, Use with caution!
 
-`include "wb_soc_includes.vh"
+//`include "wb_soc_includes.vh"
 
 module wishbone_cpu (/*AUTOARG*/
    // Outputs
@@ -154,6 +154,7 @@ module wishbone_cpu (/*AUTOARG*/
                 );
    
 `elsif WISHBONE_CPU_MOR1K
+   
 `elsif WISHBONE_CPU_OR1200
 
  `include "or1200_defines.v"

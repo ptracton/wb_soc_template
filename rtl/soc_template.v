@@ -46,7 +46,17 @@ module soc_template (/*AUTOARG*/
 
    wire                 VDD = 1;
    wire                 VSS = 0;
-      
+
+   assign wb_s2m_ram_rty = 0;
+   assign wb_s2m_rom_rty = 0;
+   assign wb_s2m_debug_rty =0;
+   assign wb_s2m_uart_rty = 0;
+   assign wb_s2m_uart_err =0;
+   assign wb_s2m_debug_dat = 0;
+   assign wb_s2m_debug_err = 0;
+   assign wb_s2m_debug_ack = 0;
+   
+   
    //
    // Wishbone CPU
    //
@@ -121,11 +131,13 @@ module soc_template (/*AUTOARG*/
                             .iwbm_err_i(wb_s2m_iwmb_err), 
                             .iwbm_ack_i(wb_s2m_iwmb_ack), 
                             .iwbm_dat_i(wb_s2m_iwmb_dat),
-                            .iwbm_rty_i(wb_s2m_iwmb_rty), 
+                            .iwbm_rty_i(wb_s2m_iwmb_rty),
+//                            .iwbm_rty_i(1'b0), 
                             .dwbm_err_i(wb_s2m_dwmb_err), 
                             .dwbm_ack_i(wb_s2m_dwmb_ack), 
                             .dwbm_dat_i(wb_s2m_dwmb_dat), 
                             .dwbm_rty_i(wb_s2m_dwmb_rty),
+//                            .dwbm_rty_i(1'b0),
                             .dbg_stall_i(VSS), 
                             .dbg_ewt_i(VSS), 
                             .dbg_stb_i(VSS), 
@@ -198,10 +210,10 @@ module soc_template (/*AUTOARG*/
    // UART
    //
    uart_top	uart0(
-	              .wb_clk_i(wb_clk_i), 
-	              
-	              // Wishbone signals
-	              .wb_rst_i(wb_rst_i), 
+	                .wb_clk_i(wb_clk_i), 
+	                
+	                // Wishbone signals
+	                .wb_rst_i(wb_rst_i), 
                   .wb_adr_i(wb_m2s_uart_adr[4:0]), 
                   .wb_dat_i(wb_m2s_uart_dat), 
                   .wb_dat_o(wb_s2m_uart_dat), 
@@ -210,20 +222,20 @@ module soc_template (/*AUTOARG*/
                   .wb_cyc_i(wb_m2s_uart_cyc), 
                   .wb_ack_o(wb_s2m_uart_ack), 
                   .wb_sel_i(wb_m2s_uart_sel),
-	              .int_o(uart_interrupt), // interrupt request
+	                .int_o(uart_interrupt), // interrupt request
                   
-	              // UART	signals
+	                // UART	signals
 	              // serial input/output
-	              .stx_pad_o(uart_tx), 
+	                .stx_pad_o(uart_tx), 
                   .srx_pad_i(uart_rx),
                   
-	              // modem signals
-	              .rts_pad_o(), 
+	                // modem signals
+	                .rts_pad_o(), 
                   .cts_pad_i(1'b0), 
                   .dtr_pad_o(), 
                   .dsr_pad_i(1'b0), 
                   .ri_pad_i(1'b0), 
                   .dcd_pad_i(1'b0),
                   .baud_o()
-	              );  
+	                );  
 endmodule // soc_template
