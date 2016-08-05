@@ -14,15 +14,15 @@
         },
 	    "compile_clean" : {
 	        "executable": "make",
-	        "arguments" : " TARGET=$simulation clean"	
+	        "arguments" : " TARGET=$simulation CPU=$cpu clean"	
 	    },        
 	    "compile" : {
 	        "executable": "make",
-	        "arguments" : " TARGET=$simulation"	
+	        "arguments" : " TARGET=$simulation CPU=$cpu"	
 	    },        
 	    "simulation" : {
 	        "executable": "iverilog",
-	        "arguments" : " -f rtl_sim.f $simulation +define+ICARUS "	
+	        "arguments" : " -f rtl_sim.f $simulation -DICARUS -DWISHBONE_CPU_$cpu"	
 	    },
 	    "run" : {
 	        "executable" : "vvp",

@@ -39,12 +39,19 @@ vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
 
-vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/
+vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/  +define+WISHBONE_CPU_${2}
 
 vlog ../rtl/cpu/lm32_config.v
 
-do ../rtl/lm32/lm32_rtl.do
+if {${2} == "LM32"} {
+   do ../rtl/lm32/lm32_rtl.do
+}
 
-vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8
+if {${2} == "OR1200"} {
+   do ../rtl/or1200-r2/or1200_rtl.do
+}
+
+
+vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_${2}
 do wave.do      
 run -all

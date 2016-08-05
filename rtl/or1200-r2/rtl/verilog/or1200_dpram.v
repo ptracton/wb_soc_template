@@ -94,9 +94,18 @@ module or1200_dpram
    //
    // Generic RAM's registers and wires
    //
-   reg [dw-1:0] 		mem [(1<<aw)-1:0] /*synthesis syn_ramstyle = "no_rw_check"*/;	// RAM content
+   reg [dw-1:0] 		mem [(1<<aw)-1:0]/*synthesis syn_ramstyle = "no_rw_check"*/;	// RAM content
    reg [aw-1:0] 		addr_a_reg;		// RAM address registered
 
+
+   //
+   // For SIMULATION ONLY
+   //
+   integer              i;
+   initial begin
+      for (i=0; i< (1<<aw); i=i+1)
+        mem[i] = 0;      
+   end
 
    // Function to access GPRs (for use by Verilator). No need to hide this one
    // from the simulator, since it has an input (as required by IEEE 1364-2001).

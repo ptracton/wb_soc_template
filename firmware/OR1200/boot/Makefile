@@ -1,7 +1,24 @@
-include ../environment.mk
+
+PREFIX	= or32-elf
+
+
+##
+## Tools we use for building
+##
+CC	    = $(PREFIX)-gcc
+LD	    = $(PREFIX)-gcc
+ASM     = $(PREFIX)-as
+OBJCOPY	= $(PREFIX)-objcopy
+OBJDUMP	= $(PREFIX)-objdump
+AR     	= $(PREFIX)-ar
+GDB	    = $(PREFIX)-gdb
+FLASH	= $(shell which st-flash)
+MKDIR   = mkdir
+RM      = rm
+
 
 TARGET = boot
-LIBRARY = liblm32boot.a
+LIBRARY = libOR1200boot.a
 
 ##
 ## Project Directories
@@ -54,14 +71,14 @@ all: dirs $(LIB_DIR)/$(LIB_FILE)
 
 dirs:
 	@echo "Making directories $(MAKE_DIRS)"
-	$(MKDIR) -p $(MAKE_DIRS)
+	@$(MKDIR) -p $(MAKE_DIRS)
 
 ##
 ## Link together the executable
 ##
 $(LIB_DIR)/$(LIB_FILE): $(ELF_REQUIREMENTS)
 	@echo "Create Library $(LIBRARY)"
-	$(AR) cr $(LIB_DIR)/$(LIBRARY) $(ELF_REQUIREMENTS)
+	@$(AR) cr $(LIB_DIR)/$(LIBRARY) $(ELF_REQUIREMENTS)
 
 
 ##
@@ -69,14 +86,14 @@ $(LIB_DIR)/$(LIB_FILE): $(ELF_REQUIREMENTS)
 ##
 $(OBJ_DIR)/%.o:%.S
 	@echo "Assembling $<"
-	$(ASM) $(ASMFLAGS)   $<  -o $@
+	@$(CC) $(CFLAGS)  -c  $<  -o $@
 
 ##
 ## Turn out C code into objects in our $(OBJ_DIR)
 ##
 $(OBJ_DIR)/%.o:%.c
 	@echo "Compiling  $<"
-	$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF dep/$(*F).d
+	@$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF dep/$(*F).d
 
 clean:
 	$(RM) -rf  $(OBJ_DIR) $(EXEC_DIR) $(DEP_DIR) $(LIB_DIR)

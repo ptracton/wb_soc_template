@@ -89,7 +89,12 @@ module wishbone_cpu (/*AUTOARG*/
    output wire                           dbg_ack_o;	// External Data Acknowledge (not WB compatible)
    
 `ifdef WISHBONE_CPU_LM32
-`include "lm32_config.v"
+ `include "lm32_config.v"
+
+   initial begin
+      $display("INSTANTIATE LM32 CPU");      
+   end
+   
    lm32_top cpu(
                 // ----- Inputs -------
                 .clk_i(clk_i),
@@ -154,10 +159,16 @@ module wishbone_cpu (/*AUTOARG*/
                 );
    
 `elsif WISHBONE_CPU_MOR1K
+   initial begin
+      $display("INSTANTIATE MOR1K CPU");      
+   end
    
 `elsif WISHBONE_CPU_OR1200
 
  `include "or1200_defines.v"
+   initial begin
+      $display("INSTANTIATE OR1200 CPU");      
+   end
    
    or1200_top cpu(
 	                // System

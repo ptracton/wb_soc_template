@@ -7,7 +7,7 @@
 ##
 ## Prefix of the GCC LM32 Cross Compiler
 ##
-REFIX	= or32-elf
+PREFIX	= or32-elf
 
 
 ##

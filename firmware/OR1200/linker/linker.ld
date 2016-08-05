@@ -4,7 +4,8 @@ __DYNAMIC  =  0;
 
 MEMORY
 {
-	vectors : ORIGIN = 0x00000100, LENGTH = 0x8000 - 0x100
+	vectors : ORIGIN = 0x00000000, LENGTH = 0x1000
+    rom     : ORIGIN = 0x00001000, LENGTH = 0x7000
 	ram     : ORIGIN = 0x20000000, LENGTH = (0x8000 - 0x200)
 }
 
@@ -37,12 +38,12 @@ SECTIONS
 		*(.lit)
 		*(.shdata)
 		_endtext = .;
-	}  > vectors
+	}  > rom
 
 	.rodata : {
 		*(.rodata);
 		*(.rodata.*)
-	} > vectors
+	} > rom
 	
 	.shbss :
 	{

@@ -30,7 +30,7 @@ symbol:
 
 /* =================================================== [ exceptions ] === */
 	.section .vectors, "ax"
-
+.global _default_exception_handler_c
 /* ---[ 0x100: RESET exception ]----------------------------------------- */
         .org 0x100 	
 	l.movhi r0, 0
@@ -194,12 +194,13 @@ symbol:
 
 /* ========================================================= [ entry ] === */
 	.section .text
-
+    .global _main
+    .global _exit
 ENTRY(_start)
 
-	/* Cache initialisation */
+	/* Cache initialisation 
 	l.jal _cache_init
-	l.nop
+	l.nop*/
 	
 	/* Clear BSS */
         LOAD_SYMBOL_2_GPR(r5, _bss_start)
@@ -213,12 +214,12 @@ ENTRY(_start)
 	/* Jump to main program entry point (argc = argv = 0) */
 	CLEAR_GPR(r3)
 	CLEAR_GPR(r4)
-	l.jal   main
+	l.jal   _main
 	l.nop
 	
 	/* If program exits, call exit routine */
 	l.addi  r3, r11, 0
-	l.jal   exit
+	l.jal   _exit
 	l.nop
 
 
@@ -254,7 +255,7 @@ default_exception_handler:
 	l.sw    0x70(r1), r30
 	l.sw    0x74(r1), r31
 
-	l.jal   default_exception_handler_c
+	l.jal   _default_exception_handler_c
 	l.nop
 	
 	l.lwz    r2, 0x00(r1)
