@@ -80,8 +80,9 @@ module wb_arbiter
 
    wire [num_masters-1:0]     grant;
    wire [master_sel_bits-1:0] master_sel;
-   wire 		      active;
-
+   wire                       active;
+   wire [$clog2(num_masters)-1:0] select;
+   
    arbiter
      #(.NUM_PORTS (num_masters))
    arbiter0
@@ -89,6 +90,7 @@ module wb_arbiter
       .rst (wb_rst_i),
       .request (wbm_cyc_i),
       .grant (grant),
+      .select(select),
       .active (active));
 
    assign master_sel = ff1(grant, num_masters);
@@ -97,9 +99,9 @@ module wb_arbiter
    assign wbs_adr_o = wbm_adr_i[master_sel*aw+:aw];
    assign wbs_dat_o = wbm_dat_i[master_sel*dw+:dw];
    assign wbs_sel_o = wbm_sel_i[master_sel*4+:4];
-   assign wbs_we_o  = wbm_we_i [master_sel];
+   assign wbs_we_o  = wbm_we_i [master_sel] & active;
    assign wbs_cyc_o = wbm_cyc_i[master_sel] & active;
-   assign wbs_stb_o = wbm_stb_i[master_sel];
+   assign wbs_stb_o = wbm_stb_i[master_sel] & active;
    assign wbs_cti_o = wbm_cti_i[master_sel*3+:3];
    assign wbs_bte_o = wbm_bte_i[master_sel*2+:2];
 

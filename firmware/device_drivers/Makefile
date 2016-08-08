@@ -19,7 +19,7 @@ ELF_REQUIREMENTS = $(OBJECTS)
 CINCLUDES = -I$(INC_DIR)
 
 MAKE_DIRS = $(DEP_DIR) $(LIB_DIR) $(OBJ_DIR)
-CFLAGS = -g -Wall -Werror $(CINCLUDES) -D$(CPU)
+CFLAGS = -O2 -g -Wall -Werror $(CINCLUDES) -D$(CPU)
 
 all: dirs $(LIBRARY) $(LIST_FILE)
 

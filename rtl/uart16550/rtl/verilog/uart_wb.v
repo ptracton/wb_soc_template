@@ -305,8 +305,11 @@ module uart_wb (clk, wb_rst_i,
  `endif
      end
 
+ `ifdef WISHBONE_CPU_OR1200
+   assign wb_adr_int = {2'b00,wb_adr_is[`UART_ADDR_WIDTH-1:2]};
+ `else
    assign wb_adr_int = {wb_adr_is[`UART_ADDR_WIDTH-1:2], wb_adr_int_lsb};
-
+ `endif
 `endif // !`ifdef DATA_BUS_WIDTH_8
 
 endmodule

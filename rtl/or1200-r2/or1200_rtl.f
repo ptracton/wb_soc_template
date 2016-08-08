@@ -76,3 +76,5 @@
 //../rtl/or1200-r2/rtl/verilog/or1200_spram_64x24.v
 //../rtl/or1200-r2/rtl/verilog/or1200_spram_2048x32_bw.v
 //../rtl/or1200-r2/rtl/verilog/or1200_spram_2048x8.v
+
+../rtl/or1200-r2/bench/or1200_monitor.v

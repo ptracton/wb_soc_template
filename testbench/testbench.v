@@ -41,6 +41,27 @@ module testbench;
                     .reset_sys_i(reset), 
                     .uart_rx(RX)          
                     );   
+
+
+   /****************************************************************************
+    
+    TEST SUPPORT
+    
+    ***************************************************************************/
+   
+   //
+   // Tasks used to help test cases
+   //
+   test_tasks test_tasks();
+   
+   //
+   // The actual test cases that are being tested
+   //
+   test_case test_case();   
+
+`ifdef WISHBONE_CPU_OR1200
+   or1200_monitor monitor();   
+`endif
    
    /****************************************************************************
     UART 0 
@@ -104,22 +125,8 @@ module testbench;
 
    uart_tasks uart_tasks();   
 
-   /****************************************************************************
-    
-    TEST SUPPORT
-    
-    ***************************************************************************/
-   
-   //
-   // Tasks used to help test cases
-   //
-   test_tasks test_tasks();
-   
-   //
-   // The actual test cases that are being tested
-   //
-   test_case test_case();   
 
+   
    
 endmodule // testbench
 
