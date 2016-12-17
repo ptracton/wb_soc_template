@@ -7,9 +7,13 @@
 
 int main(void){
 
+#ifdef OR1200
   report(0);
+#endif
   UART16550_Init(UART);
+#ifdef OR1200  
   report (10);
+#endif
   UART16550_TransmitByte(UART, '0');
   UART16550_TransmitByte(UART, '1');
   UART16550_TransmitByte(UART, '2');

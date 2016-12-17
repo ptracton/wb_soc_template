@@ -29,34 +29,59 @@ add wave -noupdate -group {UART 0} -radix hexadecimal -childformat {{{/testbench
 add wave -noupdate -group {UART 0} -radix hexadecimal /testbench/dut/uart0/wb_stb_i
 add wave -noupdate -group {UART 0} -radix hexadecimal /testbench/dut/uart0/wb_we_i
 add wave -noupdate -group {UART 0} -radix hexadecimal /testbench/dut/uart0/we_o
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/clk
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/wb_addr_i
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/wb_dat_i
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/wb_we_i
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/dl
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/dlab
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/enable
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/fcr
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/rx_reset
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/tx_reset
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/fifo_read
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/fifo_write
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/ier
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/iir
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/int_o
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/lcr
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/lsr
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/mcr
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/msr
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/rf_count
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/rf_data_out
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/serial_in
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/serial_out
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/srx_pad
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/srx_pad_i
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/tf_count
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/tf_push
-add wave -noupdate -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/wb_addr_i
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/clk
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/re_o
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_ack_o
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_adr_i
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_adr_int
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_adr_int_lsb
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_adr_is
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_cyc_i
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_cyc_is
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_dat32_o
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_dat8_i
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_dat8_o
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_dat_i
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_dat_is
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_dat_o
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_rst_i
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_sel_i
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_sel_is
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_stb_i
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_stb_is
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_we_i
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wb_we_is
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wbstate
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/we_o
+add wave -noupdate -expand -group {UART WB IF} -radix hexadecimal /testbench/dut/uart0/wb_interface/wre
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/clk
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/wb_addr_i
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/wb_dat_i
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/wb_we_i
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/dl
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/dlab
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/enable
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/fcr
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/rx_reset
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/tx_reset
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/fifo_read
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/fifo_write
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/ier
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/iir
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/int_o
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/lcr
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/lsr
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/mcr
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/msr
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/rf_count
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/rf_data_out
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/serial_in
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/serial_out
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/srx_pad
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/srx_pad_i
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/tf_count
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/tf_push
+add wave -noupdate -expand -group {UART REGS} -radix hexadecimal /testbench/dut/uart0/regs/wb_addr_i
 add wave -noupdate -group {DUT UART TX TFIFO} -radix hexadecimal /testbench/dut/uart0/regs/transmitter/fifo_tx/tfifo/a
 add wave -noupdate -group {DUT UART TX TFIFO} -radix hexadecimal /testbench/dut/uart0/regs/transmitter/fifo_tx/tfifo/clk
 add wave -noupdate -group {DUT UART TX TFIFO} -radix hexadecimal /testbench/dut/uart0/regs/transmitter/fifo_tx/tfifo/di
@@ -174,21 +199,21 @@ add wave -noupdate -group {TB UART REGS} -radix hexadecimal /testbench/uart0/reg
 add wave -noupdate -group {TB UART REGS} -radix hexadecimal /testbench/uart0/regs/tf_push
 add wave -noupdate -group {TB UART REGS} -radix hexadecimal /testbench/uart0/regs/trigger_level
 add wave -noupdate -group {TB UART REGS} -radix hexadecimal /testbench/uart0/regs/tstate
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/adr
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/adr_r
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_ack_o
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_adr_i
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_bte_i
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_clk_i
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_cti_i
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_cyc_i
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_dat_i
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_dat_o
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_err_o
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_rst_i
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_sel_i
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_stb_i
-add wave -noupdate -expand -group ROM -radix hexadecimal /testbench/dut/rom0/wb_we_i
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/adr
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/adr_r
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_ack_o
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_adr_i
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_bte_i
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_clk_i
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_cti_i
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_cyc_i
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_dat_i
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_dat_o
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_err_o
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_rst_i
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_sel_i
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_stb_i
+add wave -noupdate -group ROM -radix hexadecimal /testbench/dut/rom0/wb_we_i
 add wave -noupdate -group {ROM Memory} -radix hexadecimal /testbench/dut/rom0/ram0/din
 add wave -noupdate -group {ROM Memory} -radix hexadecimal /testbench/dut/rom0/ram0/dout
 add wave -noupdate -group {ROM Memory} -radix hexadecimal /testbench/dut/rom0/ram0/mem
@@ -344,21 +369,21 @@ add wave -noupdate -group {OPERAND MUXES} -radix hexadecimal /testbench/dut/cpu_
 add wave -noupdate -group {OPERAND MUXES} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_operandmuxes/simm
 add wave -noupdate -group {OPERAND MUXES} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_operandmuxes/wb_forw
 add wave -noupdate -group {OPERAND MUXES} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_operandmuxes/width
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/addr_a
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/addr_a_reg
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/addr_b
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/aw
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/ce_a
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/ce_b
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/clk_a
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/clk_b
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/di_b
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/do_a
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/dw
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem
-add wave -noupdate -expand -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/we_b
+add wave -noupdate -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/addr_a
+add wave -noupdate -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/addr_a_reg
+add wave -noupdate -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/addr_b
+add wave -noupdate -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/aw
+add wave -noupdate -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/ce_a
+add wave -noupdate -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/ce_b
+add wave -noupdate -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/clk_a
+add wave -noupdate -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/clk_b
+add wave -noupdate -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/di_b
+add wave -noupdate -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/do_a
+add wave -noupdate -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/dw
+add wave -noupdate -group {RF A} -radix hexadecimal -childformat {{{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[31]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[30]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[29]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[28]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[27]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[26]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[25]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[24]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[23]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[22]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[21]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[20]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[19]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[18]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[17]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[16]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[15]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[14]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[13]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[12]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[11]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[10]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[9]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[8]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[7]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[6]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[5]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[4]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[3]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[2]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[1]} -radix hexadecimal} {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[0]} -radix hexadecimal}} -expand -subitemconfig {{/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[31]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[30]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[29]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[28]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[27]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[26]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[25]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[24]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[23]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[22]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[21]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[20]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[19]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[18]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[17]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[16]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[15]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[14]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[13]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[12]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[11]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[10]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[9]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[8]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[7]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[6]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[5]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[4]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[3]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[2]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[1]} {-radix hexadecimal} {/testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem[0]} {-radix hexadecimal}} /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/mem
+add wave -noupdate -group {RF A} -radix hexadecimal /testbench/dut/cpu_wrapper/cpu/or1200_cpu/or1200_rf/rf_a/we_b
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {12525 ps} 0}
+WaveRestoreCursors {{Cursor 1} {21275000 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 586
 configure wave -valuecolwidth 83
@@ -374,4 +399,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {120802 ps} {2010485 ps}
+WaveRestoreZoom {21068608 ps} {21535332 ps}
