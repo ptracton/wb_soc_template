@@ -44,13 +44,16 @@ vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/  +def
 vlog ../rtl/cpu/lm32_config.v
 
 if {${2} == "LM32"} {
-   do ../rtl/lm32/lm32_rtl.do
+   do ../rtl/LM32/lm32_rtl.do
 }
 
 if {${2} == "OR1200"} {
    do ../rtl/or1200-r2/or1200_rtl.do
 }
 
+if {${2} == "RISCV"} {
+   do ../rtl/RISCV/RISCV.do
+}
 
 vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_${2}
 do wave.do      

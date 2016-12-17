@@ -255,8 +255,45 @@ module wishbone_cpu (/*AUTOARG*/
                   ,.sig_tick()		  
                   
 );
-   
+
+`elsif WISHBONE_CPU_RISCV
+   initial begin
+      $display("INSTANTIATE RISCV CPU");      
+   end   
 `endif
 
+   wb_vscale cpu(
+     			 .clk(clk_i),
+     			 .rst(rst_i),
+                 .ext_interrupts(interrupts[24:0]),
+                 
+                 // Wishbone interface
+                 .iwbm_adr_o(iwbm_adr_o),
+     			 .iwbm_stb_o(iwbm_stb_o),
+     			 .iwbm_cyc_o(iwbm_cyc_o),
+                 .iwbm_sel_o(iwbm_sel_o),
+     			 .iwbm_we_o(iwbm_we_o),
+                 .iwbm_cti_o(iwbm_cti_o),
+                 .iwbm_bte_o(iwbm_bte_o),
+                 .iwbm_dat_o(iwbm_dat_o),
+     			 .iwbm_err_i(iwbm_err_i),
+     			 .iwbm_ack_i(iwbm_ack_i),
+                 .iwbm_dat_i(iwbm_dat_i),
+     			 .iwbm_rty_i(iwbm_rty_i),
+                 
+                 .dwbm_adr_o(dwbm_adr_o),
+     			 .dwbm_stb_o(dwbm_stb_o),
+     			 .dwbm_cyc_o(dwbm_cyc_o),
+                 .dwbm_sel_o(dwbm_sel_o),
+     			 .dwbm_we_o(dwbm_we_o),
+                 .dwbm_cti_o(dwbm_cti_o),
+                 .dwbm_bte_o(dwbm_bte_o),
+                 .dwbm_dat_o(dwbm_dat_o),
+     			 .dwbm_err_i(dwbm_err_i),
+     			 .dwbm_ack_i(dwbm_ack_i),
+                 .dwbm_dat_i(dwbm_dat_i),
+     			 .dwbm_rty_i(dwbm_rty_i)
+                 );
+   
    
 endmodule // wishbone_cpu

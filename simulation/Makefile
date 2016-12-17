@@ -18,6 +18,11 @@ ifeq ($(CPU), OR1200)
 	CPU_MAKEFILE = Makefile.or1200
 endif
 
+ifeq ($(CPU), RISCV)
+	CPU_MAKEFILE = Makefile.riscv
+endif
+
+
 all:
 	@echo $(CPU_MAKEFILE)
 	make -f $(CPU_MAKEFILE) TEST_NAME=$(TARGET) CPU=$(CPU)
