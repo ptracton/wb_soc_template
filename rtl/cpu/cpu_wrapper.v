@@ -260,7 +260,6 @@ module wishbone_cpu (/*AUTOARG*/
    initial begin
       $display("INSTANTIATE RISCV CPU");      
    end   
-`endif
 
    wb_vscale cpu(
      			 .clk(clk_i),
@@ -294,6 +293,7 @@ module wishbone_cpu (/*AUTOARG*/
                  .dwbm_dat_i(dwbm_dat_i),
      			 .dwbm_rty_i(dwbm_rty_i)
                  );
+`endif // !`elsif WISHBONE_CPU_RISCV
    
    
 endmodule // wishbone_cpu
