@@ -9,11 +9,11 @@
 // Status          : Unknown, Use with caution!
 
 module soc_template (/*AUTOARG*/
-   // Outputs
-   uart_tx,
-   // Inputs
-   clk_sys_i, reset_sys_i, uart_rx
-   ) ;
+                     // Outputs
+                     uart_tx,
+                     // Inputs
+                     clk_sys_i, reset_sys_i, uart_rx
+                     ) ;
 
    //
    // System Interface
@@ -34,18 +34,18 @@ module soc_template (/*AUTOARG*/
    //
    // Bus Matrix
    //
-   wire                 clk_i;
-   wire                 rst_i;
+   wire   clk_i;
+   wire   rst_i;
    
-   wire                 wb_clk_i = clk_i;
-   wire                 wb_rst_i = rst_i;
+   wire   wb_clk_i = clk_i;
+   wire   wb_rst_i = rst_i;
    assign wb_clk = wb_clk_i;
    assign wb_rst = wb_rst_i;
    
 `include "soc_bus_matrix.vh"
 
-   wire                 VDD = 1;
-   wire                 VSS = 0;
+   wire   VDD = 1;
+   wire   VSS = 0;
 
    assign wb_s2m_ram_rty = 0;
    assign wb_s2m_rom_rty = 0;
@@ -61,8 +61,8 @@ module soc_template (/*AUTOARG*/
    // Wishbone CPU
    //
 
-   wire [31:0]          interrupts;
-   wire                 uart_interrupt;
+   wire [31:0] interrupts;
+   wire        uart_interrupt;
    
    assign interrupts [0]  = 0;
    assign interrupts [1]  = 0;
@@ -123,7 +123,7 @@ module soc_template (/*AUTOARG*/
                             .dbg_bp_o(), 
                             .dbg_dat_o(),
                             .dbg_ack_o(),
-                            
+      
                             // Inputs
                             .clk_i(clk_i), 
                             .rst_i(rst_i), 
@@ -132,12 +132,12 @@ module soc_template (/*AUTOARG*/
                             .iwbm_ack_i(wb_s2m_iwmb_ack), 
                             .iwbm_dat_i(wb_s2m_iwmb_dat),
                             .iwbm_rty_i(wb_s2m_iwmb_rty),
-//                            .iwbm_rty_i(1'b0), 
+                            //                            .iwbm_rty_i(1'b0), 
                             .dwbm_err_i(wb_s2m_dwmb_err), 
                             .dwbm_ack_i(wb_s2m_dwmb_ack), 
                             .dwbm_dat_i(wb_s2m_dwmb_dat), 
                             .dwbm_rty_i(wb_s2m_dwmb_rty),
-//                            .dwbm_rty_i(1'b0),
+                            //                            .dwbm_rty_i(1'b0),
                             .dbg_stall_i(VSS), 
                             .dbg_ewt_i(VSS), 
                             .dbg_stb_i(VSS), 
@@ -169,7 +169,7 @@ module soc_template (/*AUTOARG*/
    ram0(
         .wb_clk_i(clk_i),
         .wb_rst_i(rst_i),
-        
+      
         .wb_adr_i(wb_m2s_ram_adr[14:0]),
         .wb_dat_i(wb_m2s_ram_dat),
         .wb_sel_i(wb_m2s_ram_sel),
@@ -178,7 +178,7 @@ module soc_template (/*AUTOARG*/
         .wb_cti_i(wb_m2s_ram_cti),
         .wb_cyc_i(wb_m2s_ram_cyc),
         .wb_stb_i(wb_m2s_ram_stb),
-        
+      
         .wb_ack_o(wb_s2m_ram_ack),
         .wb_err_o(wb_s2m_ram_err),
         .wb_dat_o(wb_s2m_ram_dat)
@@ -191,7 +191,7 @@ module soc_template (/*AUTOARG*/
    rom0(
         .wb_clk_i(clk_i),
         .wb_rst_i(rst_i),
-        
+      
         .wb_adr_i(wb_m2s_rom_adr[14:0]),
         .wb_dat_i(wb_m2s_rom_dat),
         .wb_sel_i(wb_m2s_rom_sel),
@@ -200,7 +200,7 @@ module soc_template (/*AUTOARG*/
         .wb_cti_i(wb_m2s_rom_cti),
         .wb_cyc_i(wb_m2s_rom_cyc),
         .wb_stb_i(wb_m2s_rom_stb),
-        
+      
         .wb_ack_o(wb_s2m_rom_ack),
         .wb_err_o(wb_s2m_rom_err),
         .wb_dat_o(wb_s2m_rom_dat)        
@@ -210,11 +210,15 @@ module soc_template (/*AUTOARG*/
    // UART
    //
    uart_top	uart0(
-	                .wb_clk_i(wb_clk_i), 
-	                
-	                // Wishbone signals
-	                .wb_rst_i(wb_rst_i), 
-                  .wb_adr_i(wb_m2s_uart_adr[4:0]), 
+	              .wb_clk_i(wb_clk_i), 
+	  
+	              // Wishbone signals
+	              .wb_rst_i(wb_rst_i),
+//`ifdef  WISHBONE_CPU_MOR1KX                  
+//                  .wb_adr_i(wb_m2s_uart_adr[6:2]),
+//`else
+                  .wb_adr_i(wb_m2s_uart_adr[4:0]),
+//`endif
                   .wb_dat_i(wb_m2s_uart_dat), 
                   .wb_dat_o(wb_s2m_uart_dat), 
                   .wb_we_i(wb_m2s_uart_we), 
@@ -222,20 +226,20 @@ module soc_template (/*AUTOARG*/
                   .wb_cyc_i(wb_m2s_uart_cyc), 
                   .wb_ack_o(wb_s2m_uart_ack), 
                   .wb_sel_i(wb_m2s_uart_sel),
-	                .int_o(uart_interrupt), // interrupt request
-                  
-	                // UART	signals
+	              .int_o(uart_interrupt), // interrupt request
+      
+	              // UART	signals
 	              // serial input/output
-	                .stx_pad_o(uart_tx), 
+	              .stx_pad_o(uart_tx), 
                   .srx_pad_i(uart_rx),
-                  
-	                // modem signals
-	                .rts_pad_o(), 
+      
+	              // modem signals
+	              .rts_pad_o(), 
                   .cts_pad_i(1'b0), 
                   .dtr_pad_o(), 
                   .dsr_pad_i(1'b0), 
                   .ri_pad_i(1'b0), 
                   .dcd_pad_i(1'b0),
                   .baud_o()
-	                );  
+	              );  
 endmodule // soc_template

@@ -11,18 +11,18 @@
 //`include "wb_soc_includes.vh"
 
 module wishbone_cpu (/*AUTOARG*/
-   // Outputs
-   iwbm_adr_o, iwbm_stb_o, iwbm_cyc_o, iwbm_sel_o, iwbm_we_o,
-   iwbm_cti_o, iwbm_bte_o, iwbm_dat_o, dwbm_adr_o, dwbm_stb_o,
-   dwbm_cyc_o, dwbm_sel_o, dwbm_we_o, dwbm_cti_o, dwbm_bte_o,
-   dwbm_dat_o, dbg_lss_o, dbg_is_o, dbg_wp_o, dbg_bp_o, dbg_dat_o,
-   dbg_ack_o,
-   // Inputs
-   clk_i, rst_i, interrupts, iwbm_err_i, iwbm_ack_i, iwbm_dat_i,
-   iwbm_rty_i, dwbm_err_i, dwbm_ack_i, dwbm_dat_i, dwbm_rty_i,
-   dbg_stall_i, dbg_ewt_i, dbg_stb_i, dbg_we_i, dbg_sel_i, dbg_cti_i,
-   dbg_bte_i, dbg_lock_i, dbg_cyc_i, dbg_adr_i, dbg_dat_i
-   ) ;
+                     // Outputs
+                     iwbm_adr_o, iwbm_stb_o, iwbm_cyc_o, iwbm_sel_o, iwbm_we_o,
+                     iwbm_cti_o, iwbm_bte_o, iwbm_dat_o, dwbm_adr_o, dwbm_stb_o,
+                     dwbm_cyc_o, dwbm_sel_o, dwbm_we_o, dwbm_cti_o, dwbm_bte_o,
+                     dwbm_dat_o, dbg_lss_o, dbg_is_o, dbg_wp_o, dbg_bp_o, dbg_dat_o,
+                     dbg_ack_o,
+                     // Inputs
+                     clk_i, rst_i, interrupts, iwbm_err_i, iwbm_ack_i, iwbm_dat_i,
+                     iwbm_rty_i, dwbm_err_i, dwbm_ack_i, dwbm_dat_i, dwbm_rty_i,
+                     dbg_stall_i, dbg_ewt_i, dbg_stb_i, dbg_we_i, dbg_sel_i, dbg_cti_i,
+                     dbg_bte_i, dbg_lock_i, dbg_cyc_i, dbg_adr_i, dbg_dat_i
+                     ) ;
 
    parameter NUMBER_OF_INTERRUPTS = 32;
    parameter ADDRESS_WIDTH = 32;
@@ -128,7 +128,7 @@ module wishbone_cpu (/*AUTOARG*/
                 .D_ACK_I(dwbm_ack_i),
                 .D_ERR_I(dwbm_err_i),
                 .D_RTY_I(dwbm_rty_i),
-             
+                
                 // ----- Outputs -------
  `ifdef CFG_USER_ENABLED    
                 .user_valid(),
@@ -158,13 +158,77 @@ module wishbone_cpu (/*AUTOARG*/
                 .D_CTI_O(dwbm_cti_o),
                 .D_LOCK_O(),
                 .D_BTE_O(dwbm_bte_o)
-               
+                
                 );
    
-`elsif WISHBONE_CPU_MOR1K
+`elsif WISHBONE_CPU_MOR1KX
    initial begin
       $display("INSTANTIATE MOR1K CPU");      
    end
+
+   mor1kx cpu(
+             .clk(clk_i),
+             .rst(rst_i),
+      
+             // Wishbone interface
+             .iwbm_adr_o(iwbm_adr_o),
+     		 .iwbm_stb_o(iwbm_stb_o),
+     		 .iwbm_cyc_o(iwbm_cyc_o),
+             .iwbm_sel_o(iwbm_sel_o),
+     		 .iwbm_we_o(iwbm_we_o),
+             .iwbm_cti_o(iwbm_cti_o),
+             .iwbm_bte_o(iwbm_bte_o),
+             .iwbm_dat_o(iwbm_dat_o),
+     		 .iwbm_err_i(iwbm_err_i),
+     		 .iwbm_ack_i(iwbm_ack_i),
+             .iwbm_dat_i(iwbm_dat_i),
+     		 .iwbm_rty_i(iwbm_rty_i),
+             
+             .dwbm_adr_o(dwbm_adr_o),
+     		 .dwbm_stb_o(dwbm_stb_o),
+     		 .dwbm_cyc_o(dwbm_cyc_o),
+             .dwbm_sel_o(dwbm_sel_o),
+     		 .dwbm_we_o(dwbm_we_o),
+             .dwbm_cti_o(dwbm_cti_o),
+             .dwbm_bte_o(dwbm_bte_o),
+             .dwbm_dat_o(dwbm_dat_o),
+     		 .dwbm_err_i(dwbm_err_i),
+     		 .dwbm_ack_i(dwbm_ack_i),
+             .dwbm_dat_i(dwbm_dat_i),
+     		 .dwbm_rty_i(dwbm_rty_i),
+
+             
+             
+             .irq_i(interrupts),
+             
+             // Debug interface
+             .du_addr_i('b0),
+             .du_stb_i('b0),
+             .du_dat_i('b0),
+             .du_we_i('b0),
+             .du_dat_o(),
+             .du_ack_o(),
+             // Stall control from debug interface
+             .du_stall_i('b0),
+             .du_stall_o(),
+             
+             .traceport_exec_valid_o(),
+             .traceport_exec_pc_o(),
+             .traceport_exec_insn_o(),
+             .traceport_exec_wbdata_o(),
+             .traceport_exec_wbreg_o(),
+             .traceport_exec_wben_o(),
+             
+             // The multicore core identifier
+             .multicore_coreid_i('b0),
+             // The number of cores
+             .multicore_numcores_i('b0),
+             
+             .snoop_adr_i('b0),
+             .snoop_en_i('b0)
+             
+             );
+   
    
 `elsif WISHBONE_CPU_OR1200
 
@@ -174,82 +238,82 @@ module wishbone_cpu (/*AUTOARG*/
    end
    
    or1200_top cpu(
-	                // System
-	                .clk_i(clk_i), 
+	              // System
+	              .clk_i(clk_i), 
                   .rst_i(rst_i), 
                   .pic_ints_i(interrupts), 
                   .clmode_i(2'b00), //WB=RISC
-                  
-	                // Instruction WISHBONE INTERFACE
-	                .iwb_clk_i(clk_i), 
+      
+	              // Instruction WISHBONE INTERFACE
+	              .iwb_clk_i(clk_i), 
                   .iwb_rst_i(rst_i), 
                   .iwb_ack_i(iwbm_ack_i), 
                   .iwb_err_i(iwbm_err_i), 
                   .iwb_rty_i(iwbm_rty_i), 
                   .iwb_dat_i(iwbm_dat_i),
                   
-	                .iwb_cyc_o(iwbm_cyc_o), 
+	              .iwb_cyc_o(iwbm_cyc_o), 
                   .iwb_adr_o(iwbm_adr_o), 
                   .iwb_stb_o(iwbm_stb_o), 
                   .iwb_we_o(iwbm_we_o), 
                   .iwb_sel_o(iwbm_sel_o), 
                   .iwb_dat_o(iwbm_dat_o),
  `ifdef OR1200_WB_CAB
-	                .iwb_cab_o(),
+	              .iwb_cab_o(),
  `endif
  `ifdef OR1200_WB_B3
-	                .iwb_cti_o(iwbm_cti_o), 
+	              .iwb_cti_o(iwbm_cti_o), 
                   .iwb_bte_o(iwbm_bte_o),
  `endif
-	                // Data WISHBONE INTERFACE
-	                .dwb_clk_i(clk_i), 
+	              // Data WISHBONE INTERFACE
+	              .dwb_clk_i(clk_i), 
                   .dwb_rst_i(rst_i), 
                   .dwb_ack_i(dwbm_ack_i), 
                   .dwb_err_i(dwbm_err_i), 
                   .dwb_rty_i(dwbm_rty_i), 
                   .dwb_dat_i(dwbm_dat_i),
                   
-	                .dwb_cyc_o(dwbm_cyc_o), 
+	              .dwb_cyc_o(dwbm_cyc_o), 
                   .dwb_adr_o(dwbm_adr_o), 
                   .dwb_stb_o(dwbm_stb_o), 
                   .dwb_we_o(dwbm_we_o), 
                   .dwb_sel_o(dwbm_sel_o), 
                   .dwb_dat_o(dwbm_dat_o),
  `ifdef OR1200_WB_CAB
-	                .dwb_cab_o(),
+	              .dwb_cab_o(),
  `endif
  `ifdef OR1200_WB_B3
-	                .dwb_cti_o(dwbm_cti_o), 
+	              .dwb_cti_o(dwbm_cti_o), 
                   .dwb_bte_o(dwbm_bte_o),
  `endif
                   
-	                // External Debug Interface
-	                .dbg_stall_i(dbg_stall_i), 
+	              // External Debug Interface
+	              .dbg_stall_i(dbg_stall_i), 
                   .dbg_ewt_i(dbg_ewt_i),	
                   .dbg_lss_o(dbg_lss_o), 
                   .dbg_is_o(dbg_is_o), 
                   .dbg_wp_o(dbg_wp_o), 
                   .dbg_bp_o(dbg_bp_o),
-	                .dbg_stb_i(dbg_stb_i), 
+	              .dbg_stb_i(dbg_stb_i), 
                   .dbg_we_i(dbg_we_i), 
                   .dbg_adr_i(dbg_adr_i), 
                   .dbg_dat_i(dbg_dat_i), 
                   .dbg_dat_o(dbg_adr_o), 
                   .dbg_ack_o(dbg_ack_o),
-	                
+	              
  `ifdef OR1200_BIST
-	                // RAM BIST
-	                .mbist_si_i('b0), 
+	              // RAM BIST
+	              .mbist_si_i('b0), 
                   .mbist_so_o(), 
                   .mbist_ctrl_i('b0),
  `endif
-	                // Power Management
-	                .pm_cpustall_i('b0),
-	                .pm_clksd_o(), 
+	              // Power Management
+	              .pm_cpustall_i('b0),
+	              .pm_clksd_o(), 
                   .pm_dc_gate_o(), 
                   .pm_ic_gate_o(), 
                   .pm_dmmu_gate_o(), 
-	                .pm_immu_gate_o(), 
+	              .pm_immu_gate_o(), 
                   .pm_tt_gate_o(), 
                   .pm_cpu_gate_o(), 
                   .pm_wakeup_o(), 
@@ -257,8 +321,11 @@ module wishbone_cpu (/*AUTOARG*/
                   
                   ,.sig_tick()		  
                   
-);
+                  );
 
+   
+   
+   
 `elsif WISHBONE_CPU_RISCV
    initial begin
       $display("INSTANTIATE RISCV CPU");      
@@ -268,7 +335,7 @@ module wishbone_cpu (/*AUTOARG*/
      			 .clk(clk_i),
      			 .rst(rst_i),
                  .ext_interrupts(interrupts[24:0]),
-                 
+      
                  // Wishbone interface
                  .iwbm_adr_o(iwbm_adr_o),
      			 .iwbm_stb_o(iwbm_stb_o),

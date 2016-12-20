@@ -18,6 +18,10 @@ ifeq ($(CPU), OR1200)
 	CPU_MAKEFILE = Makefile.or1200
 endif
 
+ifeq ($(CPU), MOR1KX)
+	CPU_MAKEFILE = Makefile.mor1kx
+endif
+
 ifeq ($(CPU), RISCV)
 	CPU_MAKEFILE = Makefile.riscv
 endif

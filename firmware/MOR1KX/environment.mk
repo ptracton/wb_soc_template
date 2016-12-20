@@ -7,21 +7,7 @@
 ##
 ## Prefix of the GCC LM32 Cross Compiler
 ##
-ifeq ($(CPU), LM32)
-	PREFIX	= lm32-elf
-endif
-
-ifeq ($(CPU), MOR1KX)
-	PREFIX	= or32-elf
-endif
-
-ifeq ($(CPU), OR1200)
-	PREFIX	= or32-elf
-endif
-
-ifeq ($(CPU), RISCV)
-	PREFIX	= riscv32-unknown-elf
-endif
+PREFIX	= or32-elf
 
 
 ##
@@ -34,6 +20,6 @@ OBJCOPY	= $(PREFIX)-objcopy
 OBJDUMP	= $(PREFIX)-objdump
 AR     	= $(PREFIX)-ar
 GDB	    = $(PREFIX)-gdb
-FLASH	  = $(shell which st-flash)
+FLASH	= $(shell which st-flash)
 MKDIR   = mkdir
 RM      = rm
