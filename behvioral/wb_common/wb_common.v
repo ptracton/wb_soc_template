@@ -14,10 +14,14 @@ function wb_is_last;
 	CTI_CONST_BURST  : wb_is_last = 1'b0;
 	CTI_INC_BURST    : wb_is_last = 1'b0;
 	CTI_END_OF_BURST : wb_is_last = 1'b1;
-	default : $display("%d : Illegal Wishbone B3 cycle type (%b)", $time, cti);//$error("%d : Illegal Wishbone B3 cycle type (%b)", $time, cti);
-      endcase
+	default :  begin
+       $display("%d : Illegal Wishbone B3 cycle type (%b)", $time, cti);
+       //$error("%d : Illegal Wishbone B3 cycle type (%b)", $time, cti);
+       //$display("Internal error: null handle at %s, line %d.", `__FILE__, `__LINE__);
+    end
+      endcase // case (cti)      
    end
-endfunction
+endfunction // case
 
 function [31:0] wb_next_adr;
    input [31:0] adr_i;

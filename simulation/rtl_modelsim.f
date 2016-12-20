@@ -34,11 +34,11 @@ vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
 
-vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/
+vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/ +define+WISHBONE_CPU_LM32
 
 vlog ../rtl/cpu/lm32_config.v
 
-do ../rtl/lm32/lm32_rtl.do
+do ../rtl/LM32/lm32_rtl.do
 
-vsim -voptargs=+acc work.testbench +define+XILINX
+vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_LM32
 run -all

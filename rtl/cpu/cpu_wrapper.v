@@ -91,6 +91,9 @@ module wishbone_cpu (/*AUTOARG*/
 `ifdef WISHBONE_CPU_LM32
  `include "lm32_config.v"
 
+   assign dbg_cti_i = 3'b000;
+   
+   
    initial begin
       $display("INSTANTIATE LM32 CPU");      
    end

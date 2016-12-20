@@ -4,9 +4,10 @@
     "flow_steps": {
         "1": "compile_clean",
         "2": "compile",
-        "3": "vlib",
-        "4": "test_case",
-	    "5" : "simulation"
+        "3" : "clean_vlib",
+        "4": "vlib",
+        "5": "test_case",
+	    "6" : "simulation"
     },
     "flow" : {
         "compile_clean" : {
@@ -16,7 +17,11 @@
 	    "compile" : {
 	        "executable": "make",
 	        "arguments" : " TARGET=$simulation CPU=$cpu"	
-	    },                
+	    },
+        "clean_vlib":{
+	        "executable": "rm -rf",
+	        "arguments" : " vlib"	            
+        },
 	    "vlib" : {
 	        "executable": "vlib",
 	        "arguments" : " work"	
@@ -24,7 +29,7 @@
         
 	    "test_case" : {
 	        "executable": "vlog",
-	        "arguments" : " $simulation +incdir+../testbench"	
+	        "arguments" : " $simulation.v +incdir+../testbench"	
 	    },        
 	    "simulation" : {
 	        "executable": "vsim",

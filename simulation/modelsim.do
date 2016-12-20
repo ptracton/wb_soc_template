@@ -41,9 +41,10 @@ vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
 vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/  +define+WISHBONE_CPU_${2}
 
-vlog ../rtl/cpu/lm32_config.v
+
 
 if {${2} == "LM32"} {
+   vlog ../rtl/cpu/lm32_config.v   
    do ../rtl/LM32/lm32_rtl.do
 }
 
