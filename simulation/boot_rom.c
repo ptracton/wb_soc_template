@@ -5,6 +5,10 @@
 #include "or1200-utils.h"
 #endif
 
+#ifdef MOR1KX
+#include "or1k-support.h"
+#endif
+
 int main(void){
 
 #ifdef OR1200

@@ -1,11 +1,17 @@
+#include <or1k-asm.h>
+//#include <or1k-support.h>
 #include "spr-defs.h"
 #include "board.h"
 
 /* ======================================================= [ macros ] === */
 
 #define REDZONE 128
-#define EXCEPTION_STACK_SIZE (128 + REDZONE)
-	
+#define EXCEPTION_STACK_SIZE (128 + 8 + REDZONE)
+
+#define NOP_CNT_RESET    0x0005	     /* Reset statistics counters */
+#define NOP_GET_TICKS    0x0006	     /* JPB: Get # ticks running */
+#define NOP_REPORT      0x0002      /* Simple report */
+    
 #define CLEAR_GPR(gpr) \
 	l.or    gpr, r0, r0
     
@@ -25,12 +31,11 @@ symbol:
 	l.sw    8(r1), r4;             \
 	l.mfspr r3,r0,SPR_NPC;          \
 	l.mfspr r4,r0,SPR_EPCR_BASE;   \
-	l.j default_exception_handler; \
-	l.nop
+	OR1K_DELAYED_NOP(OR1K_INST(l.j default_exception_handler))
 
 /* =================================================== [ exceptions ] === */
 	.section .vectors, "ax"
-.global _default_exception_handler_c
+
 /* ---[ 0x100: RESET exception ]----------------------------------------- */
         .org 0x100 	
 	l.movhi r0, 0
@@ -78,8 +83,7 @@ symbol:
 
 	/* Jump to program initialisation code */
 	LOAD_SYMBOL_2_GPR(r4, _start)
-	l.jr    r4
-	l.nop
+	OR1K_DELAYED_NOP(OR1K_INST(l.jr    r4))
 
 /* ---[ 0x200: BUS exception ]------------------------------------------- */
 	.org 0x200
@@ -194,13 +198,12 @@ symbol:
 
 /* ========================================================= [ entry ] === */
 	.section .text
-    .global _main
-    .global _exit
+
 ENTRY(_start)
 
-	/* Cache initialisation 
+	/* Cache initialisation */
 	l.jal _cache_init
-	l.nop*/
+	l.nop
 	
 	/* Clear BSS */
         LOAD_SYMBOL_2_GPR(r5, _bss_start)
@@ -208,19 +211,36 @@ ENTRY(_start)
 1:
         l.sw    (0)(r5), r0
         l.sfltu r5, r6
-        l.bf    1b
-        l.addi  r5, r5, 4
+        OR1K_DELAYED(
+        OR1K_INST(l.addi  r5, r5, 4),
+	OR1K_INST(l.bf    1b)
+	)
         
 	/* Jump to main program entry point (argc = argv = 0) */
 	CLEAR_GPR(r3)
 	CLEAR_GPR(r4)
-	l.jal   _main
-	l.nop
-	
+	/* nop to reset cycle counter */
+    l.nop	NOP_CNT_RESET
+	OR1K_DELAYED_NOP(OR1K_INST(l.jal   main))
+
 	/* If program exits, call exit routine */
-	l.addi  r3, r11, 0
-	l.jal   _exit
+	/* Save r11 */
+	l.or	r4,r11,r11
+	/* l.nop 0x6 moves the simulator cycle count to regs 11,12 */
+	/* Put some nops around this op so that the RF isn't
+	doing anything else when we write to it it */
 	l.nop
+	l.nop
+	l.nop	NOP_GET_TICKS
+	l.nop
+	l.nop
+	/* report upper 32-bits first */
+	l.or	r3,r12,r12
+	l.nop	NOP_REPORT
+	l.or	r3, r11,r11
+	l.nop	NOP_REPORT
+	l.addi  r3, r4, 0
+	OR1K_DELAYED_NOP(OR1K_INST(l.jal   exit))
 
 
 /* ====================================== [ default exception handler ] === */
@@ -254,10 +274,19 @@ default_exception_handler:
 	l.sw    0x6c(r1), r29
 	l.sw    0x70(r1), r30
 	l.sw    0x74(r1), r31
+	l.sw    0x78(r1), r4 /* EPCR */	
+	l.mfspr r5,r0,SPR_ESR_BASE
+	l.sw    0x7c(r1), r5 /* ESR */
 
-	l.jal   _default_exception_handler_c
-	l.nop
+	l.ori	r6, r1, 0 /* Pass exception stack pointer as arg 4*/
 	
+	OR1K_DELAYED_NOP(OR1K_INST(l.jal   default_exception_handler_c))
+
+	l.lwz   r2, 0x78(r1) /* EPCR */
+	l.mtspr	r0,r2, SPR_EPCR_BASE
+	l.lwz   r2, 0x7c(r1) /* ESR */
+	l.mtspr	r0,r2, SPR_ESR_BASE
+
 	l.lwz    r2, 0x00(r1)
 	l.lwz    r3, 0x04(r1)
 	l.lwz    r4, 0x08(r1)
@@ -293,4 +322,3 @@ default_exception_handler:
 
 	l.rfe
 	l.nop
-

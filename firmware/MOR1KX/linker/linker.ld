@@ -1,17 +1,17 @@
-OUTPUT_ARCH(or32)
+OUTPUT_ARCH(or1knd)
 SEARCH_DIR(.)
 __DYNAMIC  =  0;
 
 MEMORY
 {
 	vectors : ORIGIN = 0x00000000, LENGTH = 0x1000
-    rom     : ORIGIN = 0x00001000, LENGTH = 0x7000
-	ram     : ORIGIN = 0x20000000, LENGTH = (0x8000 - 0x200)
+	code    : ORIGIN = 0x00001000, LENGTH = (32768 - 0x1000)
+	ram     : ORIGIN = 0x20000000, LENGTH = (32768)
 }
 
 
 /* Stack information variables */
-_min_stack      = 0x200;   /* stack space to reserve */
+_min_stack      = 0x2000;   /* 8K - minimum stack space to reserve */
 
 
 SECTIONS
@@ -38,12 +38,12 @@ SECTIONS
 		*(.lit)
 		*(.shdata)
 		_endtext = .;
-	}  > rom
+	}  > code
 
 	.rodata : {
 		*(.rodata);
 		*(.rodata.*)
-	} > rom
+	} > code
 	
 	.shbss :
 	{
@@ -60,7 +60,7 @@ SECTIONS
 		*(.data)
 		edata  =  .;
 		_edata  =  .;
-	} > ram
+	} > code
 	
 	.bss :
 	{
@@ -89,4 +89,3 @@ SECTIONS
 		[ .stabstr ]
 	}
 }
-PROVIDE(_fstack = ORIGIN(ram) + LENGTH(ram) - 4);

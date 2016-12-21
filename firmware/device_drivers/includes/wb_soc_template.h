@@ -2,13 +2,13 @@
 #define __WB_SOC_TEMPLATE_H__
 
 
-//#ifdef LM32
+#ifdef LM32
 
 #define uint8_t  unsigned char
 #define uint16_t unsigned short
 #define uint32_t unsigned long
 
-//#endif
+#endif
 
 #include <stdlib.h>
 #include <sys/types.h>

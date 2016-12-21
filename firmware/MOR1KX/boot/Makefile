@@ -1,5 +1,5 @@
 
-PREFIX	= or32-elf
+PREFIX	= or1k-elf
 
 
 ##
@@ -50,8 +50,8 @@ BIN_FILE  = $(LIB_DIR)/$(TARGET).bin
 ##
 #ASM_SOURCES      += src/crt0ram.S 
 #ASM_OBJECTS      += $(OBJ_DIR)/crt0ram.o
-ASM_SOURCES      += src/crt0.S 
-ASM_OBJECTS      += $(OBJ_DIR)/crt0.o
+ASM_SOURCES      += $(wildcard $(SRC_DIR)/*.S)
+ASM_OBJECTS      += $(patsubst $(SRC_DIR)/%.S,$(OBJ_DIR)/%.o,$(ASM_SOURCES))
 ELF_REQUIREMENTS += $(ASM_OBJECTS)
 ASMFLAGS         +=  # -Wa 
 
@@ -59,7 +59,7 @@ ASMFLAGS         +=  # -Wa
 ## Linker flags
 ##
 LDFLAGS = -T$(LD_DIR)/linker.ld -nostdlib -nodefaultlibs -static -lgcc
-CFLAGS  = -g $(CINCLUDES)
+CFLAGS  = -g $(CINCLUDES) -I /opt/CrossCompilers/or1k-elf/or1k-elf/include/
 CFLAGS += -Wall -Werror -Wextra 
 
 ##
@@ -93,7 +93,7 @@ $(OBJ_DIR)/%.o:%.S
 ##
 $(OBJ_DIR)/%.o:%.c
 	@echo "Compiling  $<"
-	@$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF dep/$(*F).d
+	$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF dep/$(*F).d
 
 clean:
 	$(RM) -rf  $(OBJ_DIR) $(EXEC_DIR) $(DEP_DIR) $(LIB_DIR)

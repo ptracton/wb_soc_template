@@ -1,7 +1,7 @@
 #include "spr-defs.h"
-#include "or1200-utils.h"
 #include "board.h" // For timer rate (IN_CLK, TICKS_PER_SEC)
-
+#include "mor1kx-utils.h"
+#include <or1k-support.h>
 /* For writing into SPR. */
 void 
 mtspr(unsigned long spr, unsigned long value)
@@ -59,7 +59,8 @@ unsigned long timer_ticks;
 void 
 cpu_enable_timer(void)
 {
-  mtspr(SPR_TTMR, SPR_TTMR_IE | SPR_TTMR_RT | ((IN_CLK/TICKS_PER_SEC) & SPR_TTMR_PERIOD));
+  mtspr(SPR_TTMR, SPR_TTMR_IE | SPR_TTMR_RT | ((IN_CLK/TICKS_PER_SEC) & 
+					       SPR_TTMR_PERIOD));
   mtspr(SPR_SR, SPR_SR_TEE | mfspr(SPR_SR));
 
 }

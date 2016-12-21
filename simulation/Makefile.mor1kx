@@ -23,7 +23,7 @@ DEVICE_DRIVERS_LIB = $(CPU)_device_drivers
 
 CINCLUDES = -I $(DEVICE_DRIVERS_INC_DIR) -I$(BOOT_INC_DIR)
 CFLAGS += -O2 $(CINCLUDES) -g -D$(CPU)  -Wall -Werror -Wextra
-LD_FLAGS = -nostdlib -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld -L $(DEVICE_DRIVERS_LIB_DIR) -l$(DEVICE_DRIVERS_LIB) 
+LD_FLAGS = -nostdlib -nostartfiles  -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld -L $(DEVICE_DRIVERS_LIB_DIR) -l$(DEVICE_DRIVERS_LIB) 
 LD_FLAGS += -L $(BOOT_LIB_DIR) -l$(BOOT_LIB)
 include $(FIRMWARE_CPU_ROOT)/environment.mk
 
@@ -37,7 +37,7 @@ $(ELF_FILE): $(ELF_REQUIREMENTS)
 	@$(MAKE) -C ../firmware/device_drivers CPU=$(CPU)
 	@$(MAKE) -C ../firmware/$(CPU)/boot CPU=$(CPU)
 	@echo "Linking $(ELF_FILE)"
-	@$(LD) -o $(ELF_FILE) $(ELF_REQUIREMENTS)  $(BOOT_OBJECT)  $(LD_FLAGS)
+	$(LD)  $(ELF_REQUIREMENTS)  $(BOOT_OBJECT)  $(LD_FLAGS) -o $(ELF_FILE)
 
 %.vh: %.elf
 	@echo "Elf to Verilog Memory Model"
@@ -47,7 +47,9 @@ $(ELF_FILE): $(ELF_REQUIREMENTS)
 
 %.o:%.c
 	@echo "Compiling  $<"
-	@$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF $(*F).d
+	$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF $(*F).d
 
 clean:
 	$(RM) -f $(ELF_FILE) $(TARGET).d $(LIST_FILE) $(TEST_CASE_OBJ) *.bin  *~
+	@$(MAKE) -C ../firmware/device_drivers CPU=$(CPU) clean
+	@$(MAKE) -C ../firmware/$(CPU)/boot CPU=$(CPU) clean

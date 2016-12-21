@@ -1,10 +1,5 @@
-exec make TARGET=${1} CPU=${2} clean
-exec make TARGET=${1} CPU=${2}
-exec rm -rf work
-
 vlib work
 
-vlog ${1} +incdir+../testbench
 
 vlog ../rtl/soc_template.v +incdir+../rtl/bus_matrix
 
@@ -39,23 +34,10 @@ vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
 
-vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/  +define+WISHBONE_CPU_${2}
+vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/ +define+WISHBONE_CPU_MOR1KX
 
 
+do ../rtl/MOR1KX/MOR1KX_rtl.do
 
-if {${2} == "LM32"} {
-   vlog ../rtl/cpu/lm32_config.v   
-   do ../rtl/LM32/lm32_rtl.do
-}
-
-if {${2} == "MOR1KX"} {
-   do ../rtl/MOR1KX/MOR1KX_rtl.do
-}
-
-if {${2} == "RISCV"} {
-   do ../rtl/RISCV/RISCV.do
-}
-
-vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_${2}
-do wave.do      
+vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_MOR1KX
 run -all

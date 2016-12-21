@@ -1,7 +1,8 @@
-#include "or1200-utils.h"
+//#include "cpu-utils.h"
 #include "int.h" // User interrupt handler header
 //#include "uart.h"
 //#include "printf.h"
+#include "mor1kx-utils.h"
 
 #define STR_EXCEPTION_OCCURED " exception occured.\n"
 
@@ -70,19 +71,23 @@ add_handler(unsigned long vector, void (*handler) (void))
   except_handlers[vector] = handler;
 }
 
+struct exception_state * current_exception_state_struct;
+
 void 
-default_exception_handler_c(unsigned exception_address,unsigned epc)
+default_exception_handler_c(unsigned exception_address, unsigned epc, unsigned esr,
+			    struct exception_state * exception_state)
 {
-  epc++;
+  esr =(unsigned)  &esr;
   int exception_no = (exception_address >> 8) & 0x1f;
   if (except_handlers[exception_no])
     {	    
+            current_exception_state_struct = exception_state;
 	    (*except_handlers[exception_no])();
 	    return;
     }
 
   // init uart here, incase it hasn't been
-  //  uart_init(DEFAULT_UART);
+  //uart_init(DEFAULT_UART);
 	  
   //  printf("EPC = 0x%.8x\n", exception_address);
 	  
@@ -93,9 +98,9 @@ default_exception_handler_c(unsigned exception_address,unsigned epc)
 	  
   // Icing on the cake using fancy functions
   //  printf("EPC = 0x%.8x\n", epc);
-  //  report(exception_address);
-  //  report(epc);
-  // __asm__("l.nop 1");
+  report(exception_address);
+  report(epc);
+  __asm__("l.nop 1");
   for(;;);
 }
 

@@ -1,12 +1,10 @@
-/* ipc.h.  Microkernel IPC header for Or1ksim
+/* spr-defs.h - Special purpose registers definitions file
 	
    Copyright (C) 2000 Damjan Lampret
    Copyright (C) 2008, 2010 Embecosm Limited
    
    Contributor Damjan Lampret <lampret@opencores.org>
    Contributor Jeremy Bennett <jeremy.bennett@embecosm.com>
-
-   This file is part of OpenRISC 1000 Architectural Simulator.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the Free
@@ -24,34 +22,6 @@
 /* ----------------------------------------------------------------------------
    This code is commented throughout for use with Doxygen.
    --------------------------------------------------------------------------*/
-
-/* This file is part of test microkernel for OpenRISC 1000. */
-/* spr-defs.h -- Defines OR1K architecture specific special-purpose registers
-
-   Copyright (C) 1999 Damjan Lampret, lampret@opencores.org
-   Copyright (C) 2008 Embecosm Limited
-  
-   Contributor Jeremy Bennett <jeremy.bennett@embecosm.com>
-  
-   This file is part of OpenRISC 1000 Architectural Simulator.
-  
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the Free
-   Software Foundation; either version 3 of the License, or (at your option)
-   any later version.
-  
-   This program is distributed in the hope that it will be useful, but WITHOUT
-   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-   more details.
-  
-   You should have received a copy of the GNU General Public License along
-   with this program.  If not, see <http://www.gnu.org/licenses/>. */
-
-/* This program is commented throughout in a fashion suitable for processing
-   with Doxygen. */
-
-
 #ifndef SPR_DEFS__H
 #define SPR_DEFS__H
 
@@ -86,10 +56,16 @@
 #define SPR_ICCFGR	(SPRGROUP_SYS + 6)
 #define SPR_DCFGR	(SPRGROUP_SYS + 7)
 #define SPR_PCCFGR	(SPRGROUP_SYS + 8)
+#define SPR_VR2 	(SPRGROUP_SYS + 9)
+#define SPR_AVR 	(SPRGROUP_SYS + 10)
+#define SPR_EVBAR 	(SPRGROUP_SYS + 11)
+#define SPR_AECR 	(SPRGROUP_SYS + 12)
+#define SPR_AESR 	(SPRGROUP_SYS + 13)
 #define SPR_NPC         (SPRGROUP_SYS + 16)  /* CZ 21/06/01 */
 #define SPR_SR		(SPRGROUP_SYS + 17)  /* CZ 21/06/01 */
 #define SPR_PPC         (SPRGROUP_SYS + 18)  /* CZ 21/06/01 */
 #define SPR_FPCSR       (SPRGROUP_SYS + 20)  /* CZ 21/06/01 */
+#define SPR_ISR_BASE    (SPRGROUP_SYS + 21)
 #define SPR_EPCR_BASE	(SPRGROUP_SYS + 32)  /* CZ 21/06/01 */
 #define SPR_EPCR_LAST	(SPRGROUP_SYS + 47)  /* CZ 21/06/01 */
 #define SPR_EEAR_BASE	(SPRGROUP_SYS + 48)
@@ -100,6 +76,7 @@
 
 /* Data MMU group */
 #define SPR_DMMUCR	(SPRGROUP_DMMU + 0)
+#define SPR_DTLBEIR     (SPRGROUP_DMMU + 2)
 #define SPR_DTLBMR_BASE(WAY)	(SPRGROUP_DMMU + 0x200 + (WAY) * 0x100)
 #define SPR_DTLBMR_LAST(WAY)	(SPRGROUP_DMMU + 0x27f + (WAY) * 0x100)
 #define SPR_DTLBTR_BASE(WAY)	(SPRGROUP_DMMU + 0x280 + (WAY) * 0x100)
@@ -107,6 +84,7 @@
 
 /* Instruction MMU group */
 #define SPR_IMMUCR	(SPRGROUP_IMMU + 0)
+#define SPR_ITLBEIR     (SPRGROUP_IMMU + 2)
 #define SPR_ITLBMR_BASE(WAY)	(SPRGROUP_IMMU + 0x200 + (WAY) * 0x100)
 #define SPR_ITLBMR_LAST(WAY)	(SPRGROUP_IMMU + 0x27f + (WAY) * 0x100)
 #define SPR_ITLBTR_BASE(WAY)	(SPRGROUP_IMMU + 0x280 + (WAY) * 0x100)
@@ -166,11 +144,13 @@
  */
 #define SPR_VR_VER	0xff000000  /* Processor version */
 #define SPR_VR_CFG	0x00ff0000  /* Processor configuration */
-#define SPR_VR_RES	0x00ff0000  /* Reserved */
+#define SPR_VR_RES	0x0000ff80  /* Reserved */
+#define SPR_VR_UVRP	0x00000040  /* Updated version register present */
 #define SPR_VR_REV	0x0000003f  /* Processor revision */
 
 #define SPR_VR_VER_OFF	24
 #define SPR_VR_CFG_OFF	16
+#define SPR_VR_UVRP_OFF	6
 #define SPR_VR_REV_OFF	0
 
 /*
@@ -202,7 +182,94 @@
 #define SPR_CPUCFGR_OF32S  0x00000080  /* ORFPX32 supported */
 #define SPR_CPUCFGR_OF64S  0x00000100  /* ORFPX64 supported */
 #define SPR_CPUCFGR_OV64S  0x00000200  /* ORVDX64 supported */
-#define SPR_CPUCFGR_RES	   0xfffffc00  /* Reserved */
+#define SPR_CPUCFGR_ND     0x00000400  /* No delay-slot */
+#define SPR_CPUCFGR_AVRP   0x00000800  /* Architecture version register present */
+#define SPR_CPUCFGR_EVBARP 0x00001000  /* Exception vector base address register 
+					  present */
+#define SPR_CPUCFGR_ISRP   0x00002000  /* Implementation-specific registers present */
+#define SPR_CPUCFGR_AECSRP 0x00004000  /* Arithmetic exception control/status 
+					  registers present */
+#define SPR_CPUCFGR_RES	   0xffff8000  /* Reserved */
+
+/*
+ * Bit definitions for the Version Register 2
+ *
+ */
+#define SPR_VR2_CPUID   0xff000000  /* Unique CPU identifier */
+#define SPR_VR2_VER	0x00ffffff  /* Version */
+
+#define SPR_VR2_CPUID_OFF   24
+#define SPR_VR2_VER_OFF     0
+
+#define SPR_VR2_CPUID_OR1KSIM   0x00
+#define SPR_VR2_CPUID_MOR1KX    0x01
+#define SPR_VR2_CPUID_OR1200    0x12
+#define SPR_VR2_CPUID_ALTOR32   0x32
+#define SPR_VR2_CPUID_OR10      0x10
+
+
+/*
+ * Bit definitions for the Architecture Version register
+ *
+ */
+#define SPR_AVR_MAJ     0xff000000  /* Major architecture version number */
+#define SPR_AVR_MIN     0x00ff0000  /* Minor architecture version number */
+#define SPR_AVR_REV     0x0000ff00  /* Architecture revision number */
+#define SPR_AVR_RES	0x000000ff  /* Reserved */
+
+#define SPR_AVR_MAJ_OFF 24
+#define SPR_AVR_MIN_OFF 16
+#define SPR_AVR_REV_OFF 8
+
+/*
+ * Bit definitions for the Exception Base Address register
+ *
+ */
+#define SPR_EVBAR_EVBA  0xffffe000  /* Exception vector base address */
+#define SPR_EVBAR_RES   0x00001fff  /* Reserved */
+
+#define SPR_EVBAR_EVBA_OFF 13
+
+/*
+ * Bit definitions for the Arithmetic Exception Control register
+ *
+ */
+#define SPR_AECR_CYADDE  0x00000001  /* Carry on add/subtract exception */
+#define SPR_AECR_OVADDE  0x00000002  /* Overflow on add/subtract exception */
+#define SPR_AECR_CYMULE  0x00000004  /* Carry on multiply exception */
+#define SPR_AECR_OVMULE  0x00000008  /* Overflow on multiply exception */
+#define SPR_AECR_DBZE    0x00000010  /* Divide by zero exception */
+#define SPR_AECR_CYMACADDE  0x00000020  /* Carry on MAC add/subtract exception */
+#define SPR_AECR_OVMACADDE  0x00000040  /* Overflow on MAC add/subtract exception */
+
+#define SPR_AECR_CYADDE_OFF 0
+#define SPR_AECR_OVADDE_OFF 1
+#define SPR_AECR_CYMULE_OFF 2
+#define SPR_AECR_OVMULE_OFF 3
+#define SPR_AECR_DBZE_OFF   4
+#define SPR_AECR_CYMACADDE_OFF 5
+#define SPR_AECR_OVMACADDE_OFF 6
+
+
+/*
+ * Bit definitions for the Arithmetic Exception Status register
+ *
+ */
+#define SPR_AESR_CYADDE  0x00000001  /* Carry on add/subtract exception */
+#define SPR_AESR_OVADDE  0x00000002  /* Overflow on add/subtract exception */
+#define SPR_AESR_CYMULE  0x00000004  /* Carry on multiply exception */
+#define SPR_AESR_OVMULE  0x00000008  /* Overflow on multiply exception */
+#define SPR_AESR_DBZE    0x00000010  /* Divide by zero exception */
+#define SPR_AESR_CYMACADDE  0x00000020  /* Carry on MAC add/subtract exception */
+#define SPR_AESR_OVMACADDE  0x00000040  /* Overflow on MAC add/subtract exception */
+
+#define SPR_AESR_CYADDE_OFF 0
+#define SPR_AESR_OVADDE_OFF 1
+#define SPR_AESR_CYMULE_OFF 2
+#define SPR_AESR_OVMULE_OFF 3
+#define SPR_AESR_DBZE_OFF   4
+#define SPR_AESR_CYMACADDE_OFF 5
+#define SPR_AESR_OVMACADDE_OFF 6
 
 /*
  * JPB: Bit definitions for the Debug configuration register and other
@@ -330,6 +397,7 @@
 
 #define ITLB_PR_NOLIMIT  ( SPR_ITLBTR_SXE  |	\
 			   SPR_ITLBTR_UXE  )
+
 
 /*
  * Bit definitions for Data Cache Control register
@@ -596,7 +664,6 @@
 #define SPR_TTMR_PERIOD	SPR_TTCR_PERIOD
 #define SPR_TTMR_IP	0x10000000  /* Interrupt Pending */
 #define SPR_TTMR_IE	0x20000000  /* Interrupt Enable */
-#define SPR_TTMR_DI	0x00000000  /* Disabled */
 #define SPR_TTMR_RT	0x40000000  /* Restart tick */
 #define SPR_TTMR_SR     0x80000000  /* Single run */
 #define SPR_TTMR_CR     0xc0000000  /* Continuous run */
@@ -625,20 +692,5 @@
 #define FPCSR_RM_RZ (1<<1)
 #define FPCSR_RM_RIP (2<<1)
 #define FPCSR_RM_RIN (3<<1)
-
-/*
- * l.nop constants
- *
- */
-#define NOP_NOP          0x0000      /* Normal nop instruction */
-#define NOP_EXIT         0x0001      /* End of simulation */
-#define NOP_REPORT       0x0002      /* Simple report */
-/*#define NOP_PRINTF       0x0003       Simprintf instruction (obsolete)*/
-#define NOP_PUTC         0x0004      /* JPB: Simputc instruction */
-#define NOP_CNT_RESET    0x0005	     /* Reset statistics counters */
-#define NOP_GET_TICKS    0x0006	     /* JPB: Get # ticks running */
-#define NOP_GET_PS       0x0007      /* JPB: Get picosecs/cycle */
-#define NOP_REPORT_FIRST 0x0400      /* Report with number */
-#define NOP_REPORT_LAST  0x03ff      /* Report with number */
 
 #endif	/* SPR_DEFS__H */

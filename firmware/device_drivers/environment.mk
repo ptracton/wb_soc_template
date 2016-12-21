@@ -12,7 +12,7 @@ ifeq ($(CPU), LM32)
 endif
 
 ifeq ($(CPU), MOR1KX)
-	PREFIX	= or32-elf
+	PREFIX	= or1k-elf
 endif
 
 ifeq ($(CPU), OR1200)
