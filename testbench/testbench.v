@@ -59,9 +59,6 @@ module testbench;
    //
    test_case test_case();   
 
-`ifdef WISHBONE_CPU_OR1200
-   or1200_monitor monitor();   
-`endif
    
    /****************************************************************************
     UART 0 

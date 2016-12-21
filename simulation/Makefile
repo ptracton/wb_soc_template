@@ -5,17 +5,13 @@
 TARGET = None
 
 #
-# LM32, MOR1K or OR1200
+# LM32, MOR1K or RISCV
 #
 #CPU = LM32
 
 
 ifeq ($(CPU), LM32)
 	CPU_MAKEFILE = Makefile.lm32
-endif
-
-ifeq ($(CPU), OR1200)
-	CPU_MAKEFILE = Makefile.or1200
 endif
 
 ifeq ($(CPU), MOR1KX)

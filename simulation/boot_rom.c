@@ -1,21 +1,17 @@
 
 #include "wb_soc_template.h"
 
-#ifdef OR1200
-#include "or1200-utils.h"
-#endif
-
 #ifdef MOR1KX
 #include "or1k-support.h"
 #endif
 
 int main(void){
 
-#ifdef OR1200
+#ifdef MOR1KX
   report(0);
 #endif
   UART16550_Init(UART);
-#ifdef OR1200  
+#ifdef MOR1KX
   report (10);
 #endif
   UART16550_TransmitByte(UART, '0');
