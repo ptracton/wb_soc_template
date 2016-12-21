@@ -363,6 +363,125 @@ module wishbone_cpu (/*AUTOARG*/
                  .dwbm_dat_i(dwbm_dat_i),
      			 .dwbm_rty_i(dwbm_rty_i)
                  );
+
+
+/* -----\/----- EXCLUDED -----\/-----
+   wire [31:0] imem_haddr;
+   wire [1:0]  imem_htrans;
+   wire        imem_hwrite;
+   wire [2:0]  imem_hsize;
+   wire [2:0]  imem_hburst;
+   wire [31:0] imem_hwdata;
+   wire [31:0] imem_hrdata;
+   wire [1:0]  imem_hresp;
+   wire        imem_hready;
+   wire        imem_hsel = imem_hready;
+
+   wire [31:0] dmem_haddr;
+   wire [1:0]  dmem_htrans;
+   wire        dmem_hwrite;
+   wire [2:0]  dmem_hsize;
+   wire [2:0]  dmem_hburst;
+   wire [31:0] dmem_hwdata;
+   wire [31:0] dmem_hrdata;
+   wire [1:0]  dmem_hresp;
+   wire        dmem_hready;
+   wire        dmem_hsel = dmem_hready;   
+   
+   ahb2wb ibridge(
+	              .adr_o(iwbm_adr_o), 
+                  .dat_o(iwbm_dat_o), 
+                  .dat_i(iwbm_dat_i), 
+                  .ack_i(iwbm_ack_i), 
+                  .cyc_o(iwbm_cyc_o),
+	              .we_o(iwbm_we_o), 
+                  .stb_o(iwbm_stb_o), 
+                  .hclk(clk_i), 
+                  .hresetn(~rst_i), 
+                  .haddr(imem_haddr), 
+                  .htrans(imem_htrans), 
+                  .hwrite(imem_hwrite), 
+                  .hsize(imem_hsize), 
+                  .hburst(imem_hburst),
+	              .hsel(imem_hsel), 
+                  .hwdata(imem_hwdata), 
+                  .hrdata(imem_hrdata), 
+                  .hresp(imem_hresp),
+                  .hready(imem_hready), 
+                  .clk_i(clk_i), 
+                  .rst_i(rst_i)
+	              );
+
+   ahb2wb dbridge(
+	              .adr_o(dwbm_adr_o), 
+                  .dat_o(dwbm_dat_o), 
+                  .dat_i(dwbm_dat_i), 
+                  .ack_i(dwbm_ack_i), 
+                  .cyc_o(dwbm_cyc_o),
+	              .we_o(dwbm_we_o), 
+                  .stb_o(dwbm_stb_o), 
+                  .hclk(clk_i), 
+                  .hresetn(~rst_i), 
+                  .haddr(dmem_haddr), 
+                  .htrans(dmem_htrans), 
+                  .hwrite(dmem_hwrite), 
+                  .hsize(dmem_hsize), 
+                  .hburst(dmem_hburst),
+	              .hsel(dmem_hsel), 
+                  .hwdata(dmem_hwdata), 
+                  .hrdata(dmem_hrdata), 
+                  .hresp(dmem_hresp),
+                  .hready(dmem_hready), 
+                  .clk_i(clk_i), 
+                  .rst_i(rst_i)
+	              );   
+
+   vscale_core cpu(
+                   .clk(clk_i),
+		           .ext_interrupts(interrupts), 
+                   .imem_haddr(imem_haddr),
+                   .imem_hwrite(imem_hwrite),
+                   .imem_hsize(imem_hsize),
+                   .imem_hburst(imem_hburst),
+                   .imem_hmastlock(),
+                   .imem_hprot(),
+                   .imem_htrans(imem_htrans),
+                   .imem_hwdata(imem_hwdata),
+                   .imem_hrdata(imem_hrdata),
+                   .imem_hready(imem_hready),
+                   .imem_hresp(imem_hresp),
+                   .dmem_haddr(dmem_haddr),
+                   .dmem_hwrite(dmem_hwrite),
+                   .dmem_hsize(dmem_hsize),
+                   .dmem_hburst(dmem_hburst),
+                   .dmem_hmastlock(),
+                   .dmem_hprot(),
+                   .dmem_htrans(dmem_htrans),
+                   .dmem_hwdata(dmem_hwdata),
+                   .dmem_hrdata(dmem_hrdata),
+                   .dmem_hready(dmem_hready),
+                   .dmem_hresp(dmem_hresp),
+                   .htif_reset(rst_i),
+                   .htif_id(1'b0),
+                   .htif_pcr_req_valid(1'b0),
+                   .htif_pcr_req_ready(),
+                   .htif_pcr_req_rw(1'b0),
+                   .htif_pcr_req_addr('b0),
+                   .htif_pcr_req_data('b0),
+                   .htif_pcr_resp_valid(),
+                   .htif_pcr_resp_ready('b0),
+                   .htif_pcr_resp_data(),
+                   .htif_ipi_req_ready('b0),
+                   .htif_ipi_req_valid(),
+                   .htif_ipi_req_data(),
+                   .htif_ipi_resp_ready(),
+                   .htif_ipi_resp_valid('b0),
+                   .htif_ipi_resp_data('b0),
+                   .htif_debug_stats_pcr()
+                   );
+ -----/\----- EXCLUDED -----/\----- */
+   
+   
 `endif // !`elsif WISHBONE_CPU_RISCV
    
    

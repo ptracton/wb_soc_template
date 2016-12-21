@@ -7,7 +7,7 @@ ELF_REQUIREMENTS = $(TEST_CASE_OBJ)
 ELF_FILE  = $(TEST_CASE).elf
 LIST_FILE = $(TEST_CASE).lst
 VH_FILE = $(TEST_CASE).vh
-#ENTRY_POINT = ../firmware/$(CPU)/boot/objects/crt0.o
+ENTRY_POINT = ../firmware/$(CPU)/boot/objects/crt0.o
 
 FIRMWARE_ROOT = ../firmware
 FIRMWARE_CPU_ROOT = $(FIRMWARE_ROOT)/$(CPU)
@@ -20,7 +20,7 @@ DEVICE_DRIVERS_LIB_DIR = $(DEVICE_DRIVERS_DIR)/RISCV_lib/
 DEVICE_DRIVERS_LIB = RISCV_device_drivers
 
 CINCLUDES = -I /home/ptracton/Downloads/gtools/lm32/lm32-elf/include/ -I $(DEVICE_DRIVERS_INC_DIR)
-CFLAGS += $(CINCLUDES) -g -D$(CPU)  -Wall -Werror -Wextra
+CFLAGS += $(CINCLUDES) -g -D$(CPU)  -Wall -Werror -Wextra -m32 -mno-fdiv  -msoft-float
 LD_FLAGS = -nostdlib -T$(FIRMWARE_CPU_ROOT)/linker/riscv.ld -L $(DEVICE_DRIVERS_LIB_DIR) -l$(DEVICE_DRIVERS_LIB) 
 
 include $(FIRMWARE_CPU_ROOT)/environment.mk
@@ -33,9 +33,9 @@ $(LIST_FILE): $(ELF_FILE)
 
 $(ELF_FILE): $(ELF_REQUIREMENTS)
 	@$(MAKE) -C ../firmware/device_drivers CPU=RISCV
-    #@$(MAKE) -C ../firmware/$(CPU)/boot/
+	@$(MAKE) -C ../firmware/$(CPU)/boot/
 	@echo "Linking $(ELF_FILE)"
-	$(LD) -o $(ELF_FILE)   $(ELF_REQUIREMENTS)  $(LD_FLAGS) 
+	$(LD) -o $(ELF_FILE) $(ENTRY_POINT)  $(ELF_REQUIREMENTS)  $(LD_FLAGS) 
 
 %.vh: %.elf
 	@$(OBJCOPY) -O srec $< $@.tmp

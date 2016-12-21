@@ -2,7 +2,7 @@
 #define __WB_SOC_TEMPLATE_H__
 
 
-#ifdef LM32
+#if defined(LM32) || defined (RISCV)
 
 #define uint8_t  unsigned char
 #define uint16_t unsigned short

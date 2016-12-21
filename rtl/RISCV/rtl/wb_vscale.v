@@ -81,7 +81,7 @@ module wb_vscale (
    wire [31:0]                            data_wire;
    wire [2:0]                             dmem_size;
    wire [31:0]                            pc;
-   wire                                   replay_IF_out;
+//   wire                                   replay_IF_out;
 
    reg                                    iwbm_riscv_cyc = 0;
    reg                                    iwbm_riscv_stb = 0;

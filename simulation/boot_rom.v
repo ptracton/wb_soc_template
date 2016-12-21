@@ -32,8 +32,8 @@ module test_case ();
       @(posedge `WB_CLK);
       `UART_CONFIG;
 
-//      #1500;
-//      `TEST_COMPLETE;
+      #300;
+      `TEST_COMPLETE;
 
       
       `UART_READ_CHAR(8'h30);

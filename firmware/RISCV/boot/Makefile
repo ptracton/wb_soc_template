@@ -36,13 +36,14 @@ BIN_FILE  = $(LIB_DIR)/$(TARGET).bin
 ASM_SOURCES      += src/crt0.S 
 ASM_OBJECTS      += $(OBJ_DIR)/crt0.o
 ELF_REQUIREMENTS += $(ASM_OBJECTS)
-ASMFLAGS         +=  # -Wa 
+ASMFLAGS         += -m32 -msoft-float
 
 ##
 ## Linker flags
 ##
 LDFLAGS = -T$(LD_DIR)/linker.ld -nostdlib -lgcc
 CFLAGS  = -g $(CINCLUDES)
+CFLAGS += -m32 -mno-fdiv  -msoft-float
 CFLAGS += #-Wall -Werror -Wextra 
 
 ##
