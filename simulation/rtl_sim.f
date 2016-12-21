@@ -75,3 +75,9 @@
 +incdir+../rtl/cpu/
 ../rtl/cpu/cpu_wrapper.v
 
+//
+// FW Interface
+//
+../testbench/fw_interface/fw_interface.v
+../testbench/fw_interface/fw_interface_wb.v
+../testbench/fw_interface/fw_interface_logic.v

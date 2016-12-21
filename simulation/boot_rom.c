@@ -1,9 +1,6 @@
-
 #include "wb_soc_template.h"
 
-#ifdef MOR1KX
-#include "or1k-support.h"
-#endif
+
 
 int main(void){
 

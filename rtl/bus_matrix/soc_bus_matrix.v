@@ -63,31 +63,19 @@ module wb_intercon
     input         wb_rom_ack_i,
     input         wb_rom_err_i,
     input         wb_rom_rty_i,
-    output [31:0] wb_debug_adr_o,
-    output [31:0] wb_debug_dat_o,
-    output  [3:0] wb_debug_sel_o,
-    output        wb_debug_we_o,
-    output        wb_debug_cyc_o,
-    output        wb_debug_stb_o,
-    output  [2:0] wb_debug_cti_o,
-    output  [1:0] wb_debug_bte_o,
-    input  [31:0] wb_debug_dat_i,
-    input         wb_debug_ack_i,
-    input         wb_debug_err_i,
-    input         wb_debug_rty_i);
+    output [31:0] wb_fw_interface_adr_o,
+    output [31:0] wb_fw_interface_dat_o,
+    output  [3:0] wb_fw_interface_sel_o,
+    output        wb_fw_interface_we_o,
+    output        wb_fw_interface_cyc_o,
+    output        wb_fw_interface_stb_o,
+    output  [2:0] wb_fw_interface_cti_o,
+    output  [1:0] wb_fw_interface_bte_o,
+    input  [31:0] wb_fw_interface_dat_i,
+    input         wb_fw_interface_ack_i,
+    input         wb_fw_interface_err_i,
+    input         wb_fw_interface_rty_i);
 
-wire [31:0] wb_m2s_iwmb_uart_adr;
-wire [31:0] wb_m2s_iwmb_uart_dat;
-wire  [3:0] wb_m2s_iwmb_uart_sel;
-wire        wb_m2s_iwmb_uart_we;
-wire        wb_m2s_iwmb_uart_cyc;
-wire        wb_m2s_iwmb_uart_stb;
-wire  [2:0] wb_m2s_iwmb_uart_cti;
-wire  [1:0] wb_m2s_iwmb_uart_bte;
-wire [31:0] wb_s2m_iwmb_uart_dat;
-wire        wb_s2m_iwmb_uart_ack;
-wire        wb_s2m_iwmb_uart_err;
-wire        wb_s2m_iwmb_uart_rty;
 wire [31:0] wb_m2s_iwmb_ram_adr;
 wire [31:0] wb_m2s_iwmb_ram_dat;
 wire  [3:0] wb_m2s_iwmb_ram_sel;
@@ -112,18 +100,30 @@ wire [31:0] wb_s2m_iwmb_rom_dat;
 wire        wb_s2m_iwmb_rom_ack;
 wire        wb_s2m_iwmb_rom_err;
 wire        wb_s2m_iwmb_rom_rty;
-wire [31:0] wb_m2s_iwmb_debug_adr;
-wire [31:0] wb_m2s_iwmb_debug_dat;
-wire  [3:0] wb_m2s_iwmb_debug_sel;
-wire        wb_m2s_iwmb_debug_we;
-wire        wb_m2s_iwmb_debug_cyc;
-wire        wb_m2s_iwmb_debug_stb;
-wire  [2:0] wb_m2s_iwmb_debug_cti;
-wire  [1:0] wb_m2s_iwmb_debug_bte;
-wire [31:0] wb_s2m_iwmb_debug_dat;
-wire        wb_s2m_iwmb_debug_ack;
-wire        wb_s2m_iwmb_debug_err;
-wire        wb_s2m_iwmb_debug_rty;
+wire [31:0] wb_m2s_iwmb_uart_adr;
+wire [31:0] wb_m2s_iwmb_uart_dat;
+wire  [3:0] wb_m2s_iwmb_uart_sel;
+wire        wb_m2s_iwmb_uart_we;
+wire        wb_m2s_iwmb_uart_cyc;
+wire        wb_m2s_iwmb_uart_stb;
+wire  [2:0] wb_m2s_iwmb_uart_cti;
+wire  [1:0] wb_m2s_iwmb_uart_bte;
+wire [31:0] wb_s2m_iwmb_uart_dat;
+wire        wb_s2m_iwmb_uart_ack;
+wire        wb_s2m_iwmb_uart_err;
+wire        wb_s2m_iwmb_uart_rty;
+wire [31:0] wb_m2s_iwmb_fw_interface_adr;
+wire [31:0] wb_m2s_iwmb_fw_interface_dat;
+wire  [3:0] wb_m2s_iwmb_fw_interface_sel;
+wire        wb_m2s_iwmb_fw_interface_we;
+wire        wb_m2s_iwmb_fw_interface_cyc;
+wire        wb_m2s_iwmb_fw_interface_stb;
+wire  [2:0] wb_m2s_iwmb_fw_interface_cti;
+wire  [1:0] wb_m2s_iwmb_fw_interface_bte;
+wire [31:0] wb_s2m_iwmb_fw_interface_dat;
+wire        wb_s2m_iwmb_fw_interface_ack;
+wire        wb_s2m_iwmb_fw_interface_err;
+wire        wb_s2m_iwmb_fw_interface_rty;
 wire [31:0] wb_m2s_dwmb_uart_adr;
 wire [31:0] wb_m2s_dwmb_uart_dat;
 wire  [3:0] wb_m2s_dwmb_uart_sel;
@@ -160,23 +160,23 @@ wire [31:0] wb_s2m_dwmb_rom_dat;
 wire        wb_s2m_dwmb_rom_ack;
 wire        wb_s2m_dwmb_rom_err;
 wire        wb_s2m_dwmb_rom_rty;
-wire [31:0] wb_m2s_dwmb_debug_adr;
-wire [31:0] wb_m2s_dwmb_debug_dat;
-wire  [3:0] wb_m2s_dwmb_debug_sel;
-wire        wb_m2s_dwmb_debug_we;
-wire        wb_m2s_dwmb_debug_cyc;
-wire        wb_m2s_dwmb_debug_stb;
-wire  [2:0] wb_m2s_dwmb_debug_cti;
-wire  [1:0] wb_m2s_dwmb_debug_bte;
-wire [31:0] wb_s2m_dwmb_debug_dat;
-wire        wb_s2m_dwmb_debug_ack;
-wire        wb_s2m_dwmb_debug_err;
-wire        wb_s2m_dwmb_debug_rty;
+wire [31:0] wb_m2s_dwmb_fw_interface_adr;
+wire [31:0] wb_m2s_dwmb_fw_interface_dat;
+wire  [3:0] wb_m2s_dwmb_fw_interface_sel;
+wire        wb_m2s_dwmb_fw_interface_we;
+wire        wb_m2s_dwmb_fw_interface_cyc;
+wire        wb_m2s_dwmb_fw_interface_stb;
+wire  [2:0] wb_m2s_dwmb_fw_interface_cti;
+wire  [1:0] wb_m2s_dwmb_fw_interface_bte;
+wire [31:0] wb_s2m_dwmb_fw_interface_dat;
+wire        wb_s2m_dwmb_fw_interface_ack;
+wire        wb_s2m_dwmb_fw_interface_err;
+wire        wb_s2m_dwmb_fw_interface_rty;
 
 wb_mux
   #(.num_slaves (4),
-    .MATCH_ADDR ({32'h40000000, 32'h20000000, 32'h00000000, 32'he0000000}),
-    .MATCH_MASK ({32'hffffffe0, 32'hffff8000, 32'hffff8000, 32'hffffffe0}))
+    .MATCH_ADDR ({32'h20000000, 32'h00000000, 32'h40000000, 32'he0000000}),
+    .MATCH_MASK ({32'hffff8000, 32'hffff8000, 32'hffffffe0, 32'hffffff80}))
  wb_mux_iwmb
    (.wb_clk_i  (wb_clk_i),
     .wb_rst_i  (wb_rst_i),
@@ -192,23 +192,23 @@ wb_mux
     .wbm_ack_o (wb_iwmb_ack_o),
     .wbm_err_o (wb_iwmb_err_o),
     .wbm_rty_o (wb_iwmb_rty_o),
-    .wbs_adr_o ({wb_m2s_iwmb_uart_adr, wb_m2s_iwmb_ram_adr, wb_m2s_iwmb_rom_adr, wb_m2s_iwmb_debug_adr}),
-    .wbs_dat_o ({wb_m2s_iwmb_uart_dat, wb_m2s_iwmb_ram_dat, wb_m2s_iwmb_rom_dat, wb_m2s_iwmb_debug_dat}),
-    .wbs_sel_o ({wb_m2s_iwmb_uart_sel, wb_m2s_iwmb_ram_sel, wb_m2s_iwmb_rom_sel, wb_m2s_iwmb_debug_sel}),
-    .wbs_we_o  ({wb_m2s_iwmb_uart_we, wb_m2s_iwmb_ram_we, wb_m2s_iwmb_rom_we, wb_m2s_iwmb_debug_we}),
-    .wbs_cyc_o ({wb_m2s_iwmb_uart_cyc, wb_m2s_iwmb_ram_cyc, wb_m2s_iwmb_rom_cyc, wb_m2s_iwmb_debug_cyc}),
-    .wbs_stb_o ({wb_m2s_iwmb_uart_stb, wb_m2s_iwmb_ram_stb, wb_m2s_iwmb_rom_stb, wb_m2s_iwmb_debug_stb}),
-    .wbs_cti_o ({wb_m2s_iwmb_uart_cti, wb_m2s_iwmb_ram_cti, wb_m2s_iwmb_rom_cti, wb_m2s_iwmb_debug_cti}),
-    .wbs_bte_o ({wb_m2s_iwmb_uart_bte, wb_m2s_iwmb_ram_bte, wb_m2s_iwmb_rom_bte, wb_m2s_iwmb_debug_bte}),
-    .wbs_dat_i ({wb_s2m_iwmb_uart_dat, wb_s2m_iwmb_ram_dat, wb_s2m_iwmb_rom_dat, wb_s2m_iwmb_debug_dat}),
-    .wbs_ack_i ({wb_s2m_iwmb_uart_ack, wb_s2m_iwmb_ram_ack, wb_s2m_iwmb_rom_ack, wb_s2m_iwmb_debug_ack}),
-    .wbs_err_i ({wb_s2m_iwmb_uart_err, wb_s2m_iwmb_ram_err, wb_s2m_iwmb_rom_err, wb_s2m_iwmb_debug_err}),
-    .wbs_rty_i ({wb_s2m_iwmb_uart_rty, wb_s2m_iwmb_ram_rty, wb_s2m_iwmb_rom_rty, wb_s2m_iwmb_debug_rty}));
+    .wbs_adr_o ({wb_m2s_iwmb_ram_adr, wb_m2s_iwmb_rom_adr, wb_m2s_iwmb_uart_adr, wb_m2s_iwmb_fw_interface_adr}),
+    .wbs_dat_o ({wb_m2s_iwmb_ram_dat, wb_m2s_iwmb_rom_dat, wb_m2s_iwmb_uart_dat, wb_m2s_iwmb_fw_interface_dat}),
+    .wbs_sel_o ({wb_m2s_iwmb_ram_sel, wb_m2s_iwmb_rom_sel, wb_m2s_iwmb_uart_sel, wb_m2s_iwmb_fw_interface_sel}),
+    .wbs_we_o  ({wb_m2s_iwmb_ram_we, wb_m2s_iwmb_rom_we, wb_m2s_iwmb_uart_we, wb_m2s_iwmb_fw_interface_we}),
+    .wbs_cyc_o ({wb_m2s_iwmb_ram_cyc, wb_m2s_iwmb_rom_cyc, wb_m2s_iwmb_uart_cyc, wb_m2s_iwmb_fw_interface_cyc}),
+    .wbs_stb_o ({wb_m2s_iwmb_ram_stb, wb_m2s_iwmb_rom_stb, wb_m2s_iwmb_uart_stb, wb_m2s_iwmb_fw_interface_stb}),
+    .wbs_cti_o ({wb_m2s_iwmb_ram_cti, wb_m2s_iwmb_rom_cti, wb_m2s_iwmb_uart_cti, wb_m2s_iwmb_fw_interface_cti}),
+    .wbs_bte_o ({wb_m2s_iwmb_ram_bte, wb_m2s_iwmb_rom_bte, wb_m2s_iwmb_uart_bte, wb_m2s_iwmb_fw_interface_bte}),
+    .wbs_dat_i ({wb_s2m_iwmb_ram_dat, wb_s2m_iwmb_rom_dat, wb_s2m_iwmb_uart_dat, wb_s2m_iwmb_fw_interface_dat}),
+    .wbs_ack_i ({wb_s2m_iwmb_ram_ack, wb_s2m_iwmb_rom_ack, wb_s2m_iwmb_uart_ack, wb_s2m_iwmb_fw_interface_ack}),
+    .wbs_err_i ({wb_s2m_iwmb_ram_err, wb_s2m_iwmb_rom_err, wb_s2m_iwmb_uart_err, wb_s2m_iwmb_fw_interface_err}),
+    .wbs_rty_i ({wb_s2m_iwmb_ram_rty, wb_s2m_iwmb_rom_rty, wb_s2m_iwmb_uart_rty, wb_s2m_iwmb_fw_interface_rty}));
 
 wb_mux
   #(.num_slaves (4),
     .MATCH_ADDR ({32'h40000000, 32'h20000000, 32'h00000000, 32'he0000000}),
-    .MATCH_MASK ({32'hffffffe0, 32'hffff8000, 32'hffff8000, 32'hffffffe0}))
+    .MATCH_MASK ({32'hffffffe0, 32'hffff8000, 32'hffff8000, 32'hffffff80}))
  wb_mux_dwmb
    (.wb_clk_i  (wb_clk_i),
     .wb_rst_i  (wb_rst_i),
@@ -224,18 +224,18 @@ wb_mux
     .wbm_ack_o (wb_dwmb_ack_o),
     .wbm_err_o (wb_dwmb_err_o),
     .wbm_rty_o (wb_dwmb_rty_o),
-    .wbs_adr_o ({wb_m2s_dwmb_uart_adr, wb_m2s_dwmb_ram_adr, wb_m2s_dwmb_rom_adr, wb_m2s_dwmb_debug_adr}),
-    .wbs_dat_o ({wb_m2s_dwmb_uart_dat, wb_m2s_dwmb_ram_dat, wb_m2s_dwmb_rom_dat, wb_m2s_dwmb_debug_dat}),
-    .wbs_sel_o ({wb_m2s_dwmb_uart_sel, wb_m2s_dwmb_ram_sel, wb_m2s_dwmb_rom_sel, wb_m2s_dwmb_debug_sel}),
-    .wbs_we_o  ({wb_m2s_dwmb_uart_we, wb_m2s_dwmb_ram_we, wb_m2s_dwmb_rom_we, wb_m2s_dwmb_debug_we}),
-    .wbs_cyc_o ({wb_m2s_dwmb_uart_cyc, wb_m2s_dwmb_ram_cyc, wb_m2s_dwmb_rom_cyc, wb_m2s_dwmb_debug_cyc}),
-    .wbs_stb_o ({wb_m2s_dwmb_uart_stb, wb_m2s_dwmb_ram_stb, wb_m2s_dwmb_rom_stb, wb_m2s_dwmb_debug_stb}),
-    .wbs_cti_o ({wb_m2s_dwmb_uart_cti, wb_m2s_dwmb_ram_cti, wb_m2s_dwmb_rom_cti, wb_m2s_dwmb_debug_cti}),
-    .wbs_bte_o ({wb_m2s_dwmb_uart_bte, wb_m2s_dwmb_ram_bte, wb_m2s_dwmb_rom_bte, wb_m2s_dwmb_debug_bte}),
-    .wbs_dat_i ({wb_s2m_dwmb_uart_dat, wb_s2m_dwmb_ram_dat, wb_s2m_dwmb_rom_dat, wb_s2m_dwmb_debug_dat}),
-    .wbs_ack_i ({wb_s2m_dwmb_uart_ack, wb_s2m_dwmb_ram_ack, wb_s2m_dwmb_rom_ack, wb_s2m_dwmb_debug_ack}),
-    .wbs_err_i ({wb_s2m_dwmb_uart_err, wb_s2m_dwmb_ram_err, wb_s2m_dwmb_rom_err, wb_s2m_dwmb_debug_err}),
-    .wbs_rty_i ({wb_s2m_dwmb_uart_rty, wb_s2m_dwmb_ram_rty, wb_s2m_dwmb_rom_rty, wb_s2m_dwmb_debug_rty}));
+    .wbs_adr_o ({wb_m2s_dwmb_uart_adr, wb_m2s_dwmb_ram_adr, wb_m2s_dwmb_rom_adr, wb_m2s_dwmb_fw_interface_adr}),
+    .wbs_dat_o ({wb_m2s_dwmb_uart_dat, wb_m2s_dwmb_ram_dat, wb_m2s_dwmb_rom_dat, wb_m2s_dwmb_fw_interface_dat}),
+    .wbs_sel_o ({wb_m2s_dwmb_uart_sel, wb_m2s_dwmb_ram_sel, wb_m2s_dwmb_rom_sel, wb_m2s_dwmb_fw_interface_sel}),
+    .wbs_we_o  ({wb_m2s_dwmb_uart_we, wb_m2s_dwmb_ram_we, wb_m2s_dwmb_rom_we, wb_m2s_dwmb_fw_interface_we}),
+    .wbs_cyc_o ({wb_m2s_dwmb_uart_cyc, wb_m2s_dwmb_ram_cyc, wb_m2s_dwmb_rom_cyc, wb_m2s_dwmb_fw_interface_cyc}),
+    .wbs_stb_o ({wb_m2s_dwmb_uart_stb, wb_m2s_dwmb_ram_stb, wb_m2s_dwmb_rom_stb, wb_m2s_dwmb_fw_interface_stb}),
+    .wbs_cti_o ({wb_m2s_dwmb_uart_cti, wb_m2s_dwmb_ram_cti, wb_m2s_dwmb_rom_cti, wb_m2s_dwmb_fw_interface_cti}),
+    .wbs_bte_o ({wb_m2s_dwmb_uart_bte, wb_m2s_dwmb_ram_bte, wb_m2s_dwmb_rom_bte, wb_m2s_dwmb_fw_interface_bte}),
+    .wbs_dat_i ({wb_s2m_dwmb_uart_dat, wb_s2m_dwmb_ram_dat, wb_s2m_dwmb_rom_dat, wb_s2m_dwmb_fw_interface_dat}),
+    .wbs_ack_i ({wb_s2m_dwmb_uart_ack, wb_s2m_dwmb_ram_ack, wb_s2m_dwmb_rom_ack, wb_s2m_dwmb_fw_interface_ack}),
+    .wbs_err_i ({wb_s2m_dwmb_uart_err, wb_s2m_dwmb_ram_err, wb_s2m_dwmb_rom_err, wb_s2m_dwmb_fw_interface_err}),
+    .wbs_rty_i ({wb_s2m_dwmb_uart_rty, wb_s2m_dwmb_ram_rty, wb_s2m_dwmb_rom_rty, wb_s2m_dwmb_fw_interface_rty}));
 
 wb_arbiter
   #(.num_masters (2))
@@ -329,32 +329,32 @@ wb_arbiter
 
 wb_arbiter
   #(.num_masters (2))
- wb_arbiter_debug
+ wb_arbiter_fw_interface
    (.wb_clk_i  (wb_clk_i),
     .wb_rst_i  (wb_rst_i),
-    .wbm_adr_i ({wb_m2s_iwmb_debug_adr, wb_m2s_dwmb_debug_adr}),
-    .wbm_dat_i ({wb_m2s_iwmb_debug_dat, wb_m2s_dwmb_debug_dat}),
-    .wbm_sel_i ({wb_m2s_iwmb_debug_sel, wb_m2s_dwmb_debug_sel}),
-    .wbm_we_i  ({wb_m2s_iwmb_debug_we, wb_m2s_dwmb_debug_we}),
-    .wbm_cyc_i ({wb_m2s_iwmb_debug_cyc, wb_m2s_dwmb_debug_cyc}),
-    .wbm_stb_i ({wb_m2s_iwmb_debug_stb, wb_m2s_dwmb_debug_stb}),
-    .wbm_cti_i ({wb_m2s_iwmb_debug_cti, wb_m2s_dwmb_debug_cti}),
-    .wbm_bte_i ({wb_m2s_iwmb_debug_bte, wb_m2s_dwmb_debug_bte}),
-    .wbm_dat_o ({wb_s2m_iwmb_debug_dat, wb_s2m_dwmb_debug_dat}),
-    .wbm_ack_o ({wb_s2m_iwmb_debug_ack, wb_s2m_dwmb_debug_ack}),
-    .wbm_err_o ({wb_s2m_iwmb_debug_err, wb_s2m_dwmb_debug_err}),
-    .wbm_rty_o ({wb_s2m_iwmb_debug_rty, wb_s2m_dwmb_debug_rty}),
-    .wbs_adr_o (wb_debug_adr_o),
-    .wbs_dat_o (wb_debug_dat_o),
-    .wbs_sel_o (wb_debug_sel_o),
-    .wbs_we_o  (wb_debug_we_o),
-    .wbs_cyc_o (wb_debug_cyc_o),
-    .wbs_stb_o (wb_debug_stb_o),
-    .wbs_cti_o (wb_debug_cti_o),
-    .wbs_bte_o (wb_debug_bte_o),
-    .wbs_dat_i (wb_debug_dat_i),
-    .wbs_ack_i (wb_debug_ack_i),
-    .wbs_err_i (wb_debug_err_i),
-    .wbs_rty_i (wb_debug_rty_i));
+    .wbm_adr_i ({wb_m2s_iwmb_fw_interface_adr, wb_m2s_dwmb_fw_interface_adr}),
+    .wbm_dat_i ({wb_m2s_iwmb_fw_interface_dat, wb_m2s_dwmb_fw_interface_dat}),
+    .wbm_sel_i ({wb_m2s_iwmb_fw_interface_sel, wb_m2s_dwmb_fw_interface_sel}),
+    .wbm_we_i  ({wb_m2s_iwmb_fw_interface_we, wb_m2s_dwmb_fw_interface_we}),
+    .wbm_cyc_i ({wb_m2s_iwmb_fw_interface_cyc, wb_m2s_dwmb_fw_interface_cyc}),
+    .wbm_stb_i ({wb_m2s_iwmb_fw_interface_stb, wb_m2s_dwmb_fw_interface_stb}),
+    .wbm_cti_i ({wb_m2s_iwmb_fw_interface_cti, wb_m2s_dwmb_fw_interface_cti}),
+    .wbm_bte_i ({wb_m2s_iwmb_fw_interface_bte, wb_m2s_dwmb_fw_interface_bte}),
+    .wbm_dat_o ({wb_s2m_iwmb_fw_interface_dat, wb_s2m_dwmb_fw_interface_dat}),
+    .wbm_ack_o ({wb_s2m_iwmb_fw_interface_ack, wb_s2m_dwmb_fw_interface_ack}),
+    .wbm_err_o ({wb_s2m_iwmb_fw_interface_err, wb_s2m_dwmb_fw_interface_err}),
+    .wbm_rty_o ({wb_s2m_iwmb_fw_interface_rty, wb_s2m_dwmb_fw_interface_rty}),
+    .wbs_adr_o (wb_fw_interface_adr_o),
+    .wbs_dat_o (wb_fw_interface_dat_o),
+    .wbs_sel_o (wb_fw_interface_sel_o),
+    .wbs_we_o  (wb_fw_interface_we_o),
+    .wbs_cyc_o (wb_fw_interface_cyc_o),
+    .wbs_stb_o (wb_fw_interface_stb_o),
+    .wbs_cti_o (wb_fw_interface_cti_o),
+    .wbs_bte_o (wb_fw_interface_bte_o),
+    .wbs_dat_i (wb_fw_interface_dat_i),
+    .wbs_ack_i (wb_fw_interface_ack_i),
+    .wbs_err_i (wb_fw_interface_err_i),
+    .wbs_rty_i (wb_fw_interface_rty_i));
 
 endmodule

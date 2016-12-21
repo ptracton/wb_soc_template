@@ -17,7 +17,7 @@ module test_case ();
    // Test Configuration
    // These parameters need to be set for each test case
    //
-   parameter simulation_name = "boot_rom";    
+   parameter simulation_name = "uart_interrupt";    
    parameter number_of_tests = 0;
 `include "setup.v"
 
@@ -35,13 +35,7 @@ module test_case ();
 //      #300;
 //      `TEST_COMPLETE;
 
-      
-      `UART_READ_CHAR(8'h30);
-      `UART_READ_CHAR(8'h31);
-      `UART_READ_CHAR(8'h32);
-      `UART_READ_CHAR(8'h33);
-
-      repeat(100) @(posedge `WB_CLK);
+      repeat(1000) @(posedge `WB_CLK);
 
       `UART_WRITE_CHAR("A");
       `UART_READ_CHAR("A");

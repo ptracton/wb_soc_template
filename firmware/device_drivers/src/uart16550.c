@@ -3,11 +3,7 @@
 
 void UART16550_Init(UART16550_REGS_TypeDef * uart){
 
-  //
-  //Turn on Receive Data Interrupt
-  //
-  uart->reg1.interrupt_enable |= UART16550_INTERRUPT_ENABLE_DATA_RECEIVED;
-  
+ 
   //
   // FIFO Control, interrupt for each byte and clear FIFOs
   //
@@ -26,6 +22,25 @@ void UART16550_Init(UART16550_REGS_TypeDef * uart){
                          UART16550_LINE_CONTROL_1_STOP);
   return;
 }
+
+void UART16550_InterruptEnable(UART16550_REGS_TypeDef * uart, uint8_t irq){
+  //
+  //Turn on Interrupt
+  //
+  uart->reg1.interrupt_enable |= irq;
+    
+  return;
+}
+
+void UART16550_InterruptDisable(UART16550_REGS_TypeDef * uart, uint8_t irq){
+  //
+  //Turn off  Interrupt
+  //
+  uart->reg1.interrupt_enable &= ~irq;
+    
+  return;
+}
+
 
 void UART16550_SetDivisor(UART16550_REGS_TypeDef * uart, uint16_t divisor){
   //

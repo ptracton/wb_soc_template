@@ -19,9 +19,14 @@ DEVICE_DRIVERS_INC_DIR = $(DEVICE_DRIVERS_DIR)/includes
 DEVICE_DRIVERS_LIB_DIR = $(DEVICE_DRIVERS_DIR)/LM32_lib/
 DEVICE_DRIVERS_LIB = LM32_device_drivers
 
-CINCLUDES = -I /home/ptracton/Downloads/gtools/lm32/lm32-elf/include/ -I $(DEVICE_DRIVERS_INC_DIR)
+BOOT_DIR = $(FIRMWARE_ROOT)/$(CPU)/boot
+BOOT_INC_DIR = $(BOOT_DIR)/includes
+BOOT_LIB_DIR = $(BOOT_DIR)/lib
+BOOT_LIB     = LM32boot
+
+CINCLUDES = -I /home/ptracton/Downloads/gtools/lm32/lm32-elf/include/ -I $(DEVICE_DRIVERS_INC_DIR) -I $(BOOT_INC_DIR)
 CFLAGS += $(CINCLUDES) -g -D$(CPU)  -Wall -Werror -Wextra
-LD_FLAGS = -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld -L $(DEVICE_DRIVERS_LIB_DIR) -l$(DEVICE_DRIVERS_LIB) -lgcc
+LD_FLAGS = -nostdlib -nodefaultlibs -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld -L $(DEVICE_DRIVERS_LIB_DIR) -l$(DEVICE_DRIVERS_LIB) -L $(BOOT_LIB_DIR) -l$(BOOT_LIB) -lgcc
 
 include $(FIRMWARE_CPU_ROOT)/environment.mk
 
@@ -39,7 +44,7 @@ $(ELF_FILE): $(ELF_REQUIREMENTS)
 
 %.vh: %.elf
 	@$(OBJCOPY) -O srec $< $@.tmp
-	srec_cat $@.tmp --output $@.mem --VMEM
+	@srec_cat $@.tmp --output $@.mem --VMEM
 
 
 %.o:%.c
@@ -48,3 +53,5 @@ $(ELF_FILE): $(ELF_REQUIREMENTS)
 
 clean:
 	$(RM) -f $(ELF_FILE) $(TARGET).d $(LIST_FILE) $(TEST_CASE_OBJ) *.bin  *~
+	@$(MAKE) -C ../firmware/device_drivers CPU=LM32 clean
+	@$(MAKE) -C ../firmware/$(CPU)/boot/ clean

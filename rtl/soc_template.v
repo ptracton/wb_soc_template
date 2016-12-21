@@ -241,5 +241,33 @@ module soc_template (/*AUTOARG*/
                   .ri_pad_i(1'b0), 
                   .dcd_pad_i(1'b0),
                   .baud_o()
-	              );  
+	              );
+
+`ifdef SIMULATION
+   fw_interface fw_if(
+                      // Outputs
+                      .wb_ack_o(wb_s2m_fw_interface_ack), 
+                      .wb_err_o(wb_s2m_fw_interface_err), 
+                      .wb_dat_o(wb_s2m_fw_interface_dat),
+                      // Inputs
+                      .wb_clk_i(wb_clk_i), 
+                      .wb_rst_i(wb_rst_i), 
+                      .wb_adr_i(wb_m2s_fw_interface_adr), 
+                      .wb_dat_i(wb_m2s_fw_interface_dat), 
+                      .wb_sel_i(wb_m2s_fw_interface_sel), 
+                      .wb_we_i(wb_m2s_fw_interface_we),
+                      .wb_bte_i(wb_m2s_fw_interface_bte), 
+                      .wb_cti_i(wb_m2s_fw_interface_cti), 
+                      .wb_cyc_i(wb_m2s_fw_interface_cyc), 
+                      .wb_stb_i(wb_m2s_fw_interface_stb), 
+                      .interrupts(interrupts)
+                      ) ;
+   
+`else // !`ifdef SIMULATION
+   assign wb_s2m_fw_interface_ack = 0;
+   assign wb_s2m_fw_interface_err = 0;
+   assign wb_s2m_fw_interface_dat = 0;   
+`endif
+
+   
 endmodule // soc_template

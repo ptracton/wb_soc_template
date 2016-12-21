@@ -1,7 +1,7 @@
 include ../environment.mk
 
 TARGET = boot
-LIBRARY = liblm32boot.a
+LIBRARY = lib$(CPU)boot.a
 
 ##
 ## Project Directories
@@ -55,6 +55,10 @@ all: dirs $(LIB_DIR)/$(LIB_FILE)
 dirs:
 	@echo "Making directories $(MAKE_DIRS)"
 	$(MKDIR) -p $(MAKE_DIRS)
+
+##
+## List File for the library
+##
 
 ##
 ## Link together the executable
