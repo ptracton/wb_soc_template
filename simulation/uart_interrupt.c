@@ -18,9 +18,9 @@ void uart_irq_handler(unsigned int data, void * context){
 
 int main(void){
   /* static uint32_t foo=0x1234567; */
-  uint32_t * ptr;
+  //  uint32_t * ptr;
 
-  ptr = (uint32_t *) 0xE0000004;
+  //  ptr = (uint32_t *) 0xE0000004;
   /* foo=0x89abcdef; */
   /* while(1){ */
   /*   foo++; */
@@ -29,10 +29,11 @@ int main(void){
   /* }; */
 
   //FW_IF->report = 0xdeaddead;
-  *ptr = (uint32_t ) 0x55aa66bb;
-  ptr -=1;
-  *ptr = (uint32_t ) 1;
-  *ptr = (uint32_t ) 0;
+  //  *ptr = (uint32_t ) 0x55aa66bb;
+  //  ptr -=1;
+  //  *ptr = (uint32_t ) 1;
+  //  *ptr = (uint32_t ) 0;
+  FW_IF->report = (uint32_t) 0x1123344;
   FW_report(FW_IF, 0xdeadbeef, "BOOTING");
   
   UART16550_Init(UART);

@@ -53,14 +53,14 @@ module fw_interface_wb (/*AUTOARG*/
 
    /*AUTOREG*/
    /*AUTOWIRE*/
-   wire              control_reg_enable  = (wb_adr_i[5:0] == 6'h00) & (wb_sel_i == 4'hF) & wb_cyc_i & wb_stb_i;
-   wire              report_reg_enable   = (wb_adr_i[5:0] == 6'h01) & (wb_sel_i == 4'hF) & wb_cyc_i & wb_stb_i;
-   wire              warning_reg_enable  = (wb_adr_i[5:0] == 6'h02) & (wb_sel_i == 4'hF) & wb_cyc_i & wb_stb_i;
-   wire              error_reg_enable    = (wb_adr_i[5:0] == 6'h03) & (wb_sel_i == 4'hF) & wb_cyc_i & wb_stb_i;
-   wire              measured_reg_enable = (wb_adr_i[5:0] == 6'h04) & (wb_sel_i == 4'hF) & wb_cyc_i & wb_stb_i;
-   wire              expected_reg_enable = (wb_adr_i[5:0] == 6'h05) & (wb_sel_i == 4'hF) & wb_cyc_i & wb_stb_i;
+   wire              control_reg_enable  = (wb_adr_i[6:2] == 7'h00) & wb_cyc_i & wb_stb_i;
+   wire              report_reg_enable   = (wb_adr_i[6:2] == 7'h01) & wb_cyc_i & wb_stb_i;
+   wire              warning_reg_enable  = (wb_adr_i[6:2] == 7'h02) & wb_cyc_i & wb_stb_i;
+   wire              error_reg_enable    = (wb_adr_i[6:2] == 7'h04) & wb_cyc_i & wb_stb_i;
+   wire              measured_reg_enable = (wb_adr_i[6:2] == 7'h05) & wb_cyc_i & wb_stb_i;
+   wire              expected_reg_enable = (wb_adr_i[6:2] == 7'h06) & wb_cyc_i & wb_stb_i;
    
-   assign write_mem = ((wb_adr_i[5:0] > 6'h10) && (wb_adr_i[5:0] < 6'h50)) & wb_cyc_i & wb_stb_i;
+   assign write_mem = ((wb_adr_i[6:2] > 7'h18) && (wb_adr_i[6:0] < 7'h58)) & wb_cyc_i & wb_stb_i;
    assign data      = (write_mem) ? wb_dat_i[7:0] : 0;
    assign index     = (write_mem) ? wb_adr_i[5:0] - 6'h10: 0;
    
@@ -89,6 +89,16 @@ module fw_interface_wb (/*AUTOARG*/
         error_reg <= 0;        
      end else begin
         if (wb_we_i & report_reg_enable) begin
+           case (wb_sel_i)
+             4'h1: begin report_reg   <= {report_reg[31:8], wb_dat_i[7:0]};  $display("1SEL 0x%x @ %d", wb_sel_i, $time); end
+             4'h2: begin report_reg[15:8]  <= wb_dat_i[7:0];  $display("2SEL 0x%x @ %d", wb_sel_i, $time); end
+             4'h4: begin report_reg[24:16] <= wb_dat_i[7:0];  $display("4SEL 0x%x @ %d", wb_sel_i, $time); end
+             4'h8: begin report_reg[31:24] <= wb_dat_i[7:0];  $display("8SEL 0x%x @ %d", wb_sel_i, $time); end
+             4'h3: begin report_reg[15:0]  <= wb_dat_i[15:0]; $display("3SEL 0x%x @ %d", wb_sel_i, $time); end
+             4'hC: begin report_reg[31:16] <= wb_dat_i[15:0]; $display("CSEL 0x%x @ %d", wb_sel_i, $time); end
+             4'hF: begin report_reg        <= wb_dat_i;       $display("FSEL 0x%x @ %d", wb_sel_i, $time); end
+             default: begin report_reg     <= report_reg;     $display("DSEL 0x%x @ %d", wb_sel_i, $time); end
+           endcase // case (wb_sel_i)           
            report_reg <= wb_dat_i;           
         end
 
