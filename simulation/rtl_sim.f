@@ -70,10 +70,15 @@
 ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v
 
 //
-//
+// CPU Wrapper for switching which CPU to use
 //
 +incdir+../rtl/cpu/
 ../rtl/cpu/cpu_wrapper.v
+
+//
+// Generic tools of value
+//
+../rtl/tools/edge_detection.v
 
 //
 // FW Interface

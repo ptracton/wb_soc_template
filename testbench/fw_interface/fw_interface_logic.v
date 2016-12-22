@@ -8,11 +8,14 @@
 // Update Count    : 0
 // Status          : Unknown, Use with caution!
 
+`include "timescale.v"
+`include "simulation_includes.vh"
 
 module fw_interface_logic (/*AUTOARG*/
    // Inputs
-   wb_clk_i, wb_rst_i, new_report, new_warning, new_error, report_reg,
-   warning_reg, error_reg, index, data, write_mem
+   wb_clk_i, wb_rst_i, new_report, new_warning, new_error,
+   new_compare, report_reg, warning_reg, error_reg, expected_reg,
+   measured_reg, index, data, write_mem
    ) ;
    input wire wb_clk_i;
    input wire wb_rst_i;
@@ -21,25 +24,75 @@ module fw_interface_logic (/*AUTOARG*/
    input wire new_report;
    input wire new_warning;
    input wire new_error;
-  
+   input wire new_compare;
+     
    input wire [31:0] report_reg;
    input wire [31:0] warning_reg;
    input wire [31:0] error_reg;
+   input wire [31:0] expected_reg;
+   input wire [31:0] measured_reg;   
    input wire [5:0]  index;
    input wire [7:0]  data;
    input wire        write_mem;
    
-   reg [7:0]         string_mem[63:0];
+   reg [7:0]         string_mem[8*64:0];
    
    always @(posedge wb_clk_i)
      if (write_mem) begin
         string_mem[index] <= data;        
      end
    
+   wire new_report_rising;   
+   edge_detection new_report_edge(
+                                  // Outputs
+                                  .rising(new_report_rising), 
+                                  .failling(),
+                                  // Inputs
+                                  .clk_i(wb_clk_i), 
+                                  .rst_i(wb_rst_i), 
+                                  .signal(new_report)                                  
+                                  );
+
+   integer i;
+   wire [7:0] character = string_mem[i];
+   reg [8*64:0] test_string;   
+   always @ (posedge new_report_rising) begin
+      i = 0;        
+      test_string = 0;
+      while (string_mem[i] != 8'h0) begin
+         #1 test_string = {test_string[8*29:0], string_mem[i]};         
+         #1 string_mem[i] = 0;           
+         #1 i = i + 1;
+      end
+//      $display("%s", test_string);
+      
+      `TEST_COMPARE(test_string,0,0);
+   end // always @ (posedge new_report_rising)
+
+
+   wire new_compare_rising;
+   edge_detection new_compare_edge(
+                                  // Outputs
+                                  .rising(new_compare_rising), 
+                                  .failling(),
+                                  // Inputs
+                                  .clk_i(wb_clk_i), 
+                                  .rst_i(wb_rst_i), 
+                                  .signal(new_compare)
+                                  );
    
-   always @(posedge wb_clk_i)
-     if (new_report) begin
-        $display("REPORT\t0x%04x\t%d", report_reg, $time);        
-     end
+   always @ (posedge new_compare_rising) begin
+      i = 0;        
+      test_string = 0;      
+      while (string_mem[i] != 8'h0) begin
+         #1 test_string = {test_string[8*29:0], string_mem[i]};         
+         #1 string_mem[i] = 0;           
+         #1 i = i + 1;
+      end
+//      $display("%s", test_string);
+      
+      `TEST_COMPARE(test_string,expected_reg,measured_reg);
+   end // always @ (posedge new_report_rising)
+   
    
 endmodule // fw_interface_logic

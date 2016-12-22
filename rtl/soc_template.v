@@ -9,11 +9,11 @@
 // Status          : Unknown, Use with caution!
 
 module soc_template (/*AUTOARG*/
-                     // Outputs
-                     uart_tx,
-                     // Inputs
-                     clk_sys_i, reset_sys_i, uart_rx
-                     ) ;
+   // Outputs
+   uart_tx,
+   // Inputs
+   clk_sys_i, reset_sys_i, uart_rx
+   ) ;
 
    //
    // System Interface
@@ -25,7 +25,7 @@ module soc_template (/*AUTOARG*/
    // UART Interface
    //
    input uart_rx;
-   output uart_tx;
+   output wire uart_tx;
 
    /*AUTOWIRE*/
 
@@ -214,11 +214,7 @@ module soc_template (/*AUTOARG*/
 	  
 	              // Wishbone signals
 	              .wb_rst_i(wb_rst_i),
-//`ifdef  WISHBONE_CPU_MOR1KX                  
-//                  .wb_adr_i(wb_m2s_uart_adr[6:2]),
-//`else
                   .wb_adr_i(wb_m2s_uart_adr[4:0]),
-//`endif
                   .wb_dat_i(wb_m2s_uart_dat), 
                   .wb_dat_o(wb_s2m_uart_dat), 
                   .wb_we_i(wb_m2s_uart_we), 
@@ -246,7 +242,8 @@ module soc_template (/*AUTOARG*/
 `ifdef SIMULATION
    fw_interface fw_if(
                       // Outputs
-                      .wb_ack_o(wb_s2m_fw_interface_ack), 
+                      .wb_ack_o(wb_s2m_fw_interface_ack),
+                      .wb_rty_o(wb_s2m_fw_interface_rty),
                       .wb_err_o(wb_s2m_fw_interface_err), 
                       .wb_dat_o(wb_s2m_fw_interface_dat),
                       // Inputs

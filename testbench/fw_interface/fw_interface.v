@@ -8,9 +8,11 @@
 // Update Count    : 0
 // Status          : Unknown, Use with caution!
 
+`include "timescale.v"
+
 module fw_interface (/*AUTOARG*/
    // Outputs
-   wb_ack_o, wb_err_o, wb_dat_o,
+   wb_ack_o, wb_err_o, wb_rty_o, wb_dat_o,
    // Inputs
    wb_clk_i, wb_rst_i, wb_adr_i, wb_dat_i, wb_sel_i, wb_we_i,
    wb_bte_i, wb_cti_i, wb_cyc_i, wb_stb_i, interrupts
@@ -33,6 +35,7 @@ module fw_interface (/*AUTOARG*/
    
    output wire    wb_ack_o;
    output wire    wb_err_o;
+   output wire    wb_rty_o;   
    output wire [31:0] wb_dat_o;
 
    //
@@ -50,6 +53,7 @@ module fw_interface (/*AUTOARG*/
    wire [31:0]          expected_reg;           // From wb of fw_interface_wb.v
    wire [5:0]           index;                  // From wb of fw_interface_wb.v
    wire [31:0]          measured_reg;           // From wb of fw_interface_wb.v
+   wire                 new_compare;            // From wb of fw_interface_wb.v
    wire                 new_error;              // From wb of fw_interface_wb.v
    wire                 new_report;             // From wb of fw_interface_wb.v
    wire                 new_warning;            // From wb of fw_interface_wb.v
@@ -61,11 +65,13 @@ module fw_interface (/*AUTOARG*/
    fw_interface_wb wb(/*AUTOINST*/
                       // Outputs
                       .wb_ack_o         (wb_ack_o),
+                      .wb_rty_o         (wb_rty_o),
                       .wb_err_o         (wb_err_o),
                       .wb_dat_o         (wb_dat_o[31:0]),
                       .new_report       (new_report),
                       .new_warning      (new_warning),
                       .new_error        (new_error),
+                      .new_compare      (new_compare),
                       .report_reg       (report_reg[31:0]),
                       .warning_reg      (warning_reg[31:0]),
                       .error_reg        (error_reg[31:0]),
@@ -87,19 +93,22 @@ module fw_interface (/*AUTOARG*/
                       .wb_stb_i         (wb_stb_i));
    
 
-   fw_interface_logic logic(/*AUTOINST*/
-                            // Inputs
-                            .wb_clk_i           (wb_clk_i),
-                            .wb_rst_i           (wb_rst_i),
-                            .new_report         (new_report),
-                            .new_warning        (new_warning),
-                            .new_error          (new_error),
-                            .report_reg         (report_reg[31:0]),
-                            .warning_reg        (warning_reg[31:0]),
-                            .error_reg          (error_reg[31:0]),
-                            .index              (index[5:0]),
-                            .data               (data[7:0]),
-                            .write_mem          (write_mem));
+   fw_interface_logic logic_inst(/*AUTOINST*/
+                                 // Inputs
+                                 .wb_clk_i              (wb_clk_i),
+                                 .wb_rst_i              (wb_rst_i),
+                                 .new_report            (new_report),
+                                 .new_warning           (new_warning),
+                                 .new_error             (new_error),
+                                 .new_compare           (new_compare),
+                                 .report_reg            (report_reg[31:0]),
+                                 .warning_reg           (warning_reg[31:0]),
+                                 .error_reg             (error_reg[31:0]),
+                                 .expected_reg          (expected_reg[31:0]),
+                                 .measured_reg          (measured_reg[31:0]),
+                                 .index                 (index[5:0]),
+                                 .data                  (data[7:0]),
+                                 .write_mem             (write_mem));
    
    
 endmodule // fw_interface

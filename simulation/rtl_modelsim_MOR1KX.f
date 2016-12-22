@@ -1,7 +1,7 @@
 vlib work
 
 
-vlog ../rtl/soc_template.v +incdir+../rtl/bus_matrix
+vlog ../rtl/soc_template.v +incdir+../rtl/bus_matrix +define+SIMULATION
 
 vlog ../rtl/system_controller/system_controller.v
 
@@ -36,8 +36,12 @@ vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
 vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/ +define+WISHBONE_CPU_MOR1KX
 
+vlog ../testbench/fw_interface/fw_interface.v +incdir+../testbench
+vlog ../testbench/fw_interface/fw_interface_wb.v +incdir+../testbench 
+vlog ../testbench/fw_interface/fw_interface_logic.v +incdir+../testbench
+vlog ../rtl/tools/edge_detection.v +incdir+../testbench
 
 do ../rtl/MOR1KX/MOR1KX_rtl.do
 
-vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_MOR1KX
+vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_MOR1KX 
 run -all

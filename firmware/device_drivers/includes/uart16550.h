@@ -16,7 +16,7 @@ typedef union{
   uint8_t fifo_control; 
 } UART16550_REG2_TypeDef;
 
-typedef struct __attribute__ ((packed)) {
+typedef struct __attribute__ ((__packed__)) {
   volatile UART16550_REG0_TypeDef reg0;
   volatile UART16550_REG1_TypeDef reg1;
   volatile UART16550_REG2_TypeDef reg2;
