@@ -74,15 +74,23 @@ module fw_interface_wb (/*AUTOARG*/
    //
    // Control Signals for String Memory in logic block
    //
-   assign write_mem = ((wb_adr_i[7:2] >= `MEMORY_OFFSET) && (wb_adr_i[7:2] < `MEMORY_END)) & wb_cyc_i & wb_stb_i;
+   assign write_mem = ((wb_adr_i[8:2] >= `MEMORY_OFFSET) && (wb_adr_i[8:2] < `MEMORY_END)) & wb_cyc_i & wb_stb_i;
    assign data      = (write_mem) ? wb_dat_i[7:0] : 0;
    assign index_sel_offset = (wb_sel_i == 4'h08)  ? 8'h00:
                              (wb_sel_i == 4'h04)  ? 8'h01:
                              (wb_sel_i == 4'h02)  ? 8'h02:
                              (wb_sel_i == 4'h01)  ? 8'h03:
                              0;
-   
+   wire [5:0]        sub = wb_adr_i[7:0] - (`MEMORY_OFFSET  <<2);
+
+   //
+   // FIXME: This is very annoying....
+   //
+`ifdef WISHBONE_CPU_LM32
+   assign index     = (write_mem) ? wb_adr_i[7:0] - (`MEMORY_OFFSET  <<2) /*+ index_sel_offset*/ : 0;
+`else
    assign index     = (write_mem) ? wb_adr_i[7:0] - (`MEMORY_OFFSET  <<2) + index_sel_offset : 0;
+`endif
    
 
    //

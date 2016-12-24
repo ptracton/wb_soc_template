@@ -77,7 +77,7 @@ module uart_tasks;
          
          `UART_MASTER0.wb_rd1(32'hFFFF0000,    4'h8, testbench.read_word);
          $display("TASK: UART Read = %c @ %d", testbench.read_word[31:24], $time);
-         if (testbench.read_word[31:24] != expected)
+         if (testbench.read_word[31:24] !== expected)
            begin
               $display("\033[1;31mFAIL: UART Read = 0x%h NOT 0x%h @ %d\033[0m", testbench.read_word[31:24], expected, $time);
               `TEST_FAILED <= 1;

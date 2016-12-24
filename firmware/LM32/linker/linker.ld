@@ -24,7 +24,7 @@ SECTIONS
 		*(.rodata .rodata.* .gnu.linkonce.r.*)
 		*(.rodata1)
 		_erodata = .;
-	} > dmem
+	} > pmem
 
 	.data :
 	{

@@ -32,8 +32,8 @@ module test_case ();
       @(posedge `WB_CLK);
       `UART_CONFIG;
 
-//      #300;
-//      `TEST_COMPLETE;
+      #150000;
+      `TEST_COMPLETE;
 
       repeat(1000) @(posedge `WB_CLK);
 

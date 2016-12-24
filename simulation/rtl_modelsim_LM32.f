@@ -40,5 +40,3 @@ vlog ../rtl/cpu/lm32_config.v
 
 do ../rtl/LM32/lm32_rtl.do
 
-vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_LM32
-run -all

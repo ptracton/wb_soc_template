@@ -4,13 +4,8 @@
 
 int main(void){
 
-#ifdef MOR1KX
-  report(0);
-#endif
+
   UART16550_Init(UART);
-#ifdef MOR1KX
-  report (10);
-#endif
   UART16550_TransmitByte(UART, '0');
   UART16550_TransmitByte(UART, '1');
   UART16550_TransmitByte(UART, '2');

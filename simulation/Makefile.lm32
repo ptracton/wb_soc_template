@@ -5,7 +5,7 @@ TEST_CASE_SRC = $(TEST_CASE).c
 TEST_CASE_OBJ = $(TEST_CASE).o
 ELF_REQUIREMENTS = $(TEST_CASE_OBJ) 
 ELF_FILE  = $(TEST_CASE).elf
-LIST_FILE = $(TEST_CASE).lst
+LIST_FILE = $(TEST_CASE)_$(CPU).lst
 VH_FILE = $(TEST_CASE).vh
 ENTRY_POINT = ../firmware/$(CPU)/boot/objects/crt.o
 
@@ -25,8 +25,8 @@ BOOT_LIB_DIR = $(BOOT_DIR)/lib
 BOOT_LIB     = LM32boot
 
 CINCLUDES = -I /home/ptracton/Downloads/gtools/lm32/lm32-elf/include/ -I $(DEVICE_DRIVERS_INC_DIR) -I $(BOOT_INC_DIR)
-CFLAGS += $(CINCLUDES) -g -D$(CPU)  -Wall -Werror -Wextra
-LD_FLAGS = -nostdlib -nodefaultlibs -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld -L $(DEVICE_DRIVERS_LIB_DIR) -l$(DEVICE_DRIVERS_LIB) -L $(BOOT_LIB_DIR) -l$(BOOT_LIB) -lgcc
+CFLAGS += $(CINCLUDES) -g -D$(CPU)  -Wall -Werror -Wextra -std=gnu99 -fno-builtin -fomit-frame-pointer -ffunction-sections
+LD_FLAGS = -nostdlib -nodefaultlibs -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld -L $(DEVICE_DRIVERS_LIB_DIR) -l$(DEVICE_DRIVERS_LIB) -L $(BOOT_LIB_DIR) -l$(BOOT_LIB) -lgcc -lgloss -lnosys -lc 
 
 include $(FIRMWARE_CPU_ROOT)/environment.mk
 

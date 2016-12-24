@@ -42,7 +42,7 @@ vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/  +define+WISHBONE_CPU_${2}
 
 vlog ../testbench/fw_interface/fw_interface.v +incdir+../testbench
-vlog ../testbench/fw_interface/fw_interface_wb.v +incdir+../testbench
+vlog ../testbench/fw_interface/fw_interface_wb.v +incdir+../testbench +define+WISHBONE_CPU_${2}
 vlog ../testbench/fw_interface/fw_interface_logic.v +incdir+../testbench
 vlog ../rtl/tools/edge_detection.v +incdir+../testbench
 
@@ -59,5 +59,6 @@ if {${2} == "RISCV"} {
    do ../rtl/RISCV/RISCV.do
 }
 
-vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_${2} 
+vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_${2}
+do wave.do
 run -all

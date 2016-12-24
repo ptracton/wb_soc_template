@@ -19,7 +19,7 @@ ELF_REQUIREMENTS = $(OBJECTS)
 CINCLUDES = -I ./$(INC_DIR)
 CINCLUDES += -I../$(CPU)/boot/includes/
 MAKE_DIRS = $(DEP_DIR) $(LIB_DIR) $(OBJ_DIR)
-CFLAGS = -O2 -g -Wall -Werror $(CINCLUDES) -D$(CPU)
+CFLAGS = -O2 -g -Wall -Werror $(CINCLUDES) -D$(CPU) -std=gnu99 -fno-builtin -fomit-frame-pointer -ffunction-sections
 
 all: dirs $(LIBRARY) $(LIST_FILE)
 

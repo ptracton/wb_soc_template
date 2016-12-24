@@ -54,7 +54,6 @@ module fw_interface_logic (/*AUTOARG*/
                                   );
 
    integer i;
-   wire [7:0] character = string_mem[i];
    reg [8*64:0] test_string;   
    always @ (posedge new_report_rising) begin
       i = 0;        
