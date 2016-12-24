@@ -61,7 +61,7 @@ all: dirs $(LIB_DIR)/$(LIB_FILE)
 
 dirs:
 	@echo "Making directories $(MAKE_DIRS)"
-	$(MKDIR) -p $(MAKE_DIRS)
+	@$(MKDIR) -p $(MAKE_DIRS)
 
 ##
 ## List File for the library
@@ -72,7 +72,7 @@ dirs:
 ##
 $(LIB_DIR)/$(LIB_FILE): $(ELF_REQUIREMENTS)
 	@echo "Create Library $(LIBRARY)"
-	$(AR) cr $(LIB_DIR)/$(LIBRARY) $(ELF_REQUIREMENTS)
+	@$(AR) cr $(LIB_DIR)/$(LIBRARY) $(ELF_REQUIREMENTS)
 
 
 ##
@@ -80,14 +80,14 @@ $(LIB_DIR)/$(LIB_FILE): $(ELF_REQUIREMENTS)
 ##
 $(OBJ_DIR)/%.o:%.S
 	@echo "Assembling $<"
-	$(CC) $(CFLAGS)   $<  -o $@
+	@$(CC) $(CFLAGS)   $<  -o $@
 
 ##
 ## Turn out C code into objects in our $(OBJ_DIR)
 ##
 $(OBJ_DIR)/%.o:%.c
 	@echo "Compiling  $<"
-	$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF dep/$(*F).d
+	@$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF dep/$(*F).d
 
 clean:
 	$(RM) -rf  $(OBJ_DIR) $(EXEC_DIR) $(DEP_DIR) $(LIB_DIR)
