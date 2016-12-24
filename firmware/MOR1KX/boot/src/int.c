@@ -25,7 +25,7 @@ int int_init()
 }
 
 /* Add interrupt handler */ 
-int int_add(unsigned long irq, void (* handler)(void *), void *arg)
+int int_add(unsigned long irq, void (* handler)(unsigned int, void *), void *arg)
 {
   if(irq >= MAX_INT_HANDLERS)
     return -1;
@@ -70,7 +70,7 @@ void int_main()
 
   while(i < 32) {
     if((picsr & (0x01L << i)) && (int_handlers[i].handler != 0)) {
-      (*int_handlers[i].handler)(int_handlers[i].arg); 
+      (*int_handlers[i].handler)(0, int_handlers[i].arg); 
 #ifdef OR1200_INT_CHECK_BIT_CLEARED
       // Ensure PICSR bit is cleared, incase it takes some time for the
       // IRQ line going low to propagate back to PIC

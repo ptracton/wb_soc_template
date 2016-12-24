@@ -6,8 +6,8 @@
 
 /* Handler entry */
 struct ihnd {
-	void 	(*handler)(void *);
-	void	*arg;
+  void 	(*handler)(unsigned int, void *);
+  void	*arg;
 };
 
 
@@ -21,7 +21,7 @@ struct exception_state {
 extern struct exception_state * current_exception_state_struct;
   
 /* Add interrupt handler */ 
-int int_add(unsigned long vect, void (* handler)(void *), void *arg);
+int int_add(unsigned long vect, void (* handler)(unsigned int, void *), void *arg);
 
 /* Add exception vector handler */
 void add_handler(unsigned long vector, void (* handler) (void));
@@ -34,5 +34,11 @@ void int_main();
 
 /* Function to clear all pending interrupts */
 void int_clear_all_pending(void);
+
+/* Disable interrupt */ 
+int int_disable(unsigned long irq);
+
+/* Enable interrupt */ 
+int int_enable(unsigned long irq);
 
 #endif // _INT_H_

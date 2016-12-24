@@ -33,4 +33,11 @@
 
 #define UART ((UART16550_REGS_TypeDef *) UART_BASE_ADDRESS)
 #define FW_IF ((FW_INTERFACE_REGS_TypeDef *) FW_INTERFACE_BASE_ADDRESS)
+
+
+//
+// Interrupts
+//
+#define INTERRUPT_UART (0x02)
+
 #endif
