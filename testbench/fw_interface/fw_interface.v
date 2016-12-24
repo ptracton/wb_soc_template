@@ -12,7 +12,7 @@
 
 module fw_interface (/*AUTOARG*/
    // Outputs
-   wb_ack_o, wb_err_o, wb_rty_o, wb_dat_o,
+   wb_ack_o, wb_err_o, wb_rty_o, wb_dat_o, trigger_reg,
    // Inputs
    wb_clk_i, wb_rst_i, wb_adr_i, wb_dat_i, wb_sel_i, wb_we_i,
    wb_bte_i, wb_cti_i, wb_cyc_i, wb_stb_i, interrupts
@@ -37,7 +37,8 @@ module fw_interface (/*AUTOARG*/
    output wire    wb_err_o;
    output wire    wb_rty_o;   
    output wire [31:0] wb_dat_o;
-
+   output wire [31:0] trigger_reg;
+   
    //
    // System Interface
    //
@@ -77,6 +78,7 @@ module fw_interface (/*AUTOARG*/
                       .error_reg        (error_reg[31:0]),
                       .expected_reg     (expected_reg[31:0]),
                       .measured_reg     (measured_reg[31:0]),
+                      .trigger_reg      (trigger_reg[31:0]),
                       .write_mem        (write_mem),
                       .data             (data[7:0]),
                       .index            (index[5:0]),

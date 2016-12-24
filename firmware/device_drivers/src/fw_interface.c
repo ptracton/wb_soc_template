@@ -72,6 +72,11 @@ void FW_compare(volatile FW_INTERFACE_REGS_TypeDef * dev, const char * message, 
   return;
 }
 
+void FW_trigger(volatile FW_INTERFACE_REGS_TypeDef * dev, uint32_t trigger){
+  dev->trigger = trigger;
+  return;
+}
+
 void FW_Init(volatile FW_INTERFACE_REGS_TypeDef * dev){
   uint32_t i;
   

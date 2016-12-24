@@ -4,12 +4,15 @@ ENTRY(_start)
 __DYNAMIC = 0;
 
 MEMORY {
-	pmem : ORIGIN = 0x00000000, LENGTH = 0x1000
-	dmem : ORIGIN = 0x20000000, LENGTH = 0x1000
+	pmem : ORIGIN = 0x00000000, LENGTH = 0x8000
+	dmem : ORIGIN = 0x20000000, LENGTH = 0x8000
 }
 
 SECTIONS
 {
+
+     .boot : { *(.boot) } > dmem
+     
 	.text :
 	{
 		_ftext = .;

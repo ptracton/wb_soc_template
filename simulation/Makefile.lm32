@@ -7,7 +7,8 @@ ELF_REQUIREMENTS = $(TEST_CASE_OBJ)
 ELF_FILE  = $(TEST_CASE).elf
 LIST_FILE = $(TEST_CASE)_$(CPU).lst
 VH_FILE = $(TEST_CASE).vh
-ENTRY_POINT = ../firmware/$(CPU)/boot/objects/crt.o
+ENTRY_POINT = ../firmware/$(CPU)/boot/objects/crt0.o
+#ENTRY_POINT = /opt/CrossCompilers/lm32/lm32-elf/lib/crt0rom.o
 
 FIRMWARE_ROOT = ../firmware
 FIRMWARE_CPU_ROOT = $(FIRMWARE_ROOT)/$(CPU)
@@ -24,9 +25,24 @@ BOOT_INC_DIR = $(BOOT_DIR)/includes
 BOOT_LIB_DIR = $(BOOT_DIR)/lib
 BOOT_LIB     = LM32boot
 
-CINCLUDES = -I /home/ptracton/Downloads/gtools/lm32/lm32-elf/include/ -I $(DEVICE_DRIVERS_INC_DIR) -I $(BOOT_INC_DIR)
-CFLAGS += $(CINCLUDES) -g -D$(CPU)  -Wall -Werror -Wextra -std=gnu99 -fno-builtin -fomit-frame-pointer -ffunction-sections
-LD_FLAGS = -nostdlib -nodefaultlibs -T$(FIRMWARE_CPU_ROOT)/linker/linker.ld -L $(DEVICE_DRIVERS_LIB_DIR) -l$(DEVICE_DRIVERS_LIB) -L $(BOOT_LIB_DIR) -l$(BOOT_LIB) -lgcc -lgloss -lnosys -lc 
+DRIVERS_DIR     = $(FIRMWARE_ROOT)/$(CPU)/drivers
+DRIVERS_INC_DIR = -I $(DRIVERS_DIR)/device -I$(DRIVERS_DIR)/service
+DRIVERS_LIB_DIR = $(DRIVERS_DIR)/lib
+DRIVERS_LIB     = LM32drivers
+
+CINCLUDES  = -I /home/ptracton/Downloads/gtools/lm32/lm32-elf/include/
+CINCLUDES += -I$(DEVICE_DRIVERS_INC_DIR)
+CINCLUDES += -I$(BOOT_INC_DIR) 
+CINCLUDES += $(DRIVERS_INC_DIR)
+
+CFLAGS += $(CINCLUDES) -g -D$(CPU)  #-std=gnu99 -fno-builtin -fomit-frame-pointer -ffunction-sections #-Wall -Werror -Wextra
+
+LD_FLAGS =  -nostdlib -nodefaultlibs -nostartfiles
+LD_FLAGS += -T$(FIRMWARE_CPU_ROOT)/linker/rom.ld
+LD_FLAGS += -L $(DEVICE_DRIVERS_LIB_DIR) -l$(DEVICE_DRIVERS_LIB)
+#LD_FLAGS += -L $(BOOT_LIB_DIR) -l$(BOOT_LIB)
+LD_FLAGS += -L $(DRIVERS_LIB_DIR) -l$(DRIVERS_LIB)
+LD_FLAGS += -lgcc -lgloss -lnosys -lc 
 
 include $(FIRMWARE_CPU_ROOT)/environment.mk
 
@@ -38,7 +54,8 @@ $(LIST_FILE): $(ELF_FILE)
 
 $(ELF_FILE): $(ELF_REQUIREMENTS)
 	@$(MAKE) -C ../firmware/device_drivers CPU=LM32
-	@$(MAKE) -C ../firmware/$(CPU)/boot/
+	@$(MAKE) -C ../firmware/$(CPU)/drivers/ CPU=LM32
+	@$(MAKE) -C ../firmware/$(CPU)/boot/ CPU=LM32
 	@echo "Linking $(ELF_FILE)"
 	$(LD) -o $(ELF_FILE) $(ENTRY_POINT)  $(ELF_REQUIREMENTS)  $(LD_FLAGS) 
 
@@ -55,3 +72,4 @@ clean:
 	$(RM) -f $(ELF_FILE) $(TARGET).d $(LIST_FILE) $(TEST_CASE_OBJ) *.bin  *~
 	@$(MAKE) -C ../firmware/device_drivers CPU=LM32 clean
 	@$(MAKE) -C ../firmware/$(CPU)/boot/ clean
+	@$(MAKE) -C ../firmware/$(CPU)/drivers/ clean	

@@ -737,7 +737,7 @@ begin
             end
             // synthesis translate_off
             if (d_err_i == `TRUE)
-                $display ("Data bus error. Address: %x", d_adr_o);
+                $display ("Data bus error. Address: %x @ %d", d_adr_o, $time);
             // synthesis translate_on
         end
         else

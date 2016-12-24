@@ -3,7 +3,7 @@ include ../environment.mk
 CPU = LM32
 
 TARGET = boot
-LIBRARY = lib$(CPU)boot.a
+LIBRARY = lib$(CPU)drivers.a
 
 ##
 ## Project Directories
@@ -15,12 +15,25 @@ LIB_DIR = lib
 DEP_DIR = dep
 LD_DIR = linker
 
-SOURCES          += $(wildcard $(SRC_DIR)/*.c)
-OBJECTS          += $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
-ELF_REQUIREMENTS += $(OBJECTS)
-VPATH            += $(SRC_DIR)
-CINCLUDES        += -I$(INC_DIR)
+DEVICE_DIR         = device
+DEVICE_SRC_DIR     = device
+DEVICE_SOURCES     += $(wildcard $(DEVICE_SRC_DIR)/*.c)
+DEVICE_OBJECTS     += $(patsubst $(DEVICE_SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(DEVICE_SOURCES))
+DEVICE_ASM_SOURCES += $(wildcard $(DEVICE_SRC_DIR)/*.S)
+DEVICE_ASM_OBJECTS += $(patsubst $(DEVICE_SRC_DIR)/%.S,$(OBJ_DIR)/%.o,$(DEVICE_ASM_SOURCES))
+ELF_REQUIREMENTS   += $(DEVICE_OBJECTS) $(DEVICE_ASM_OBJECTS)
+VPATH              += $(DEVICE_SRC_DIR)
+CINCLUDES          += -I$(DEVICE_SRC_DIR)
 
+SERVICE_DIR         = service
+SERVICE_SRC_DIR     = service
+SERVICE_SOURCES     += $(wildcard $(SERVICE_SRC_DIR)/*.c)
+SERVICE_OBJECTS     += $(patsubst $(SERVICE_SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SERVICE_SOURCES))
+SERVICE_ASM_SOURCES += $(wildcard $(SERVICE_SRC_DIR)/*.S)
+SERVICE_ASM_OBJECTS += $(patsubst $(SERVICE_SRC_DIR)/%.S,$(OBJ_DIR)/%.o,$(SERVICE_ASM_SOURCES))
+ELF_REQUIREMENTS += $(SERVICE_OBJECTS) $(SERVICE_ASM_OBJECTS)
+VPATH            += $(SERVICE_SRC_DIR)
+CINCLUDES        += -I$(SERVICE_SRC_DIR)
 
 ##
 ## The files we are creating
@@ -30,22 +43,14 @@ HEX_FILE  = $(LIB_DIR)/$(TARGET).hex
 SREC_FILE = $(LIB_DIR)/$(TARGET).srec
 BIN_FILE  = $(LIB_DIR)/$(TARGET).bin
 
-##
-## Start up file
-##
-ASM_SOURCES      += src/crt0.S 
-ASM_OBJECTS      += $(OBJ_DIR)/crt0.o
-#ASM_SOURCES      += src/crt.S 
-#ASM_OBJECTS      += $(OBJ_DIR)/crt.o
-ELF_REQUIREMENTS += $(ASM_OBJECTS)
-ASMFLAGS         +=  -U__MICO_USER_INST_ABORT_HANDLER__ # -Wa 
+
 
 ##
 ## Linker flags
 ##
 LDFLAGS = -T$(LD_DIR)/linker.ld -nostdlib -lgcc
 CFLAGS  = -c -g $(CINCLUDES)
-CFLAGS += -Wall -Werror -Wextra 
+CFLAGS += #-Wall -Werror -Wextra 
 
 ##
 ## The directories to make for this build.

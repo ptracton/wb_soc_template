@@ -20,12 +20,13 @@
 `define CPU `DUT.picoblaze
 `define PROCESSOR `CPU.processor
 `define PROGRAM_ROM `DUT.rom0
+`define PROGRAM_RAM `DUT.ram0
 
 
 `define TEST_CASE       `TB.test_case
 `define SIMULATION_NAME `TEST_CASE.simulation_name
 `define NUMBER_OF_TESTS `TEST_CASE.number_of_tests
-
+`define TRIGGER `DUT.trigger_reg
 
 `define TEST_TASKS  `TB.test_tasks
 `define TEST_PASSED `TEST_TASKS.test_passed

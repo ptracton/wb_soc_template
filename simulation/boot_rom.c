@@ -1,5 +1,12 @@
 #include "wb_soc_template.h"
 
+void _getpid_r(void){
+  return;
+}
+
+void _kill_r(void){
+  return;
+}
 
 
 int main(void){

@@ -240,12 +240,14 @@ module soc_template (/*AUTOARG*/
 	              );
 
 `ifdef SIMULATION
+   wire [31:0] trigger_reg;   
    fw_interface fw_if(
                       // Outputs
                       .wb_ack_o(wb_s2m_fw_interface_ack),
                       .wb_rty_o(wb_s2m_fw_interface_rty),
                       .wb_err_o(wb_s2m_fw_interface_err), 
                       .wb_dat_o(wb_s2m_fw_interface_dat),
+                      .trigger_reg(trigger_reg),
                       // Inputs
                       .wb_clk_i(wb_clk_i), 
                       .wb_rst_i(wb_rst_i), 

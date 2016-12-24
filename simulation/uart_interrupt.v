@@ -18,7 +18,7 @@ module test_case ();
    // These parameters need to be set for each test case
    //
    parameter simulation_name = "uart_interrupt";    
-   parameter number_of_tests = 0;
+   parameter number_of_tests = 5;
 `include "setup.v"
 
    reg  err;
@@ -32,11 +32,12 @@ module test_case ();
       @(posedge `WB_CLK);
       `UART_CONFIG;
 
-      #150000;
-      `TEST_COMPLETE;
+//      #150000;
+//      `TEST_COMPLETE;
 
-      repeat(1000) @(posedge `WB_CLK);
-
+      @(posedge `TRIGGER[0]);
+      `TEST_COMPARE("TRIGGER HIGH", 1, `TRIGGER[0]);
+      
       `UART_WRITE_CHAR("A");
       `UART_READ_CHAR("A");
 

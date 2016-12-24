@@ -14,7 +14,7 @@ module fw_interface_wb (/*AUTOARG*/
    // Outputs
    wb_ack_o, wb_rty_o, wb_err_o, wb_dat_o, new_report, new_warning,
    new_error, new_compare, report_reg, warning_reg, error_reg,
-   expected_reg, measured_reg, write_mem, data, index,
+   expected_reg, measured_reg, trigger_reg, write_mem, data, index,
    // Inputs
    wb_clk_i, wb_rst_i, wb_adr_i, wb_dat_i, wb_sel_i, wb_we_i,
    wb_bte_i, wb_cti_i, wb_cyc_i, wb_stb_i
@@ -51,6 +51,7 @@ module fw_interface_wb (/*AUTOARG*/
    output reg [31:0] error_reg;
    output reg [31:0] expected_reg;
    output reg [31:0] measured_reg;
+   output reg [31:0] trigger_reg;
    output wire       write_mem;
    output wire [7:0] data;
    output wire [5:0] index;
@@ -62,8 +63,9 @@ module fw_interface_wb (/*AUTOARG*/
 `define ERROR_REG_OFFSET    6'h03  // 0x0C >> 2
 `define MEASURED_REG_OFFSET 6'h04  // 0x10 >> 2
 `define EXPECTED_REG_OFFSET 6'h05  // 0x14 >> 2
-`define MEMORY_OFFSET       6'h06  // 0x18 >> 2
-`define MEMORY_END          6'h16  // 0x58 >> 2
+`define TRIGGER_REG_OFFSET  6'h06  // 0x18 >> 2
+`define MEMORY_OFFSET       6'h07  // 0x1C >> 2
+`define MEMORY_END          6'h17  // 0x5C >> 2
    
    /*AUTOREG*/
    /*AUTOWIRE*/
@@ -140,7 +142,8 @@ module fw_interface_wb (/*AUTOARG*/
         warning_reg  <= 0;
         error_reg    <= 0;
         expected_reg <= 0;
-        measured_reg <= 0;                
+        measured_reg <= 0;   
+        trigger_reg  <= 0;        
      end else begin
         if (wb_cyc_i & wb_stb_i & wb_we_i) begin
            case (wb_adr_i[8:2])
@@ -177,8 +180,14 @@ module fw_interface_wb (/*AUTOARG*/
                 expected_reg[15:08] <= wb_sel_i[1] ? wb_dat_i[15:08] : expected_reg[15:08];
                 expected_reg[23:16] <= wb_sel_i[2] ? wb_dat_i[23:16] : expected_reg[23:16];
                 expected_reg[31:24] <= wb_sel_i[3] ? wb_dat_i[31:24] : expected_reg[31:24];
-             end             
-             
+             end  
+           
+             `TRIGGER_REG_OFFSET:begin
+                trigger_reg[07:00] <= wb_sel_i[0] ? wb_dat_i[07:00] : trigger_reg[07:00];
+                trigger_reg[15:08] <= wb_sel_i[1] ? wb_dat_i[15:08] : trigger_reg[15:08];
+                trigger_reg[23:16] <= wb_sel_i[2] ? wb_dat_i[23:16] : trigger_reg[23:16];
+                trigger_reg[31:24] <= wb_sel_i[3] ? wb_dat_i[31:24] : trigger_reg[31:24];
+             end               
            endcase // case (wb_adr_i[7:2])           
         end // if (wb_cyc_i & wb_stb_i & wb_we_i)        
      end // else: !if(wb_rst_i)
@@ -198,6 +207,7 @@ module fw_interface_wb (/*AUTOARG*/
              `ERROR_REG_OFFSET:    wb_dat_o <= error_reg;
              `MEASURED_REG_OFFSET: wb_dat_o <= measured_reg;
              `EXPECTED_REG_OFFSET: wb_dat_o <= expected_reg;
+             `TRIGGER_REG_OFFSET: wb_dat_o <= trigger_reg;
              default: wb_dat_o <= 0;             
            endcase // case (wb_adr_i[7:2])           
         end begin

@@ -10,6 +10,7 @@ typedef struct __attribute__ ((__packed__)){
   volatile uint32_t error;
   volatile uint32_t measured;
   volatile uint32_t expected;
+  volatile uint32_t trigger;
   volatile uint8_t string[FW_INTERFACE_MAX_CHARS];
 } FW_INTERFACE_REGS_TypeDef;
 
@@ -28,5 +29,6 @@ void FW_report(volatile FW_INTERFACE_REGS_TypeDef * dev, const char * message, u
 void FW_warning(volatile FW_INTERFACE_REGS_TypeDef * dev, const char * message,  uint32_t warning);
 void FW_error(volatile FW_INTERFACE_REGS_TypeDef * dev, const char * message, uint32_t error);
 void FW_compare(volatile FW_INTERFACE_REGS_TypeDef * dev, const char * message, uint32_t measured, uint32_t expected);
+void FW_trigger(volatile FW_INTERFACE_REGS_TypeDef * dev, uint32_t trigger);
 void FW_Init(volatile FW_INTERFACE_REGS_TypeDef * dev);
 #endif

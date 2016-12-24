@@ -26,8 +26,9 @@
 
 OUTPUT_FORMAT("elf32-lm32")
 ENTRY(_start)
-INPUT(crti.o crtbegin.o crt0rom.o crtend.o crtn.o)
+/*INPUT(crti.o crtbegin.o crt0rom.o crtend.o crtn.o)
 GROUP(-lgloss -lnosys -lc -lgcc)
+*/
 
 /* Peripherals */
 _uart = 0x80000000;
@@ -35,15 +36,15 @@ _gpio = 0x82000000;
 
 MEMORY
 {
-    rom : ORIGIN = 0x00000000, LENGTH = 0x00080000
-    ram : ORIGIN = 0x00080000, LENGTH = 0x00080000
+    rom : ORIGIN = 0x00000000, LENGTH = 0x00008000
+    ram : ORIGIN = 0x20000000, LENGTH = 0x00008000
 }
 
 SECTIONS
 {
 
   .boot : { *(.boot) } > rom
-   
+  .vector : { *(.vector) } > ram
   /* Code */
   .text           :
   {
