@@ -22,11 +22,11 @@
 	    },        
 	    "simulation" : {
 	        "executable": "iverilog",
-	        "arguments" : " -f rtl_sim.f -f ../rtl/$cpu/$cpu.f $simulation.v -DICARUS -DWISHBONE_CPU_$cpu"	
+	        "arguments" : " -f rtl_sim.f -f rtl_$technology.f -f ../rtl/$cpu/$cpu.f $simulation.v -DICARUS -DWISHBONE_CPU_$cpu -D$technology"	
 	    },
 	    "run" : {
 	        "executable" : "vvp",
-	        "arguments"  : "-l $simulation.log a.out"
+	        "arguments"  : "-l $simulation.$cpu.$tool.$technology.log a.out"
 	    }
     },
     "remove_files": "hack.vh *.vcd a.out *.log"

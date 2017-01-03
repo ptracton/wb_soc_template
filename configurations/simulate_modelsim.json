@@ -33,7 +33,7 @@
 	    },        
 	    "simulation" : {
 	        "executable": "vsim",
-	        "arguments" : " -c -do rtl_modelsim_$cpu.f -l $simulation.$cpu.modelsim.log"	
+	        "arguments" : " -c -do rtl_modelsim_$cpu.f -l $simulation.$cpu.$tool.log"	
 	    }
     },
     "remove_files" : "work transcript test_case.v vsim.wlf a.out *.o *.d *.elf *.lst *.mem *.srec *.vh.mem *.tmp"

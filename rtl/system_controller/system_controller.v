@@ -22,12 +22,8 @@ module system_controller (/*AUTOARG*/
    output wire nrst_i;
    
 
-
+`ifdef RTL
    assign clk_i = clk_sys_i;
-   
-   
-
-
    
    reg [4:0] reset_count =0;
    assign rst_i = |reset_count; 
@@ -40,7 +36,35 @@ module system_controller (/*AUTOARG*/
         if (reset_count)
           reset_count <= reset_count + 1;
      end
-   
+`else
+ `ifdef XILINX
 
+   initial begin
+      $display("XILINX SYSCON!");
+      //$finish;      
+   end
+
+   system_controller_xilinx sys_con_xil(/*AUTOINST*/
+                                        // Outputs
+                                        .clk_i          (clk_i),
+                                        .rst_i          (rst_i),
+                                        .nrst_i         (nrst_i),
+                                        // Inputs
+                                        .clk_sys_i      (clk_sys_i),
+                                        .rst_sys_i      (rst_sys_i));
+   
+ `endif //  `ifdef XILINX
+   
+ `ifdef ALTERA
+   initial begin
+      $display("ALTERA SYSCON NOT IMPLEMENTED YET!");
+      $finish;      
+   end
+   
+ `endif
+   
+`endif //  `ifdef RTL 
+
+   
    
 endmodule // system_controller

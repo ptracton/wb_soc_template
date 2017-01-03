@@ -73,6 +73,11 @@ if __name__ == "__main__":
                         help="Which CPU to use",
                         required=False,
                         default="LM32",
+                        action="store")
+    parser.add_argument("--technology",
+                        help="Which technology to use, RTL, ALTERA or XILINX",
+                        required=False,
+                        default="RTL",
                         action="store")    
 
     args = parser.parse_args()
@@ -82,12 +87,16 @@ if __name__ == "__main__":
 
     if args.icarus:
         json_file = "../configurations/simulate_iverilog.json"
+        tool = "icarus"
     if args.ncverilog:
         json_file = "../configurations/simulate_ncverilog.json"
+        tool = "ncverilog"
     if args.xsim:
         json_file = "../configurations/simulate_xsim.json"
+        tool = "xsim"
     if args.modelsim:
         json_file = "../configurations/simulate_modelsim.json"
+        tool = "modelsim"
         
     try:
         f = open(json_file, "r")
@@ -107,7 +116,9 @@ if __name__ == "__main__":
             json_data['flow'][flow_steps[step]]['arguments'])
         arguments_str = arguments.safe_substitute(simulation=args.simulation,
                                                   application=args.application,
-                                                  cpu=args.cpu)
+                                                  tool=tool,
+                                                  cpu=args.cpu,
+                                                  technology=args.technology)
         if args.debug:
             print(executable)
         if (arguments is None):

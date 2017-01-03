@@ -4,11 +4,11 @@ exec make TARGET=${1} CPU=${2}
 
 vlib work
 
-vlog ${1} +incdir+../testbench
+vlog ${1} +incdir+../testbench +define+${3}
+
+vlog ../rtl/system_controller/system_controller.v +define+${3}
 
 vlog ../rtl/soc_template.v +incdir+../rtl/bus_matrix  +define+SIMULATION
-
-vlog ../rtl/system_controller/system_controller.v
 
 vlog ../rtl/bus_matrix/soc_bus_matrix.v +incdir+../rtl/bus_matrix
 vlog ../behvioral/wb_intercon/wb_arbiter.v +incdir+../rtl/bus_matrix +incdir+../behvioral/verilog_utils
@@ -59,6 +59,16 @@ if {${2} == "RISCV"} {
    do ../rtl/RISCV/RISCV.do
 }
 
-vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_${2}
+if {${3} == "XILINX"} {
+   do xilinx.do
+   vsim -voptargs=+acc work.testbench work.glbl +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_${2}
+}
+
+if {${3} == "RTL"} {
+   vsim -voptargs=+acc work.testbench  +define+RTL +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_${2}
+}
+
+
+
 do wave.do
 run -all

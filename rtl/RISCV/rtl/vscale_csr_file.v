@@ -89,7 +89,8 @@ module vscale_csr_file(
 
 
    wire [`XPR_LEN-1:0]                              padded_prv = prv;
-   assign handler_PC = mtvec + (padded_prv << 5);
+//   assign handler_PC = mtvec + (padded_prv << 5);
+   assign handler_PC = mtvec;// + (padded_prv << 5);
 
    assign prv = priv_stack[2:1];
    assign ie = priv_stack[0];
@@ -304,7 +305,8 @@ module vscale_csr_file(
          mtime_full <= 0;
          to_host <= 0;
          from_host <= 0;
-         mtvec <= 'h100;
+//         mtvec <= 'h100;
+         mtvec <= 0;         
          mtimecmp <= 0;
          mscratch <= 0;
       end else begin
