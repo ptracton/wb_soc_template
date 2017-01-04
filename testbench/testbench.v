@@ -122,9 +122,6 @@ module testbench;
    uart_tasks uart_tasks();   
 
 
-`ifdef XILINX
-   glbl glbl();   
-`endif   
    
 endmodule // testbench
 

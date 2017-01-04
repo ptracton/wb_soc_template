@@ -4,3 +4,6 @@
 ../rtl/XILINX/IBUF.v
 ../rtl/XILINX/MMCME2_BASE.v
 ../rtl/XILINX/MMCME2_ADV.v
+../rtl/XILINX/RAMB16_S9.v
+../rtl/wb_ram/rtl/verilog/wb_ram_xilinx_bank.v
+../rtl/wb_ram/rtl/verilog/wb_ram_xilinx.v

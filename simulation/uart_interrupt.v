@@ -10,7 +10,6 @@
 
 `include "timescale.v"
 `include "simulation_includes.vh"
-
 module test_case ();
 
    //

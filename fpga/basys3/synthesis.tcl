@@ -21,6 +21,7 @@ read_verilog -library xil_defaultlib {
     ../../behvioral/verilog-arbiter/arbiter.v    
     ../../rtl/cpu/cpu_wrapper.v
     ../../rtl/system_controller/system_controller.v
+    ../../rtl/system_controller/system_controller_xilinx.v
     ../../rtl/uart16550/rtl/verilog/raminfr.v
     ../../rtl/uart16550/rtl/verilog/uart_debug_if.v
     ../../rtl/uart16550/rtl/verilog/uart_receiver.v
@@ -33,7 +34,8 @@ read_verilog -library xil_defaultlib {
     ../../rtl/uart16550/rtl/verilog/uart_wb.v
     ../../behvioral/wb_common/wb_common.v
     ../../rtl/wb_ram/rtl/verilog/wb_ram.v
-    ../../rtl/wb_ram/rtl/verilog/wb_ram_generic.v
+    ../../rtl/wb_ram/rtl/verilog/wb_ram_xilinx.v
+    ../../rtl/wb_ram/rtl/verilog/wb_ram_xilinx_bank.v
     ../../rtl/MOR1KX/rtl/verilog/mor1kx-defines.v
     ../../rtl/MOR1KX/rtl/verilog/mor1kx_bus_if_wb32.v
     ../../rtl/MOR1KX/rtl/verilog/mor1kx_decode_execute_cappuccino.v

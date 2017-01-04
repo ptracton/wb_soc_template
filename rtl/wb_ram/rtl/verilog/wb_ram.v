@@ -56,6 +56,7 @@ module wb_ram
    //TODO:ck for burst address errors
    assign wb_err_o =  1'b0;
 
+`ifdef RTL   
    wb_ram_generic
      #(.depth(depth/4),
        .memfile (memfile))
@@ -66,5 +67,19 @@ module wb_ram
       .waddr(adr_r[aw-1:2]),
       .raddr (adr[aw-1:2]),
       .dout (wb_dat_o));
-
+`else // !`ifdef RTL
+ `ifdef XILINX
+   wb_ram_xilinx ram0(
+                      .clk (wb_clk_i),
+                      .rst (wb_rst_i),
+                      .we  ({4{ram_we}} & wb_sel_i),
+                      .din (wb_dat_i),
+                      .waddr(adr_r[aw-1:2]),
+                      .raddr (adr[aw-1:2]),
+                      .dout (wb_dat_o)
+                      );
+   
+ `endif
+`endif // !`ifdef RTL
+   
 endmodule

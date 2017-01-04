@@ -11,7 +11,7 @@ DIRS:
 	@echo "Making Directories $(MAKE_DIRS)"
 	@mkdir -p $(MAKE_DIRS)
 
-SYNTHESIS:
+SYNTHESIS: DIRS
 	@echo "Synthesis"
 	@vivado -mode batch -source synthesis.tcl > $(SYNTH_DIR)/basys3_synthesis.log 2>&1
 
