@@ -42,7 +42,7 @@ module wb_ram_xilinx_bank (/*AUTOARG*/
    RAMB16_S9 ram0(
 		          .DO(dout[7:0]), 
 		          .DOP(), 
-		          .ADDR({3'b0,address}), 
+		          .ADDR(address[10:0]), 
 		          .CLK(clk),
 		          .DI(din[7:0]), 
 		          .DIP(1'b0), 
@@ -54,7 +54,7 @@ module wb_ram_xilinx_bank (/*AUTOARG*/
    RAMB16_S9 ram1(
 		          .DO(dout[15:8]), 
 		          .DOP(), 
-		          .ADDR({3'b0,address}), 
+		          .ADDR(address[10:0]), 
 		          .CLK(clk),
 		          .DI(din[15:8]), 
 		          .DIP(1'b0), 
@@ -66,7 +66,7 @@ module wb_ram_xilinx_bank (/*AUTOARG*/
    RAMB16_S9 ram2(
 		          .DO(dout[23:16]), 
 		          .DOP(), 
-		          .ADDR({3'b0,address}), 
+		          .ADDR(address[10:0]), 
 		          .CLK(clk),
 		          .DI(din[23:16]), 
 		          .DIP(1'b0), 
@@ -78,7 +78,7 @@ module wb_ram_xilinx_bank (/*AUTOARG*/
    RAMB16_S9 ram3(
 		          .DO(dout[31:24]), 
 		          .DOP(), 
-		          .ADDR({3'b0,address}), 
+		          .ADDR(address[10:0]), 
 		          .CLK(clk),
 		          .DI(din[31:24]), 
 		          .DIP(1'b0), 

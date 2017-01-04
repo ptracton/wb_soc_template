@@ -74,8 +74,8 @@ module wb_ram
                       .rst (wb_rst_i),
                       .we  ({4{ram_we}} & wb_sel_i),
                       .din (wb_dat_i),
-                      .waddr(adr_r[aw-1:2]),
-                      .raddr (adr[aw-1:2]),
+                      .waddr({2'b00, adr_r[aw-1:2]}),
+                      .raddr ({2'b00, adr[aw-1:2]}),
                       .dout (wb_dat_o)
                       );
    

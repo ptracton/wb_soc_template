@@ -2,6 +2,9 @@ exec make TARGET=${1} CPU=${2} clean
 exec make TARGET=${1} CPU=${2}
 
 
+
+
+
 vlib work
 
 vlog ${1} +incdir+../testbench +define+${3}
@@ -35,7 +38,7 @@ vlog ../tasks/uart_tasks.v +incdir+../rtl/uart16550/rtl/verilog/
 
 vlog ../behvioral/wb_master/wb_master_model.v +incdir+../testbench
 
-vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/
+vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/ +define+${3}
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
 

@@ -4,3 +4,6 @@ vlog ../rtl/XILINX/BUFGCE.v
 vlog ../rtl/XILINX/IBUF.v
 vlog ../rtl/XILINX/MMCME2_BASE.v
 vlog ../rtl/XILINX/MMCME2_ADV.v
+vlog ../rtl/XILINX/RAMB16_S9.v
+vlog ../rtl/wb_ram/rtl/verilog/wb_ram_xilinx_bank.v
+vlog ../rtl/wb_ram/rtl/verilog/wb_ram_xilinx.v

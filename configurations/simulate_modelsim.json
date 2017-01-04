@@ -4,10 +4,11 @@
     "flow_steps": {
         "1": "compile_clean",
         "2": "compile",
-        "3" : "clean_vlib",
-        "4": "vlib",
-        "5": "test_case",
-	    "6" : "simulation"
+        "3" : "memory",        
+        "4" : "clean_vlib",
+        "5": "vlib",
+        "6": "test_case",
+	    "7" : "simulation"
     },
     "flow" : {
         "compile_clean" : {
@@ -18,6 +19,10 @@
 	        "executable": "make",
 	        "arguments" : " TARGET=$simulation CPU=$cpu"	
 	    },
+	    "memory" : {
+	        "executable": "../tools/mem_to_bram.py",
+	        "arguments" : " --mem $simulation.vh.mem"	
+	    },           
         "clean_vlib":{
 	        "executable": "rm -rf",
 	        "arguments" : " vlib"	            
