@@ -19,8 +19,8 @@ module wb_ram_xilinx_bank (/*AUTOARG*/
    input rst;   
    input [3:0] we;
    input [31:0] din;
-   input [14:0] waddr;
-   input [14:0] raddr;
+   input [15:0] waddr;
+   input [15:0] raddr;
    input wire   bank_select;
    
    output wire [31:0] dout;
@@ -35,7 +35,8 @@ module wb_ram_xilinx_bank (/*AUTOARG*/
    //
    wire [3:0]        enable = {4{bank_select}};
 
-   
+
+`ifdef XILINX_RAMB16_S9
    //
    // RAMS -- the RAMB16_S9 is lifted from ISE
    //
@@ -86,6 +87,47 @@ module wb_ram_xilinx_bank (/*AUTOARG*/
 		          .SSR(rst), 
 		          .WE(we[3])
 		          );
+`else // !`ifdef XILINX_RAMB16_S9
+   wire              VSS = 1'b0;
+   wire              VDD = 1'b1;
+   
+   RAMB36E1 #(.READ_WIDTH_A(36), .RAM_MODE(SDP))
+   ram0(
+        .CASCADEOUTA(), 
+        .CASCADEOUTB(), 
+        .DBITERR(VSS), 
+        .DOADO(dout), 
+        .DOBDO(), 
+        .DOPADOP(), 
+        .DOPBDOP(), 
+        .ECCPARITY(), 
+        .RDADDRECC(), 
+        .SBITERR(), 
+		.ADDRARDADDR(), 
+        .ADDRBWRADDR(), 
+        .CASCADEINA(), 
+        .CASCADEINB(), 
+        .CLKARDCLK(clk), 
+        .CLKBWRCLK(clk), 
+        .DIADI(din), 
+        .DIBDI(), 
+        .DIPADIP(), 
+        .DIPBDIP(), 
+        .ENARDEN(VDD), 
+        .ENBWREN(VSS), 
+        .INJECTDBITERR(VSS), 
+        .INJECTSBITERR(VSS), 
+        .REGCEAREGCE(VSS), 
+        .REGCEB(VSS), 
+        .RSTRAMARSTRAM(rst), 
+        .RSTRAMB(rst), 
+        .RSTREGARSTREG(rst), 
+        .RSTREGB(rst), 
+        .WEA(we), 
+        .WEBWE({8{VSS}})
+        
+        );   
+`endif // !`ifdef XILINX_RAMB16_S9
    
    
 endmodule // wb_ram_xilinx_bank

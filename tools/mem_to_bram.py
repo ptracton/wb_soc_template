@@ -36,6 +36,8 @@ if __name__ == "__main__":
         bram2_file = open("bram2.txt", "w")
         bram3_file = open("bram3.txt", "w")
 
+        lst_file = open(args.mem+".loc", "w")
+
     except:
         print("Failed to open or read %s" % args.mem)
         sys.exit(-1)
@@ -60,17 +62,32 @@ if __name__ == "__main__":
         for data in values[1:]:
             data_hex = int(data, 16)
             data_bytes = [hex(data_hex >> i & 0xff) for i in (24, 16, 8, 0)]
-            bram3_init.append(data_bytes[0][2:])
-            bram2_init.append(data_bytes[1][2:])
-            bram1_init.append(data_bytes[2][2:])
-            bram0_init.append(data_bytes[3][2:])
-            print("0x%08x\t0x%s\t\t0x%s\t\t0x%s\t\t0x%s" % (address,data_bytes[0][2:],data_bytes[1][2:],data_bytes[2][2:],(data_bytes[3][2:]) ))
+
+            # Swap the order 
+            byte3 = int(data_bytes[0][2:], 16)
+            byte2 = int(data_bytes[1][2:], 16)
+            byte1 = int(data_bytes[2][2:], 16)
+            byte0 = int(data_bytes[3][2:], 16)
+
+            # always have 8 bits of data
+            byte3_str = "{:02X}".format(byte3)
+            byte2_str = "{:02X}".format(byte2)
+            byte1_str = "{:02X}".format(byte1)
+            byte0_str = "{:02X}".format(byte0)
+            
+            bram3_init.append(byte3_str)
+            bram2_init.append(byte2_str)
+            bram1_init.append(byte1_str)
+            bram0_init.append(byte0_str)
+            
+            print("0x%08x\t0x%02X\t\t0x%02X\t\t0x%02X\t\t0x%02X" % (address, byte0, byte1, byte2, byte3))
+            lst_file.write("%08X\t0x%02X%02X%02X%02X\n"% (address, byte3, byte2, byte1, byte0))
             index = index + 1
             if index % 32 == 0:
-                bram0_init.reverse()
-                bram1_init.reverse()
-                bram2_init.reverse()
-                bram3_init.reverse()
+                #bram0_init.reverse()
+                #bram1_init.reverse()
+                #bram2_init.reverse()
+                #bram3_init.reverse()
                 b0 = '_'.join(str(x) for x in bram0_init)
                 b1 = '_'.join(str(x) for x in bram1_init)
                 b2 = '_'.join(str(x) for x in bram2_init)
@@ -97,3 +114,4 @@ if __name__ == "__main__":
     bram1_file.close()
     bram2_file.close()
     bram3_file.close()
+    lst_file.close()
