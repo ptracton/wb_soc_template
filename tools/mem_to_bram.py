@@ -84,10 +84,10 @@ if __name__ == "__main__":
             lst_file.write("%08X\t0x%02X%02X%02X%02X\n"% (address, byte3, byte2, byte1, byte0))
             index = index + 1
             if index % 32 == 0:
-                #bram0_init.reverse()
-                #bram1_init.reverse()
-                #bram2_init.reverse()
-                #bram3_init.reverse()
+                bram0_init.reverse()
+                bram1_init.reverse()
+                bram2_init.reverse()
+                bram3_init.reverse()
                 b0 = '_'.join(str(x) for x in bram0_init)
                 b1 = '_'.join(str(x) for x in bram1_init)
                 b2 = '_'.join(str(x) for x in bram2_init)

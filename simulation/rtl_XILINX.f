@@ -6,5 +6,6 @@
 ../rtl/XILINX/MMCME2_ADV.v
 ../rtl/XILINX/RAMB16_S9.v
 ../rtl/XILINX/RAMB36E1.v
+../rtl/XILINX/RAMB36SDP.v
 ../rtl/wb_ram/rtl/verilog/wb_ram_xilinx_bank.v
 ../rtl/wb_ram/rtl/verilog/wb_ram_xilinx.v

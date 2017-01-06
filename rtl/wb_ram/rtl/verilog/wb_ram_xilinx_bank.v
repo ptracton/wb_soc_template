@@ -36,7 +36,7 @@ module wb_ram_xilinx_bank (/*AUTOARG*/
    wire [3:0]        enable = {4{bank_select}};
 
 
-`ifdef XILINX_RAMB16_S9
+`ifndef XILINX_RAMB16_S9
    //
    // RAMS -- the RAMB16_S9 is lifted from ISE
    //

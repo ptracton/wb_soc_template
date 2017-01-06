@@ -57,6 +57,7 @@ module testbench;
    //
    // The actual test cases that are being tested
    //
+   reg [31:0] local_mem[0:16384];   
    test_case test_case();   
 
    
