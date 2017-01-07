@@ -8,8 +8,9 @@
 // Update Count    : 0
 // Status          : Unknown, Use with caution!
 
-`include "timescale.v"
+`ifdef SIMULATION
 `include "simulation_includes.vh"
+`endif
 
 module fw_interface_logic (/*AUTOARG*/
    // Inputs
@@ -17,6 +18,7 @@ module fw_interface_logic (/*AUTOARG*/
    new_compare, report_reg, warning_reg, error_reg, expected_reg,
    measured_reg, index, data, write_mem
    ) ;
+
    input wire wb_clk_i;
    input wire wb_rst_i;
 
@@ -35,6 +37,7 @@ module fw_interface_logic (/*AUTOARG*/
    input wire [7:0]  data;
    input wire        write_mem;
    
+`ifdef SIMULATION   
    reg [7:0]         string_mem[8*64:0];
    
    always @(posedge wb_clk_i)
@@ -63,8 +66,6 @@ module fw_interface_logic (/*AUTOARG*/
          #1 string_mem[i] = 0;           
          #1 i = i + 1;
       end
-//      $display("%s", test_string);
-      
       `TEST_COMPARE(test_string,0,0);
    end // always @ (posedge new_report_rising)
 
@@ -88,10 +89,9 @@ module fw_interface_logic (/*AUTOARG*/
          #1 string_mem[i] = 0;           
          #1 i = i + 1;
       end
-//      $display("%s", test_string);
-      
       `TEST_COMPARE(test_string,expected_reg,measured_reg);
    end // always @ (posedge new_report_rising)
    
+`endif
    
 endmodule // fw_interface_logic

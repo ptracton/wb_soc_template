@@ -239,7 +239,7 @@ module soc_template (/*AUTOARG*/
                   .baud_o()
 	              );
 
-`ifdef SIMULATION
+//`ifdef SIMULATION
    wire [31:0] trigger_reg;   
    fw_interface fw_if(
                       // Outputs
@@ -261,12 +261,14 @@ module soc_template (/*AUTOARG*/
                       .wb_stb_i(wb_m2s_fw_interface_stb), 
                       .interrupts(interrupts)
                       ) ;
+/* -----\/----- EXCLUDED -----\/-----
    
 `else // !`ifdef SIMULATION
    assign wb_s2m_fw_interface_ack = 0;
    assign wb_s2m_fw_interface_err = 0;
    assign wb_s2m_fw_interface_dat = 0;   
 `endif
+ -----/\----- EXCLUDED -----/\----- */
 
    
 endmodule // soc_template

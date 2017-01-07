@@ -8,8 +8,6 @@
 // Update Count    : 0
 // Status          : Unknown, Use with caution!
 
-`include "timescale.v"
-
 module fw_interface (/*AUTOARG*/
    // Outputs
    wb_ack_o, wb_err_o, wb_rty_o, wb_dat_o, trigger_reg,

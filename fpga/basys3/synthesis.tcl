@@ -64,7 +64,10 @@ read_verilog -library xil_defaultlib {
     ../../rtl/MOR1KX/rtl/verilog/mor1kx_store_buffer.v
     ../../rtl/MOR1KX/rtl/verilog/mor1kx_branch_predictor_simple.v
     ../../rtl/MOR1KX/rtl/verilog/mor1kx_decode.v
-    ../../rtl/MOR1KX/rtl/verilog/mor1kx_ticktimer.v    
+    ../../rtl/MOR1KX/rtl/verilog/mor1kx_ticktimer.v
+    ../../testbench/fw_interface/fw_interface.v
+    ../../testbench/fw_interface/fw_interface_logic.v
+    ../../testbench/fw_interface/fw_interface_wb.v
 }
 read_xdc basys3.xdc
 set_property used_in_implementation false [get_files basys3.xdc]

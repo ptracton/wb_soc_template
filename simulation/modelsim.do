@@ -7,7 +7,7 @@ exec make TARGET=${1} CPU=${2}
 
 vlib work
 
-vlog ${1} +incdir+../testbench +define+${3}
+vlog ${1} +incdir+../testbench +define+${3}  +define+WISHBONE_CPU_${2}
 
 vlog ../rtl/system_controller/system_controller.v +define+${3}
 
@@ -46,7 +46,7 @@ vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/  +def
 
 vlog ../testbench/fw_interface/fw_interface.v +incdir+../testbench
 vlog ../testbench/fw_interface/fw_interface_wb.v +incdir+../testbench +define+WISHBONE_CPU_${2}
-vlog ../testbench/fw_interface/fw_interface_logic.v +incdir+../testbench
+vlog ../testbench/fw_interface/fw_interface_logic.v +incdir+../testbench +define+SIMULATION -timescale "1ns/1ns"
 vlog ../rtl/tools/edge_detection.v +incdir+../testbench
 
 if {${2} == "LM32"} {

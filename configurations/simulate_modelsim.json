@@ -34,7 +34,7 @@
         
 	    "test_case" : {
 	        "executable": "vlog",
-	        "arguments" : " $simulation.v +incdir+../testbench"	
+	        "arguments" : " $simulation.v +incdir+../testbench +define+$tool"	
 	    },        
 	    "simulation" : {
 	        "executable": "vsim",
