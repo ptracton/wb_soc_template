@@ -187,7 +187,7 @@ module soc_template (/*AUTOARG*/
    //
    // System ROM
    // 
-   wb_ram #(.depth(32768))
+   wb_rom #(.depth(32768))
    rom0(
         .wb_clk_i(clk_i),
         .wb_rst_i(rst_i),
@@ -195,7 +195,7 @@ module soc_template (/*AUTOARG*/
         .wb_adr_i(wb_m2s_rom_adr[14:0]),
         .wb_dat_i(wb_m2s_rom_dat),
         .wb_sel_i(wb_m2s_rom_sel),
-        .wb_we_i(VSS),
+//        .wb_we_i(VSS),
         .wb_bte_i(wb_m2s_rom_bte),
         .wb_cti_i(wb_m2s_rom_cti),
         .wb_cyc_i(wb_m2s_rom_cyc),

@@ -57,10 +57,18 @@ module system_controller (/*AUTOARG*/
    
  `ifdef ALTERA
    initial begin
-      $display("ALTERA SYSCON NOT IMPLEMENTED YET!");
-      $finish;      
+      $display("ALTERA SYSCON");
    end
-   
+      system_controller_altera sys_con_alt(/*AUTOINST*/
+                                           // Outputs
+                                           .clk_i               (clk_i),
+                                           .rst_i               (rst_i),
+                                           .nrst_i              (nrst_i),
+                                           // Inputs
+                                           .clk_sys_i           (clk_sys_i),
+                                           .rst_sys_i           (rst_sys_i));
+      
+      
  `endif
    
 `endif //  `ifdef RTL 

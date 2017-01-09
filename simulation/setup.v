@@ -31,6 +31,11 @@ initial begin
    $readmemh( {simulation_name, ".vh.mem"}, `PROGRAM_ROM.ram0.mem);
 `endif
 
+`ifdef ALTERA
+   $display("ALTERA SIM: %s", {simulation_name, ".vh.mem"});
+   $readmemh( {simulation_name, ".vh.mem"}, `PROGRAM_ROM.ram0.altsyncram_component.m_default.altsyncram_inst.mem_data);
+`endif
+      
 `ifdef XILINX
  `ifdef WISHBONE_CPU_MOR1KX
    cpu_name = "MOR1KX";

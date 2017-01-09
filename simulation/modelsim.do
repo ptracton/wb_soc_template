@@ -1,11 +1,8 @@
 exec make TARGET=${1} CPU=${2} clean
 exec make TARGET=${1} CPU=${2}
 
-
-
-
-
 vlib work
+
 
 vlog ${1} +incdir+../testbench +define+${3}  +define+WISHBONE_CPU_${2}
 
@@ -39,6 +36,7 @@ vlog ../tasks/uart_tasks.v +incdir+../rtl/uart16550/rtl/verilog/
 vlog ../behvioral/wb_master/wb_master_model.v +incdir+../testbench
 
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/ +define+${3}
+vlog ../rtl/wb_ram/rtl/verilog/wb_rom.v +incdir+../behvioral/wb_common/ +define+${3}
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
 
@@ -65,6 +63,11 @@ if {${2} == "RISCV"} {
 if {${3} == "XILINX"} {
    do xilinx.do
    vsim -voptargs=+acc work.testbench work.glbl +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_${2}
+}
+
+if {${3} == "ALTERA"} {
+   do altera.do         
+   vsim -voptargs=+acc -L altera_mf_ver -t ps work.testbench work.glbl +define+ALTERA +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_${2}
 }
 
 if {${3} == "RTL"} {

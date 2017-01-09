@@ -79,7 +79,23 @@ module wb_ram
                       .dout (wb_dat_o)
                       );
    
- `endif
+ `else // !`ifdef XILINX   
+
+  `ifdef ALTERA
+   wb_ram_32x8192 ram0(
+                       .address(adr_r),
+	                   .byteena(),
+	                   .clock(wb_clk_i),
+	                   .data(wb_dat_i),
+	                   .wren({4{ram_we}} & wb_sel_i),
+	                   .q(wb_dat_o)
+                       );
+   
+   
+  `endif   
+   
+     
+ `endif // !`ifdef XILINX
 `endif // !`ifdef RTL
    
 endmodule
