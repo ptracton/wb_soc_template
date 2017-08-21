@@ -68,6 +68,8 @@
 //
 ../rtl/wb_ram/rtl/verilog/wb_ram.v
 ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v
+../rtl/wb_ram/rtl/verilog/wb_rom.v
+
 
 //
 // CPU Wrapper for switching which CPU to use
