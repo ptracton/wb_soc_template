@@ -1,0 +1,75 @@
+CPU = ZIP
+TEST_NAME = none
+TEST_CASE = $(basename $(TEST_NAME))
+TEST_CASE_SRC = $(TEST_CASE).c
+TEST_CASE_OBJ = $(TEST_CASE).o
+ELF_REQUIREMENTS = $(TEST_CASE_OBJ) 
+ELF_FILE  = $(TEST_CASE).elf
+LIST_FILE = $(TEST_CASE)_$(CPU).lst
+VH_FILE = $(TEST_CASE).vh
+#ENTRY_POINT = ../firmware/$(CPU)/boot/objects/crt0.o
+#ENTRY_POINT = /opt/CrossCompilers/zip/zip-elf/lib/crt0rom.o
+
+FIRMWARE_ROOT = ../firmware
+FIRMWARE_CPU_ROOT = $(FIRMWARE_ROOT)/$(CPU)
+LIB_BOOT = zipboot
+LIB_BOOT_DIR = $(FIRMWARE_CPU_ROOT)/boot/lib
+
+DEVICE_DRIVERS_DIR     = $(FIRMWARE_ROOT)/device_drivers
+DEVICE_DRIVERS_INC_DIR = $(DEVICE_DRIVERS_DIR)/includes
+DEVICE_DRIVERS_LIB_DIR = $(DEVICE_DRIVERS_DIR)/ZIP_lib/
+DEVICE_DRIVERS_LIB = ZIP_device_drivers
+
+BOOT_DIR = $(FIRMWARE_ROOT)/$(CPU)/boot
+BOOT_INC_DIR = $(BOOT_DIR)/includes
+BOOT_LIB_DIR = $(BOOT_DIR)/lib
+BOOT_LIB     = ZIPboot
+
+DRIVERS_DIR     = $(FIRMWARE_ROOT)/$(CPU)/drivers
+DRIVERS_INC_DIR = -I $(DRIVERS_DIR)/device -I$(DRIVERS_DIR)/service
+DRIVERS_LIB_DIR = $(DRIVERS_DIR)/lib
+DRIVERS_LIB     = ZIPdrivers
+
+CINCLUDES  = -I /home/ptracton/Downloads/gtools/zip/zip-elf/include/
+CINCLUDES += -I$(DEVICE_DRIVERS_INC_DIR)
+CINCLUDES += -I$(BOOT_INC_DIR) 
+CINCLUDES += $(DRIVERS_INC_DIR)
+
+CFLAGS += $(CINCLUDES) -g -gdwarf-2 -D$(CPU)  #-std=gnu99 -fno-builtin -fomit-frame-pointer -ffunction-sections #-Wall -Werror -Wextra
+
+LD_FLAGS =  -nostdlib -nodefaultlibs -nostartfiles
+LD_FLAGS += -T$(FIRMWARE_CPU_ROOT)/linker/zip.ld
+LD_FLAGS += -L $(DEVICE_DRIVERS_LIB_DIR)  -l$(DEVICE_DRIVERS_LIB)
+LD_FLAGS += -L $(BOOT_LIB_DIR) -l$(BOOT_LIB)
+#LD_FLAGS += -L $(DRIVERS_LIB_DIR) -l$(DRIVERS_LIB)
+LD_FLAGS += -lgcc -lnosys -lc 
+
+include $(FIRMWARE_CPU_ROOT)/environment.mk
+
+all: $(ELF_FILE) $(LIST_FILE) $(VH_FILE)
+
+$(LIST_FILE): $(ELF_FILE)
+	@echo "List File: $(LIST_FILE)"
+	@$(OBJDUMP) -xStsd $(ELF_FILE) > $(LIST_FILE)
+
+$(ELF_FILE): $(ELF_REQUIREMENTS)
+	@$(MAKE) -C ../firmware/device_drivers CPU=ZIP
+#	@$(MAKE) -C ../firmware/$(CPU)/drivers/ CPU=ZIP
+	@$(MAKE) -C ../firmware/$(CPU)/boot/ CPU=ZIP
+	@echo "Linking $(ELF_FILE)"
+	$(LD) -o $(ELF_FILE) $(ENTRY_POINT)  $(ELF_REQUIREMENTS)  $(LD_FLAGS) 
+
+%.vh: %.elf
+	@$(OBJCOPY) -O srec $< $@.tmp
+	@srec_cat $@.tmp --output $@.mem --VMEM
+
+
+%.o:%.c
+	@echo "Compiling  $<"
+	@$(CC) $(CFLAGS) -o $@ -c $< -MMD -MF $(*F).d
+
+clean:
+	$(RM) -f $(ELF_FILE) $(TARGET).d $(LIST_FILE) $(TEST_CASE_OBJ) *.bin  *~
+	@$(MAKE) -C ../firmware/device_drivers CPU=ZIP clean
+	@$(MAKE) -C ../firmware/$(CPU)/boot/ clean
+#	@$(MAKE) -C ../firmware/$(CPU)/drivers/ clean	

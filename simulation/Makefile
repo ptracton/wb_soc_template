@@ -22,6 +22,9 @@ ifeq ($(CPU), RISCV)
 	CPU_MAKEFILE = Makefile.riscv
 endif
 
+ifeq ($(CPU), ZIP)
+	CPU_MAKEFILE = Makefile.zip
+endif
 
 all:
 	@echo $(CPU_MAKEFILE)

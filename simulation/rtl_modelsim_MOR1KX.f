@@ -31,6 +31,7 @@ vlog ../tasks/uart_tasks.v +incdir+../rtl/uart16550/rtl/verilog/
 vlog ../behvioral/wb_master/wb_master_model.v +incdir+../testbench
 
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/
+vlog ../rtl/wb_ram/rtl/verilog/wb_rom.v +incdir+../behvioral/wb_common/
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
 
