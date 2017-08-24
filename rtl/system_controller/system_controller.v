@@ -23,6 +23,11 @@ module system_controller (/*AUTOARG*/
    
 
 `ifdef RTL
+   initial begin
+      $display("RTL SYSCON!");
+      //$finish;      
+   end
+   
    assign clk_i = clk_sys_i;
    
    reg [4:0] reset_count =0;
@@ -70,6 +75,10 @@ module system_controller (/*AUTOARG*/
       
       
  `endif
+
+   initial begin
+      $error("SYSCON WON'T WORK");      
+   end
    
 `endif //  `ifdef RTL 
 

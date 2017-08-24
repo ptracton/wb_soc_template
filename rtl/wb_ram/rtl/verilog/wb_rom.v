@@ -56,19 +56,30 @@ module wb_rom
    //TODO:ck for burst address errors
    assign wb_err_o =  1'b0;
 
-`ifdef RTL   
+`ifdef RTL
+
+   initial begin
+      $display("RTL ROM: %s" % memfile);      
+   end
+   
    wb_ram_generic
      #(.depth(depth/4),
        .memfile (memfile))
    ram0
      (.clk (wb_clk_i),
-      .we  (ram_we),
+      .we  (4'b0),
       .din (wb_dat_i),
       .waddr(adr_r[aw-1:2]),
       .raddr (adr[aw-1:2]),
       .dout (wb_dat_o));
 `else // !`ifdef RTL
  `ifdef XILINX
+   
+   initial begin
+      $display("XILINX ROM");      
+   end
+   
+   
    wb_ram_xilinx ram0(
                       .clk (wb_clk_i),
                       .rst (wb_rst_i),
@@ -82,6 +93,10 @@ module wb_rom
  `else // !`ifdef XILINX   
 
   `ifdef ALTERA
+   initial begin
+      $display("ALTERA ROM");      
+   end
+   
    wb_rom_32x8192 ram0(
                        .address(adr_r),
 	                   .clock(wb_clk_i),
@@ -93,6 +108,9 @@ module wb_rom
    
      
  `endif // !`ifdef XILINX
+   initial begin
+      $error("NO ROM!");      
+   end
 `endif // !`ifdef RTL
    
 endmodule

@@ -1,9 +1,12 @@
+make TARGET=${1} CPU=LM32
+
+
 vlib work
 
 
 vlog ../rtl/soc_template.v +incdir+../rtl/bus_matrix
 
-vlog ../rtl/system_controller/system_controller.v
+vlog ../rtl/system_controller/system_controller.v +define+RTL
 
 vlog ../rtl/bus_matrix/soc_bus_matrix.v +incdir+../rtl/bus_matrix
 vlog ../behvioral/wb_intercon/wb_arbiter.v +incdir+../rtl/bus_matrix +incdir+../behvioral/verilog_utils
@@ -30,8 +33,8 @@ vlog ../tasks/uart_tasks.v +incdir+../rtl/uart16550/rtl/verilog/
 
 vlog ../behvioral/wb_master/wb_master_model.v +incdir+../testbench
 
-vlog ../rtl/wb_ram/rtl/verilog/wb_rom.v +incdir+../behvioral/wb_common/
-vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/
+vlog ../rtl/wb_ram/rtl/verilog/wb_rom.v +incdir+../behvioral/wb_common/  +define+RTL
+vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/  +define+RTL
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
 vlog ../testbench/fw_interface/fw_interface.v
@@ -45,6 +48,8 @@ vlog ../rtl/cpu/lm32_config.v
 
 do ../rtl/LM32/lm32_rtl.do
 
-
+vlog ${1}.v +incdir+../testbench +define+RTL +define+SIMULATION_NAME=${1}
+      
 vsim -voptargs=+acc work.testbench
+do wave.do
 run -all

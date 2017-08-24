@@ -3,7 +3,7 @@ vlib work
 
 vlog ../rtl/soc_template.v +incdir+../rtl/bus_matrix
 
-vlog ../rtl/system_controller/system_controller.v
+vlog ../rtl/system_controller/system_controller.v +define+RTL
 
 vlog ../rtl/bus_matrix/soc_bus_matrix.v +incdir+../rtl/bus_matrix
 vlog ../behvioral/wb_intercon/wb_arbiter.v +incdir+../rtl/bus_matrix +incdir+../behvioral/verilog_utils
