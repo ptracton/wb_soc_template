@@ -92,6 +92,17 @@ module	pfcache(i_clk, i_rst, i_new_pc, i_clear_cache,
 	reg	[(BUSW-1):0]	r_pc_cache, r_last_cache;
 	reg	[(AW-1):0]	r_pc, r_lastpc;
 	reg	isrc;
+
+   initial isrc = 0;
+   initial r_pc_cache = 0;
+   initial r_last_cache = 0;
+   initial lastpc = 0;
+   initial rdaddr = 0;
+   initial tagvalipc =0;
+   initial tagvallst =0;
+   initial illegal_cache =0;
+   
+   
 	always @(posedge i_clk)
 	begin
 		// We don't have the logic to select what to read, we must

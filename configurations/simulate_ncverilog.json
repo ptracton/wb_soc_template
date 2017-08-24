@@ -36,7 +36,7 @@
         },
         "simulation" : {
             "executable": "ncverilog",
-            "arguments" : " -64bit -ALLOWREDEFINITION -v93 +access+rwc -clean -cdslib cds.lib -f rtl_sim.f -f $cpu.f -f rtl_$technology.f -timescale 1ns/1ns +define+NCVERILOG +define+WISHBONE_CPU_$cpu +define+$technology +loadpli1=/cadtools/apps/design_compiler/prod/auxx/syn/power/vpower/lib-amd64/libvpower.so:saifpli_bootstrap $simulation.v -l $simulation.$cpu.$tool.log"
+            "arguments" : " -64bit -ALLOWREDEFINITION -v93 +access+rwc -clean -cdslib cds.lib -f rtl_sim.f -f  ../rtl/$cpu/$cpu.f -f rtl_$technology.f -timescale 1ns/1ns +define+NCVERILOG +define+WISHBONE_CPU_$cpu +define+$technology +loadpli1=/cadtools/apps/design_compiler/prod/auxx/syn/power/vpower/lib-amd64/libvpower.so:saifpli_bootstrap $simulation.v -l $simulation.$cpu.$tool.log"
         }   
     },
     "remove_files": "INCA_libs/ cds.lib *.shm ncverilog.log"

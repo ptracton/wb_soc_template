@@ -93,7 +93,9 @@ module	dcache(i_clk, i_rst, i_pipe_stb, i_lock,
 	input	[31:0]		i_data;
 	input	[(NAUX-1):0]	i_oreg;	// Aux data, such as reg to write to
 	// Outputs, going back to the CPU
-	output	wire		o_busy, o_pipe_stalled, o_valid, o_err;
+   output	wire            o_busy, o_pipe_stalled; /*o_valid, o_err*/
+   output reg           o_valid, o_err;
+   
 	output reg [(NAUX-1):0]	o_wreg;
 	output	reg	[31:0]	o_data;
 	// Wishbone bus master outputs
@@ -109,7 +111,15 @@ module	dcache(i_clk, i_rst, i_pipe_stb, i_lock,
 
 	reg	cyc, stb, last_ack, end_of_line, last_line_stb;
 
-
+   //
+   // Missing registers added by PET 8/24/2017
+   //
+   reg  r_wb_cyc_gbl;
+   reg  lock_gbl;
+   reg  r_wb_cyc_lcl;
+   reg  lock_lcl;
+   
+   
 	reg	[((1<<LGNLINES)-1):0] c_v;	// One bit per cache line, is it valid?
 	reg	[(AW-LS-1):0]	c_vtags	[0:((1<<LGNLINES)-1)];
 	reg	[31:0]		c_mem	[0:((1<<CS)-1)];
