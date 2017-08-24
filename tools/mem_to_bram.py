@@ -55,7 +55,7 @@ if __name__ == "__main__":
     bram2_init = []
     bram3_init = []
     
-    print("ADDRESS\t\tByte3\tByte2\tByte1\tByte0")
+#    print("ADDRESS\t\tByte3\tByte2\tByte1\tByte0")
     for line in mem_file_lines[1:]:
         values = line.split(' ')
         address = int(values[0][1:], 16)
@@ -80,7 +80,7 @@ if __name__ == "__main__":
             bram1_init.append(byte1_str)
             bram0_init.append(byte0_str)
             
-            print("0x%08x\t0x%02X\t\t0x%02X\t\t0x%02X\t\t0x%02X" % (address, byte0, byte1, byte2, byte3))
+#            print("0x%08x\t0x%02X\t\t0x%02X\t\t0x%02X\t\t0x%02X" % (address, byte0, byte1, byte2, byte3))
             lst_file.write("%08X\t0x%02X%02X%02X%02X\n"% (address, byte3, byte2, byte1, byte0))
             index = index + 1
             if index % 32 == 0:

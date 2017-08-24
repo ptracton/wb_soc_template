@@ -34,17 +34,17 @@ vlog ../rtl/wb_ram/rtl/verilog/wb_rom.v +incdir+../behvioral/wb_common/
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
+
+vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/ +define+WISHBONE_CPU_ZIP
+
 vlog ../testbench/fw_interface/fw_interface.v
 vlog ../testbench/fw_interface/fw_interface_wb.v
 vlog ../testbench/fw_interface/fw_interface_logic.v
 
 
-vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/ +define+WISHBONE_CPU_LM32
-
-vlog ../rtl/cpu/lm32_config.v
-
-do ../rtl/LM32/lm32_rtl.do
+do ../rtl/ZIP/zip_rtl.do
 
 
 vsim -voptargs=+acc work.testbench
 run -all
+
