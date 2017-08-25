@@ -18,5 +18,6 @@
             "path":"{soc_template/rom0/ram0/bank0/ram3}",
             "file":"../../simulation/uart_interrupt_bank0_ram3.txt"            
         }         
-    }
+    },
+    "remove_files" : " *.history bram*.txt ncverilog.key"
 }

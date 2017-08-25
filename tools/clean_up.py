@@ -27,6 +27,7 @@ if __name__ == "__main__":
     json_file_list = os.listdir(configurations_dir)
     #print (json_file_list)
     for json_file in json_file_list:
+        print("\nJSON FILE: %s" % json_file)
         if json_file.split(".")[1] == "json":            
             try:
                 f = open(configurations_dir+json_file, "r")
