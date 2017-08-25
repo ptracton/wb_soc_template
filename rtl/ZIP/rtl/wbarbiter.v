@@ -49,7 +49,7 @@
 // for more details.
 //
 // You should have received a copy of the GNU General Public License along
-// with this program.  (It's in the $(ROOT)/doc directory, run make with no
+// with this program.  (It's in the $(ROOT)/doc directory.  Run make with no
 // target there if the PDF file isn't present.)  If not, see
 // <http://www.gnu.org/licenses/> for a copy.
 //
@@ -75,17 +75,23 @@ module	wbarbiter(i_clk, i_rst,
 	// Wishbone doesn't use an i_ce signal.  While it could, they dislike
 	// what it would (might) do to the synchronous reset signal, i_rst.
 	input	wire			i_clk, i_rst;
-	input	wire	[(AW-1):0]	i_a_adr, i_b_adr;
-	input	wire	[(DW-1):0]	i_a_dat, i_b_dat;
-	input	wire	[(DW/8-1):0]	i_a_sel, i_b_sel;
-	input	wire			i_a_we, i_a_stb, i_a_cyc;
-	input	wire			i_b_we, i_b_stb, i_b_cyc;
-	output	wire			o_a_ack, o_b_ack, o_a_stall, o_b_stall,
-					o_a_err, o_b_err;
+	// Bus A
+	input	wire			i_a_cyc, i_a_stb, i_a_we;
+	input	wire	[(AW-1):0]	i_a_adr;
+	input	wire	[(DW-1):0]	i_a_dat;
+	input	wire	[(DW/8-1):0]	i_a_sel;
+	output	wire			o_a_ack, o_a_stall, o_a_err;
+	// Bus B
+	input	wire			i_b_cyc, i_b_stb, i_b_we;
+	input	wire	[(AW-1):0]	i_b_adr;
+	input	wire	[(DW-1):0]	i_b_dat;
+	input	wire	[(DW/8-1):0]	i_b_sel;
+	output	wire			o_b_ack, o_b_stall, o_b_err;
+	//
+	output	wire			o_cyc, o_stb, o_we;
 	output	wire	[(AW-1):0]	o_adr;
 	output	wire	[(DW-1):0]	o_dat;
 	output	wire	[(DW/8-1):0]	o_sel;
-	output	wire			o_we, o_stb, o_cyc;
 	input	wire			i_ack, i_stall, i_err;
 
 	// All the fancy stuff here is done with the three primary signals:
@@ -112,7 +118,7 @@ module	wbarbiter(i_clk, i_rst,
 	//	We were just high and the owner no longer wants the bus
 	// WISHBONE Spec recommends no logic between a FF and the o_cyc
 	//	This violates that spec.  (Rec 3.15, p35)
-   wire	w_a_owner, w_b_owner;   
+	wire	w_a_owner, w_b_owner;   
 	assign o_cyc = ((~r_cyc)&&((i_a_cyc)||(i_b_cyc))) || ((r_cyc)&&((w_a_owner)||(w_b_owner)));
 
 

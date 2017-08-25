@@ -42,10 +42,10 @@ vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
 vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/ +define+WISHBONE_CPU_ZIP
 
-vlog ../testbench/fw_interface/fw_interface.v
-vlog ../testbench/fw_interface/fw_interface_wb.v
-vlog ../testbench/fw_interface/fw_interface_logic.v 
-
+vlog ../testbench/fw_interface/fw_interface.v +define+SIMULATION
+vlog ../testbench/fw_interface/fw_interface_wb.v +define+SIMULATION 
+vlog ../testbench/fw_interface/fw_interface_logic.v +define+SIMULATION +incdir+../testbench 
+vlog ../rtl/tools/edge_detection.v +incdir+../testbench 
 
 do ../rtl/ZIP/zip_rtl.do
 

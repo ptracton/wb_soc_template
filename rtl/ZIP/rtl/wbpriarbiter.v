@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 //
 // Filename: 	wbpriarbiter.v
 //
@@ -51,6 +51,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
 //
+`default_nettype	none
+//
 module	wbpriarbiter(i_clk,
 	// Bus A
 	i_a_cyc, i_a_stb, i_a_we, i_a_adr, i_a_dat, i_a_sel, o_a_ack, o_a_stall, o_a_err,
@@ -86,14 +88,14 @@ module	wbpriarbiter(i_clk,
 	//	We were just high and the owner no longer wants the bus
 	// WISHBONE Spec recommends no logic between a FF and the o_cyc
 	//	This violates that spec.  (Rec 3.15, p35)
-   reg                      r_a_owner;
-   initial	r_a_owner = 1'b1;
-   
+   	reg	r_a_owner;
 	assign o_cyc = (r_a_owner) ? i_a_cyc : i_b_cyc;
+	initial	r_a_owner = 1'b1;
 	always @(posedge i_clk)
-		if (~i_b_cyc)
+		if (!i_b_cyc)
 			r_a_owner <= 1'b1;
-		else if ((i_b_cyc)&&(~i_a_cyc))
+		// Allow B to set its CYC line w/o activating this interface
+		else if ((i_b_cyc)&&(i_b_stb)&&(!i_a_cyc))
 			r_a_owner <= 1'b0;
 
 
@@ -112,16 +114,16 @@ module	wbpriarbiter(i_clk,
 	// for when things happen on the bus via VERILATOR when timing and
 	// logic counts don't matter.
 	//
-	assign o_stb = (o_cyc)?((r_a_owner) ? i_a_stb : i_b_stb):0;
-	assign o_adr = (o_stb)?((r_a_owner) ? i_a_adr : i_b_adr):0;
-	assign o_dat = (o_stb)?((r_a_owner) ? i_a_dat : i_b_dat):0;
-	assign o_sel = (o_stb)?((r_a_owner) ? i_a_sel : i_b_sel):0;
+	assign o_stb     = (o_cyc)? ((r_a_owner) ? i_a_stb : i_b_stb):0;
+	assign o_adr     = (o_stb)? ((r_a_owner) ? i_a_adr : i_b_adr):0;
+	assign o_dat     = (o_stb)? ((r_a_owner) ? i_a_dat : i_b_dat):0;
+	assign o_sel     = (o_stb)? ((r_a_owner) ? i_a_sel : i_b_sel):0;
 	assign o_a_ack   = (o_cyc)&&( r_a_owner) ? i_ack   : 1'b0;
-	assign o_b_ack   = (o_cyc)&&(~r_a_owner) ? i_ack   : 1'b0;
+	assign o_b_ack   = (o_cyc)&&(!r_a_owner) ? i_ack   : 1'b0;
 	assign o_a_stall = (o_cyc)&&( r_a_owner) ? i_stall : 1'b1;
-	assign o_b_stall = (o_cyc)&&(~r_a_owner) ? i_stall : 1'b1;
-	assign o_a_err = (o_cyc)&&( r_a_owner) ? i_err : 1'b0;
-	assign o_b_err = (o_cyc)&&(~r_a_owner) ? i_err : 1'b0;
+	assign o_b_stall = (o_cyc)&&(!r_a_owner) ? i_stall : 1'b1;
+	assign o_a_err   = (o_cyc)&&( r_a_owner) ? i_err : 1'b0;
+	assign o_b_err   = (o_cyc)&&(!r_a_owner) ? i_err : 1'b0;
 `else
 	assign o_stb = (r_a_owner) ? i_a_stb : i_b_stb;
 	assign o_adr = (r_a_owner) ? i_a_adr : i_b_adr;
@@ -132,17 +134,17 @@ module	wbpriarbiter(i_clk,
 	// the master in question does not own the bus.  Hence we force it
 	// low if the particular master doesn't own the bus.
 	assign	o_a_ack   = ( r_a_owner) ? i_ack   : 1'b0;
-	assign	o_b_ack   = (~r_a_owner) ? i_ack   : 1'b0;
+	assign	o_b_ack   = (!r_a_owner) ? i_ack   : 1'b0;
 
 	// Stall must be asserted on the same cycle the input master asserts
 	// the bus, if the bus isn't granted to him.
 	assign	o_a_stall = ( r_a_owner) ? i_stall : 1'b1;
-	assign	o_b_stall = (~r_a_owner) ? i_stall : 1'b1;
+	assign	o_b_stall = (!r_a_owner) ? i_stall : 1'b1;
 
 	//
 	//
 	assign	o_a_err = ( r_a_owner) ? i_err : 1'b0;
-	assign	o_b_err = (~r_a_owner) ? i_err : 1'b0;
+	assign	o_b_err = (!r_a_owner) ? i_err : 1'b0;
 `endif
 
 endmodule
