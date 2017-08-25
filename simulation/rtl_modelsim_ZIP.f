@@ -1,3 +1,8 @@
+
+#rm -f ${1}_ZIP.lst ${1}.vh.mem ${1}.o ${1}.elf ${1}.vh.tmp
+#make TARGET=${1} CPU=ZIP
+
+
 vlib work
 
 
@@ -30,8 +35,8 @@ vlog ../tasks/uart_tasks.v +incdir+../rtl/uart16550/rtl/verilog/
 
 vlog ../behvioral/wb_master/wb_master_model.v +incdir+../testbench
 
-vlog ../rtl/wb_ram/rtl/verilog/wb_rom.v +incdir+../behvioral/wb_common/
-vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/
+vlog ../rtl/wb_ram/rtl/verilog/wb_rom.v +incdir+../behvioral/wb_common/ +define+RTL
+vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/ +define+RTL
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
 
@@ -39,12 +44,15 @@ vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/ +defi
 
 vlog ../testbench/fw_interface/fw_interface.v
 vlog ../testbench/fw_interface/fw_interface_wb.v
-vlog ../testbench/fw_interface/fw_interface_logic.v
+vlog ../testbench/fw_interface/fw_interface_logic.v 
 
 
 do ../rtl/ZIP/zip_rtl.do
 
 
+vlog ${1}.v +incdir+../testbench +define+RTL +define+SIMULATION_NAME=${1}
+
 vsim -voptargs=+acc work.testbench
+do wave.do
 run -all
 

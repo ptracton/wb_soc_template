@@ -504,6 +504,7 @@ module wishbone_cpu (/*AUTOARG*/
  `define ZWBM_INSTR_ADDR_END   32'h00001000
 
    //Determine if this is a instruction or data access
+/* -----\/----- EXCLUDED -----\/-----
    assign z_inst_or_data = ((zwbm_adr_o >= `ZWBM_INSTR_ADDR_START) && (zwbm_adr_o <`ZWBM_INSTR_ADDR_END));
    
    assign iwbm_adr_o = (z_inst_or_data) ? {2'b00, zwbm_adr_o} : 32'h0;
@@ -512,9 +513,7 @@ module wishbone_cpu (/*AUTOARG*/
    assign iwbm_cyc_o = (z_inst_or_data) ? zwbm_cyc_o : 0;
    assign iwbm_sel_o = (z_inst_or_data) ? zwbm_sel_o : 0;
    assign iwbm_we_o  = (z_inst_or_data) ? zwbm_we_o : 0;   
-   assign iwbm_bte_o = 2'b0;
-   assign iwbm_cti_o = 3'b0;
-
+  
    assign zwbm_err_i = (z_inst_or_data) ? iwbm_err_i : dwbm_err_i;
    assign zwbm_ack_i = (z_inst_or_data) ? iwbm_ack_i : dwbm_ack_i;
    assign zwbm_rty_i = (z_inst_or_data) ? iwbm_rty_i : dwbm_rty_i;
@@ -528,8 +527,23 @@ module wishbone_cpu (/*AUTOARG*/
    assign dwbm_we_o  = (!z_inst_or_data) ? zwbm_we_o : 0;   
    assign dwbm_bte_o = 2'b0;
    assign dwbm_cti_o = 3'b0;
+ -----/\----- EXCLUDED -----/\----- */
+   assign iwbm_adr_o[31:30] = 2'b00;
+   assign iwbm_bte_o = 2'b0;
+   assign iwbm_cti_o = 3'b0;
 
-   
+   assign dwbm_adr_o = 32'h0;
+   assign dwbm_dat_o = 32'h0;
+   assign dwbm_stb_o = 0;
+   assign dwbm_cyc_o = 0;
+   assign dwbm_sel_o = 0;
+   assign dwbm_we_o  = 0;   
+   assign dwbm_bte_o = 2'b0;
+   assign dwbm_cti_o = 3'b0;
+
+   wire 		    lcl_cyc;
+   wire 		    lcl_stb;
+      
    zipcpu #(.RESET_ADDRESS(`ZWBM_INSTR_ADDR_START))
    cpu(
 	          .i_clk(clk_i), 
@@ -546,18 +560,18 @@ module wishbone_cpu (/*AUTOARG*/
 	          .o_dbg_cc(),
 	          .o_break(),
 	          // CPU interface to the wishbone bus
-	          .o_wb_gbl_cyc(zwbm_cyc_o), 
-	          .o_wb_gbl_stb(zwbm_stb_o),
-	          .o_wb_lcl_cyc(), 
-	          .o_wb_lcl_stb(),
-	          .o_wb_we(zwbm_we_o), 
-	          .o_wb_addr(zwbm_adr_o), 
-	          .o_wb_data(zwbm_dat_o), 
-	          .o_wb_sel(zwbm_sel_o),
-	          .i_wb_ack(zwbm_ack_i), 
-	          .i_wb_stall(zwbm_rty_i), 
-	          .i_wb_data(zwbm_dat_i),
-	          .i_wb_err(zwbm_err_i),
+	          .o_wb_gbl_cyc(iwbm_cyc_o), 
+	          .o_wb_gbl_stb(iwbm_stb_o),
+	          .o_wb_lcl_cyc(lcl_cyc), 
+	          .o_wb_lcl_stb(lcl_stb),
+	          .o_wb_we(iwbm_we_o), 
+	          .o_wb_addr(iwbm_adr_o[29:0]), 
+	          .o_wb_data(iwbm_dat_o), 
+	          .o_wb_sel(iwbm_sel_o),
+	          .i_wb_ack(iwbm_ack_i), 
+	          .i_wb_stall(iwbm_rty_i), 
+	          .i_wb_data(iwbm_dat_i),
+	          .i_wb_err(iwbm_err_i),
 	          // Accounting/CPU usage interface
 	          .o_op_stall(), 
 	          .o_pf_stall(), 

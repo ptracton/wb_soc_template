@@ -1,3 +1,4 @@
+rm -f ${1}_LM32.lst ${1}.vh.mem ${1}.o ${1}.elf ${1}.vh.tmp
 make TARGET=${1} CPU=LM32
 
 
@@ -37,10 +38,10 @@ vlog ../rtl/wb_ram/rtl/verilog/wb_rom.v +incdir+../behvioral/wb_common/  +define
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/  +define+RTL
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
-vlog ../testbench/fw_interface/fw_interface.v
-vlog ../testbench/fw_interface/fw_interface_wb.v
-vlog ../testbench/fw_interface/fw_interface_logic.v
-
+vlog ../testbench/fw_interface/fw_interface.v +define+SIMULATION
+vlog ../testbench/fw_interface/fw_interface_wb.v +define+SIMULATION 
+vlog ../testbench/fw_interface/fw_interface_logic.v +define+SIMULATION +incdir+../testbench 
+vlog ../rtl/tools/edge_detection.v +incdir+../testbench 
 
 vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/ +define+WISHBONE_CPU_LM32
 

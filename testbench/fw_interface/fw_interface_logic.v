@@ -8,6 +8,8 @@
 // Update Count    : 0
 // Status          : Unknown, Use with caution!
 
+`include "timescale.v"
+
 `ifdef SIMULATION
 `include "simulation_includes.vh"
 `endif
