@@ -1,9 +1,12 @@
+rm -f ${1}_MOR1KX.lst ${1}.vh.mem ${1}.o ${1}.elf ${1}.vh.tmp
+make TARGET=${1} CPU=MOR1KX
+
 vlib work
 
 
 vlog ../rtl/soc_template.v +incdir+../rtl/bus_matrix +define+SIMULATION
 
-vlog ../rtl/system_controller/system_controller.v
+vlog ../rtl/system_controller/system_controller.v +define+RTL
 
 vlog ../rtl/bus_matrix/soc_bus_matrix.v +incdir+../rtl/bus_matrix
 vlog ../behvioral/wb_intercon/wb_arbiter.v +incdir+../rtl/bus_matrix +incdir+../behvioral/verilog_utils
@@ -30,19 +33,25 @@ vlog ../tasks/uart_tasks.v +incdir+../rtl/uart16550/rtl/verilog/
 
 vlog ../behvioral/wb_master/wb_master_model.v +incdir+../testbench
 
-vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/
-vlog ../rtl/wb_ram/rtl/verilog/wb_rom.v +incdir+../behvioral/wb_common/
+vlog ../rtl/wb_ram/rtl/verilog/wb_rom.v +incdir+../behvioral/wb_common/ +define+RTL
+vlog ../rtl/wb_ram/rtl/verilog/wb_ram.v +incdir+../behvioral/wb_common/ +define+RTL
 vlog ../rtl/wb_ram/rtl/verilog/wb_ram_generic.v +incdir+../behvioral/wb_common/
 
 
 vlog ../rtl/cpu/cpu_wrapper.v +incdir+../rtl/cpu/ +incdir+../rtl/includes/ +define+WISHBONE_CPU_MOR1KX
 
-vlog ../testbench/fw_interface/fw_interface.v +incdir+../testbench
-vlog ../testbench/fw_interface/fw_interface_wb.v +incdir+../testbench 
-vlog ../testbench/fw_interface/fw_interface_logic.v +incdir+../testbench
-vlog ../rtl/tools/edge_detection.v +incdir+../testbench
+
+
+vlog ../testbench/fw_interface/fw_interface.v +define+SIMULATION
+vlog ../testbench/fw_interface/fw_interface_wb.v +define+SIMULATION 
+vlog ../testbench/fw_interface/fw_interface_logic.v +define+SIMULATION +incdir+../testbench 
+vlog ../rtl/tools/edge_detection.v +incdir+../testbench 
 
 do ../rtl/MOR1KX/MOR1KX_rtl.do
 
-vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_MOR1KX 
+vlog ${1}.v +incdir+../testbench +define+RTL +define+SIMULATION_NAME=${1}
+ 
+
+vsim -voptargs=+acc work.testbench +define+XILINX +undef+DATA_BUS_WIDTH_8 +define+WISHBONE_CPU_MOR1KX
+do wave.do
 run -all

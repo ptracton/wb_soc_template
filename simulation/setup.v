@@ -44,6 +44,10 @@ initial begin
  `ifdef WISHBONE_CPU_LM32
    cpu_name = "LM32";
  `endif
+
+ `ifdef WISHBONE_CPU_ZIP
+   cpu_name = "ZIP";
+ `endif   
    
    $display("XILINX SIM: %s", {simulation_name, ".vh.mem"});
    $readmemh( {simulation_name, ".vh.mem"},`TB.local_mem);
