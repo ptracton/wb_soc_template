@@ -7,11 +7,11 @@ ELF_REQUIREMENTS = $(TEST_CASE_OBJ)
 ELF_FILE  = $(TEST_CASE).elf
 LIST_FILE = $(TEST_CASE).lst
 VH_FILE = $(TEST_CASE).vh
-ENTRY_POINT = ../firmware/$(CPU)/boot/objects/crt0.o
+ENTRY_POINT = ../firmware/$(CPU)/boot/objects/start.o
 
 FIRMWARE_ROOT = ../firmware
 FIRMWARE_CPU_ROOT = $(FIRMWARE_ROOT)/$(CPU)
-LIB_BOOT = lm32boot
+LIB_BOOT = lriscvboot
 LIB_BOOT_DIR = $(FIRMWARE_CPU_ROOT)/boot/lib
 
 DEVICE_DRIVERS_DIR     = $(FIRMWARE_ROOT)/device_drivers
@@ -19,8 +19,10 @@ DEVICE_DRIVERS_INC_DIR = $(DEVICE_DRIVERS_DIR)/includes
 DEVICE_DRIVERS_LIB_DIR = $(DEVICE_DRIVERS_DIR)/RISCV_lib/
 DEVICE_DRIVERS_LIB = RISCV_device_drivers
 
-CINCLUDES = -I /home/ptracton/Downloads/gtools/lm32/lm32-elf/include/ -I $(DEVICE_DRIVERS_INC_DIR)
-CFLAGS += $(CINCLUDES) -g -D$(CPU)  -Wall -Werror -Wextra -m32 -mno-fdiv  -msoft-float
+CINCLUDES = -I $(DEVICE_DRIVERS_INC_DIR) -I $(FIRMWARE_CPU_ROOT)/boot/includes
+CFLAGS += $(CINCLUDES) -g -D$(CPU)  -march=rv32imc 
+CFLAGS += -Werror -Wall -Wextra -Wshadow -Wundef -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings
+CFLAGS += -Wredundant-decls -Wstrict-prototypes -Wmissing-prototypes -pedantic # -Wconversion
 LD_FLAGS = -nostdlib -T$(FIRMWARE_CPU_ROOT)/linker/riscv.ld -L $(DEVICE_DRIVERS_LIB_DIR) -l$(DEVICE_DRIVERS_LIB) 
 
 include $(FIRMWARE_CPU_ROOT)/environment.mk
@@ -39,8 +41,9 @@ $(ELF_FILE): $(ELF_REQUIREMENTS)
 
 %.vh: %.elf
 	@$(OBJCOPY) -O srec $< $@.tmp
-	srec_cat $@.tmp --output $@.mem --VMEM
-
+	srec_cat $@.tmp --byte-swap 4 --output  $@.swap
+	srec_cat $@.swap --output $@.mem --VMEM
+#	$(FIRMWARE_CPU_ROOT)/tools/makehex.py $< 16384 > $@.makehex.mem
 
 %.o:%.c
 	@echo "Compiling  $<"

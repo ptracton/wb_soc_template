@@ -8,15 +8,15 @@
 ## Prefix of the GCC LM32 Cross Compiler
 ##
 ifeq ($(CPU), LM32)
-	PREFIX	= lm32-elf
+PREFIX	= lm32-elf
 endif
 
 ifeq ($(CPU), MOR1K)
-	PREFIX	= or1k-elf
+PREFIX	= or1k-elf
 endif
 
 ifeq ($(CPU), RISCV)
-	PREFIX	= riscv32-unknown-elf
+PREFIX	= riscv32-unknown-elf
 endif
 
 

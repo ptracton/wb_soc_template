@@ -1,3 +1,4 @@
+CPU=RISCV
 include ../environment.mk
 
 TARGET = boot
@@ -34,17 +35,19 @@ BIN_FILE  = $(LIB_DIR)/$(TARGET).bin
 #ASM_SOURCES      += src/crt0ram.S 
 #ASM_OBJECTS      += $(OBJ_DIR)/crt0ram.o
 ASM_SOURCES      += src/crt0.S 
-ASM_OBJECTS      += $(OBJ_DIR)/crt0.o
+ASM_OBJECTS      += $(OBJ_DIR)/start.o $(OBJ_DIR)/custom_ops.o
 ELF_REQUIREMENTS += $(ASM_OBJECTS)
-ASMFLAGS         += -m32 -msoft-float
+ASMFLAGS         += -march=rv32imc 
 
 ##
 ## Linker flags
 ##
-LDFLAGS = -T$(LD_DIR)/linker.ld -nostdlib -lgcc
-CFLAGS  = -g $(CINCLUDES)
-CFLAGS += -m32 -mno-fdiv  -msoft-float
-CFLAGS += #-Wall -Werror -Wextra 
+LDFLAGS = -T$(LD_DIR)/linker.ld -nostdlib -lgcc 
+CFLAGS  = -g $(CINCLUDES) -march=rv32imc 
+#CFLAGS += -m32 -mno-fdiv  -msoft-float
+CFLAGS += -Werror -Wall -Wextra -Wshadow -Wundef -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings
+CFLAGS += -Wredundant-decls -Wstrict-prototypes -Wmissing-prototypes -pedantic # -Wconversion
+
 
 ##
 ## The directories to make for this build.
@@ -70,7 +73,7 @@ $(LIB_DIR)/$(LIB_FILE): $(ELF_REQUIREMENTS)
 ##
 $(OBJ_DIR)/%.o:%.S
 	@echo "Assembling $<"
-	$(ASM) $(ASMFLAGS)   $<  -o $@
+	$(CC) $(ASMFLAGS)   $< -c  -o $@
 
 ##
 ## Turn out C code into objects in our $(OBJ_DIR)
