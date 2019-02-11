@@ -5,7 +5,7 @@ TEST_CASE_SRC = $(TEST_CASE).c
 TEST_CASE_OBJ = $(TEST_CASE).o
 ELF_REQUIREMENTS = $(TEST_CASE_OBJ) 
 ELF_FILE  = $(TEST_CASE).elf
-LIST_FILE = $(TEST_CASE).lst
+LIST_FILE = $(TEST_CASE)_$(CPU).lst
 VH_FILE = $(TEST_CASE).vh
 ENTRY_POINT = ../firmware/$(CPU)/boot/objects/start.o
 

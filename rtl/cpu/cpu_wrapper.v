@@ -364,9 +364,12 @@ module wishbone_cpu (/*AUTOARG*/
    assign iwbm_cyc_o = ( mem_instr) ? rv_wbm_cyc_o : 1'b0;
    assign dwbm_cyc_o = (!mem_instr) ? rv_wbm_cyc_o : 1'b0;
 
-   assign iwbm_sel_o = ( mem_instr) ? rv_wbm_sel_o : 1'b0;
+   assign iwbm_sel_o = ( mem_instr) ? rv_wbm_sel_o : 4'b0;
    assign dwbm_sel_o = (!mem_instr) ? rv_wbm_sel_o : 4'b0;
 
+   assign iwbm_we_o = ( mem_instr) ? rv_wbm_we_o : 1'b0;
+   assign dwbm_we_o = (!mem_instr) ? rv_wbm_we_o : 1'b0;
+   
    assign iwbm_cti_o = 3'b0;
    assign dwbm_cti_o = 3'b0;
    
@@ -378,46 +381,50 @@ module wishbone_cpu (/*AUTOARG*/
    assign rv_wbm_ack_i = ( mem_instr) ? iwbm_ack_i : dwbm_ack_i;
    assign rv_wbm_rty_i = ( mem_instr) ? iwbm_rty_i : dwbm_rty_i;
    
+ `define DEBUGASM 1
+ `define DEBUG 1
+ `define DEBUGREGS 1
    
-   picorv32_wb cpu(
-		   .trap(),
-		   
-		   // Wishbone interfaces
-		   .wb_rst_i(rst_i),
-		   .wb_clk_i(clk_i),
-		   
-		   .wbm_adr_o(rv_wbm_adr_o),
-		   .wbm_dat_o(rv_wbm_dat_o),
-		   .wbm_dat_i(rv_wbm_dat_i),
-		   .wbm_we_o (rv_wbm_we_o ),
-		   .wbm_sel_o(rv_wbm_sel_o),
-		   .wbm_stb_o(rv_wbm_stb_o),
-		   .wbm_ack_i(rv_wbm_ack_i),
-		   .wbm_cyc_o(rv_wbm_cyc_o),
-		   
-		   // Pico Co-Processor Interface (PCPI)
-		   .pcpi_valid(),
-		   .pcpi_insn(),
-		   .pcpi_rs1(),
-		   .pcpi_rs2(),
-		   .pcpi_wr(1'b0),
-		   .pcpi_rd(32'b0),
-		   .pcpi_wait(1'b0),
-		   .pcpi_ready(1'b0),
-		   
-		   // IRQ interface
-		   .irq(interrupts),
-		   .eoi(end_of_interrupt),
-		   
-		   
-		   // Trace Interface
-		   .trace_valid(),
-		   .trace_data(),
-		   
-		   .mem_instr(mem_instr)
-		   );
+   picorv32_wb #(.STACKADDR(32'h20002000))
+   cpu(
+       .trap(),
+       
+       // Wishbone interfaces
+       .wb_rst_i(rst_i),
+       .wb_clk_i(clk_i),
+       
+       .wbm_adr_o(rv_wbm_adr_o),
+       .wbm_dat_o(rv_wbm_dat_o),
+       .wbm_dat_i(rv_wbm_dat_i),
+       .wbm_we_o (rv_wbm_we_o ),
+       .wbm_sel_o(rv_wbm_sel_o),
+       .wbm_stb_o(rv_wbm_stb_o),
+       .wbm_ack_i(rv_wbm_ack_i),
+       .wbm_cyc_o(rv_wbm_cyc_o),
+       
+       // Pico Co-Processor Interface (PCPI)
+       .pcpi_valid(),
+       .pcpi_insn(),
+       .pcpi_rs1(),
+       .pcpi_rs2(),
+       .pcpi_wr(1'b0),
+       .pcpi_rd(32'b0),
+       .pcpi_wait(1'b0),
+       .pcpi_ready(1'b0),
+       
+       // IRQ interface
+       .irq(interrupts),
+       .eoi(end_of_interrupt),
+       
+       
+       // Trace Interface
+       .trace_valid(),
+       .trace_data(),
+       
+       .mem_instr(mem_instr)
+       );
    
-
+   
 `elsif WISHBONE_CPU_ZIP
 
    //
