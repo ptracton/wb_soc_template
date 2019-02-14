@@ -40,9 +40,11 @@ $(ELF_FILE): $(ELF_REQUIREMENTS)
 	$(LD) -o $(ELF_FILE) $(ENTRY_POINT)  $(ELF_REQUIREMENTS)  $(LD_FLAGS) 
 
 %.vh: %.elf
+	@echo "Create srec "
 	@$(OBJCOPY) -O srec $< $@.tmp
 	srec_cat $@.tmp --byte-swap 4 --output  $@.swap
-	srec_cat $@.swap --output $@.mem --VMEM
+	@echo "Create .mem file"
+	srec_cat $@.swap  -fill 0x00 --within $@.swap --range-padding 4   --output $@.mem --VMEM 4
 #	$(FIRMWARE_CPU_ROOT)/tools/makehex.py $< 16384 > $@.makehex.mem
 
 %.o:%.c

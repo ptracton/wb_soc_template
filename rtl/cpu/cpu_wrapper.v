@@ -381,11 +381,13 @@ module wishbone_cpu (/*AUTOARG*/
    assign rv_wbm_ack_i = ( mem_instr) ? iwbm_ack_i : dwbm_ack_i;
    assign rv_wbm_rty_i = ( mem_instr) ? iwbm_rty_i : dwbm_rty_i;
    
- `define DEBUGASM 1
- `define DEBUG 1
+// `define DEBUGASM 1
+// `define DEBUG 1
  `define DEBUGREGS 1
    
-   picorv32_wb #(.STACKADDR(32'h20002000))
+   picorv32_wb #(.STACKADDR(32'h20002000),
+		 .COMPRESSED_ISA(1)
+		 )
    cpu(
        .trap(),
        

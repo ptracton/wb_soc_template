@@ -400,7 +400,8 @@ assign stx_pad_o = loopback ? 1'b1 : serial_out;
 // Receiver Instance
 uart_receiver receiver(clk, wb_rst_i, lcr, rf_pop, serial_in, enable, 
 	counter_t, rf_count, rf_data_out, rf_error_bit, rf_overrun, rx_reset, lsr_mask, rstate, rf_push_pulse);
-
+   
+   wire UART_REG_IE_write_enable = (wb_we_i && wb_addr_i==`UART_REG_IE);
 
 // Asynchronous reading here because the outputs are sampled in uart_wb.v file 
 always @(dl or dlab or ier or iir or scratch
@@ -480,7 +481,8 @@ always @(posedge clk or posedge wb_rst_i)
 	else
 	if (wb_we_i && wb_addr_i==`UART_REG_LC)
 		lcr <= wb_dat_i;
-
+   
+   
 // Interrupt Enable Register or UART_DL2
 always @(posedge clk or posedge wb_rst_i)
 	if (wb_rst_i)
