@@ -4,7 +4,7 @@ exec make TARGET=${1} CPU=${2}
 vlib work
 
 
-vlog ${1} +incdir+../testbench +define+${3}  +define+WISHBONE_CPU_${2}
+vlog ${1}.v +incdir+../testbench +define+${3}  +define+WISHBONE_CPU_${2}
 
 vlog ../rtl/system_controller/system_controller.v +define+${3}
 
